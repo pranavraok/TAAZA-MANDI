@@ -1,0 +1,186 @@
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  font-family: "Segoe UI", sans-serif; 
+}
+
+body {
+  background: #f5f9f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.auth-container {
+  display: flex;
+  width: 1000px;
+  height: 700px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.auth-left {
+  flex: 1;
+}
+
+.auth-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.auth-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: #4caf50;
+}
+
+h3 { 
+  font-size: 20px; 
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.subtitle { 
+  font-size: 14px; 
+  color: #666; 
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.auth-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.pw-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pw-wrap input { 
+  flex: 5; 
+}
+
+.forgot-link {
+  font-size: 12px;
+  color: #4caf50;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.remember-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.btn-primary {
+  background: #4caf50;
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 6px;
+  transition: 0.2s;
+}
+
+.btn-primary:hover { 
+  background: #22863a; 
+}
+
+.switch {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch a {
+  color: #4caf50;
+  cursor: pointer;
+}
+
+.err {
+  font-size: 12px;
+  color: red;
+}
+
+.hidden { 
+  display: none; 
+}
+
+.msg { 
+  font-size: 14px; 
+  margin-bottom: 10px; 
+  text-align: center; 
+}
+
+.msg.success { 
+  color: green; 
+}
+
+.msg.err { 
+  color: red; 
+}
+
+.user-card { 
+  text-align: center; 
+  margin-top: 40px; 
+}
+
+.avatar {
+  width: 70px; 
+  height: 70px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: #4caf50;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  color: white; 
+  font-weight: bold; 
+  font-size: 20px;
+}
+
+.footer-links {
+  margin-top: auto;
+  font-size: 14px;
+  text-align: center;
+}
+
+.footer-links a {
+  color: #4caf50;
+  text-decoration: none;
+}

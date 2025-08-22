@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taaza Mandi Auth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/login.css">
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script defer src="/static/auth.js"></script>
+</head>
+<body>
+  <div class="auth-container">
+    <!-- Left Image -->
+    <div class="auth-left">
+      <img src="/src/img/login.png" alt="Farm Image">
+    </div>
+
+    <!-- Right Form -->
+    <div class="auth-right">
+      <div class="brand">
+        <h2>Taaza Mandi</h2>
+      </div>
+
+      <h3 id="form-title">Welcome Back</h3>
+      <p class="subtitle">Sign in to access your account</p>
+
+      <div id="msg" class="msg"></div>
+
+      <!-- LOGIN -->
+      <form id="login-form" class="auth-form">
+        <label>Email or Username</label>
+        <input type="email" id="login-email" placeholder="Enter your email or username">
+        <small id="login-email-error" class="err"></small>
+
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="login-password" placeholder="Enter your password">
+          <a id="goto-forgot" class="forgot-link">Forgot password?</a>
+        </div>
+        <small id="login-password-error" class="err"></small>
+
+        <div class="remember-wrap">
+          <input type="checkbox" id="remember-me">
+          <label for="remember-me">Remember me</label>
+        </div>
+
+        <button type="submit" class="btn-primary">Sign In</button>
+
+        <p class="switch">Don’t have an account? <a id="goto-register">Sign up</a></p>
+      </form>
+
+      <!-- REGISTER -->
+      <form id="register-form" class="auth-form hidden">
+        <label>Full Name</label>
+        <input type="text" id="register-fullname" placeholder="Enter full name">
+        <small id="fullname-err" class="err"></small>
+
+        <label>Email</label>
+        <input type="email" id="register-email" placeholder="Enter email">
+        <small id="email-err" class="err"></small>
+
+        <label>Password</label>
+        <input type="password" id="register-password" placeholder="Enter password">
+        <small id="register-password-err" class="err"></small>
+
+        <label>Re-Enter Password</label>
+        <input type="password" id="register-pass2" placeholder="Repeat password">
+        <small id="register-pass2-err" class="err"></small>
+
+        <button type="submit" class="btn-primary">Sign Up</button>
+        <p class="switch">Already have an account? <a id="goto-login">Sign in</a></p>
+      </form>
+
+      <!-- FORGOT PASSWORD -->
+      <form id="forgot-form" class="auth-form hidden">
+        <label>Email</label>
+        <input type="email" id="forgot-email" placeholder="Enter your email">
+        <small id="forgot-email-err" class="err"></small>
+        <button type="submit" class="btn-primary">Send Reset Link</button>
+        <p class="switch"><a id="goto-login2">Back to Login</a></p>
+      </form>
+
+      <!-- RESET -->
+      <form id="reset-form" class="auth-form hidden">
+        <label>New Password</label>
+        <input type="password" id="reset-password" placeholder="New password">
+        <small id="reset-password-err" class="err"></small>
+
+        <label>Re-Enter New Password</label>
+        <input type="password" id="reset-pass2" placeholder="Repeat new password">
+        <small id="reset-pass2-err" class="err"></small>
+
+        <button type="submit" class="btn-primary">Update Password</button>
+        <p class="switch"><a id="goto-login3">Back to Login</a></p>
+      </form>
+
+      <!-- DASHBOARD -->
+      <div id="dashboard" class="hidden">
+        <div class="user-card">
+          <div id="avatar" class="avatar">TM</div>
+          <h3 id="user-name">User</h3>
+          <p id="user-email">No email</p>
+          <button onclick="logout()" class="btn-primary">Logout</button>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="{{ url_for('index') }}">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

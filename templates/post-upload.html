@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAAZA MANDI - Post Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --error: #f56565;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Enhanced Navbar */
+    header {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 72px;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar input[type="text"] {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 2rem;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .navbar input[type="text"]::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .navbar input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .navbar ul li a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .navbar ul li a:hover {
+      color: white;
+    }
+
+    .navbar ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .navbar ul li a:hover::after {
+      width: 100%;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .auth-buttons button {
+      padding: 0.6rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .auth-buttons button:first-child {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-buttons button:last-child {
+      background: white;
+      color: var(--primary-green);
+      border-color: white;
+    }
+
+    .auth-buttons button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Main Content */
+    main {
+      padding: 3rem 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    .upload-heading {
+      text-align: center;
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .upload-subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      font-weight: 500;
+    }
+
+    .upload-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem;
+      position: relative;
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+    }
+
+    .upload-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+    }
+
+    .back-btn {
+      position: absolute;
+      right: 3rem;
+      top: 2rem;
+      background: var(--light-green);
+      color: var(--primary-green);
+      border: 2px solid var(--primary-green);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 2;
+    }
+
+    .back-btn:hover {
+      background: var(--primary-green);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-flex {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Enhanced Photo Upload Area */
+    .photo-upload-area {
+      background: var(--ultra-light-green);
+      border: 3px dashed var(--accent-green);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+      min-height: 320px;
+    }
+
+    .photo-upload-area.dragover {
+      background: var(--light-green);
+      border-color: var(--secondary-green);
+      transform: scale(1.02);
+    }
+
+    .photo-upload-area .upload-icon {
+      font-size: 4rem;
+      color: var(--secondary-green);
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .photo-upload-area .upload-text {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .photo-upload-area input[type="file"] {
+      display: none;
+    }
+
+    .browse-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 1rem 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .browse-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .upload-note {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    #imagePreviewList {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .image-preview {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .image-preview img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+
+    .remove-image {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--error);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Enhanced Form Styling */
+    .desc-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group label .required {
+      color: var(--error);
+      font-size: 0.8rem;
+    }
+
+    .form-group textarea,
+    .form-group input[type="text"],
+    .form-group select {
+      width: 100%;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-light);
+      font-size: 1rem;
+      background: var(--ultra-light-green);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-group textarea:focus,
+    .form-group input[type="text"]:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--ultra-light-green);
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 0.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-row:focus-within {
+      border-color: var(--secondary-green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
+    }
+
+    .input-row input[type="text"] {
+      border: none;
+      background: transparent;
+      padding: 0.75rem;
+      flex: 1;
+    }
+
+    .input-row input[type="text"]:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .unit-label {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0 0.75rem;
+      background: white;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Enhanced Submit Button */
+    .submit-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 2rem;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.2rem;
+      width: 100%;
+      margin-top: 2.5rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Enhanced Footer */
+    footer {
+      background: var(--card-bg);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-light);
+      margin-top: 3rem;
+    }
+
+    footer p:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Success/Error Messages */
+    .message {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      color: white;
+      font-weight: 600;
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .message.show {
+      transform: translateX(0);
+    }
+
+    .message.success {
+      background: var(--success);
+    }
+
+    .message.error {
+      background: var(--error);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .navbar ul {
+        display: none;
+      }
+      
+      .upload-card {
+        margin: 0 1rem;
+        padding: 2rem;
+      }
+      
+      .back-btn {
+        right: 2rem;
+        top: 1.5rem;
+      }
+      
+      .form-flex {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-wrap: wrap;
+      }
+      
+      .navbar input[type="text"] {
+        margin: 1rem 0 0 0;
+        order: 3;
+        flex-basis: 100%;
+      }
+      
+      .auth-buttons {
+        display: none;
+      }
+      
+      .upload-heading {
+        font-size: 2rem;
+      }
+      
+      .upload-card {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+      }
+      
+      .back-btn {
+        position: static;
+        margin-bottom: 1rem;
+        align-self: flex-start;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .photo-upload-area {
+        min-height: 250px;
+        padding: 2rem 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .upload-card {
+        padding: 1rem;
+      }
+      
+      .upload-heading {
+        font-size: 1.75rem;
+      }
+      
+      .photo-upload-area .upload-icon {
+        font-size: 3rem;
+      }
+      
+      .browse-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    /* Form Validation Styles */
+    .form-group.error input,
+    .form-group.error textarea,
+    .form-group.error select {
+      border-color: var(--error);
+      background: rgba(245, 101, 101, 0.05);
+    }
+
+    .form-group.error .error-message {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .form-group.success input,
+    .form-group.success textarea,
+    .form-group.success select {
+      border-color: var(--success);
+      background: rgba(72, 187, 120, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-seedling"></i>
+        TAAZA MANDI
+      </div>
+      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="market.html">Market</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <button>Login</button>
+        <button>Sign Up</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <h1 class="upload-heading">
+      <i class="fas fa-upload"></i>
+      Upload New Product
+    </h1>
+    <p class="upload-subtitle">Share your fresh produce with buyers across the platform</p>
+    
+    <div class="upload-card">
+      <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Back to Feed
+      </a>
+      
+      <form id="cropUploadForm" autocomplete="off">
+        <div class="form-flex">
+          <!-- Enhanced Photo Upload Area -->
+          <div class="photo-upload-area" id="dropArea">
+            <div class="upload-icon">
+              <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <div class="upload-text">Drag and drop photos here or</div>
+            <label class="browse-btn" for="cropImage">
+              <i class="fas fa-images"></i>
+              Browse Files
+            </label>
+            <input type="file" id="cropImage" name="images" accept="image/*" multiple>
+            <div class="upload-note">
+              <i class="fas fa-info-circle"></i>
+              Upload up to 5 high-quality images (Max 5MB each)
+              <br>Supported formats: JPG, PNG, WebP
+            </div>
+            <div id="imagePreviewList"></div>
+          </div>
+          
+          <!-- Enhanced Description & Location -->
+          <div class="desc-col">
+            <div class="form-group">
+              <label for="cropDescription">
+                <i class="fas fa-align-left"></i>
+                Product Description
+                <span class="required">*</span>
+              </label>
+              <textarea 
+                id="cropDescription" 
+                name="description" 
+                required 
+                placeholder="Describe your product in detail. Include information about quality, freshness, harvesting date, organic certification, etc."
+                maxlength="500"
+              ></textarea>
+              <small class="char-count">0/500 characters</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="pickupLocation">
+                <i class="fas fa-map-marker-alt"></i>
+                Pickup Location
+                <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="pickupLocation" 
+                name="pickupLocation" 
+                required 
+                placeholder="Enter your farm/warehouse location (City, State)"
+              >
+            </div>
+          </div>
+        </div>
+        
+        <!-- Enhanced Form Fields -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cropTitle">
+              <i class="fas fa-tag"></i>
+              Product Title
+              <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="cropTitle" 
+              name="title" 
+              required 
+              placeholder="e.g. Fresh Organic Tomatoes"
+              maxlength="100"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="quantity">
+              <i class="fas fa-weight-hanging"></i>
+              Quantity Available
+              <span class="required">*</span>
+            </label>
+            <div class="input-row">
+              <input 
+                type="number" 
+                id="quantity" 
+                name="quantity" 
+                required 
+                placeholder="100"
+                min="1"
+              >
+              <span class="unit-label">kg</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="price">
+              <i class="fas fa-rupee-sign"></i>
+              Price per kg
+              <span class="required">*</span>
+            </label>
+            <div class="input-row">
+              <span class="unit-label">₹</span>
+              <input 
+                type="number" 
+                id="price" 
+                name="price" 
+                required 
+                placeholder="25"
+                min="1"
+                step="0.01"
+              >
+              <span class="unit-label">per kg</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="category">
+              <i class="fas fa-list"></i>
+              Category
+              <span class="required">*</span>
+            </label>
+            <select id="category" name="category" required>
+              <option value="">Select a category</option>
+              <option value="Vegetables">🥬 Vegetables</option>
+              <option value="Fruits">🍎 Fruits</option>
+              <option value="Grains">🌾 Grains</option>
+              <option value="Pulses">🫘 Pulses</option>
+              <option value="Spices">🌶️ Spices</option>
+              <option value="Others">🌱 Others</option>
+            </select>
+          </div>
+        </div>
+        
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <i class="fas fa-upload"></i>
+          Upload Product
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Enhanced Footer -->
+  <footer>
+    <p>© 2025 TAAZA MANDI. All Rights Reserved.</p>
+    <p>Connecting farmers directly to buyers through a simple and efficient marketplace. 🌱</p>
+  </footer>
+
+  <script>
+    // Enhanced JavaScript functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const cropImage = document.getElementById('cropImage');
+      const imagePreviewList = document.getElementById('imagePreviewList');
+      const dropArea = document.getElementById('dropArea');
+      const form = document.getElementById('cropUploadForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const descriptionTextarea = document.getElementById('cropDescription');
+      const charCount = document.querySelector('.char-count');
+
+      let selectedFiles = [];
+
+      // Character counter for description
+      descriptionTextarea.addEventListener('input', function() {
+        const count = this.value.length;
+        charCount.textContent = `${count}/500 characters`;
+        charCount.style.color = count > 450 ? 'var(--warning)' : 'var(--text-light)';
+      });
+
+      // Enhanced image preview with remove functionality
+      function updateImagePreviews() {
+        imagePreviewList.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+              const previewDiv = document.createElement('div');
+              previewDiv.className = 'image-preview';
+              previewDiv.innerHTML = `
+                <img src="${ev.target.result}" alt="Preview ${index + 1}">
+                <button type="button" class="remove-image" onclick="removeImage(${index})">
+                  <i class="fas fa-times"></i>
+                </button>
+              `;
+              imagePreviewList.appendChild(previewDiv);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      // Remove image function
+      window.removeImage = function(index) {
+        selectedFiles.splice(index, 1);
+        updateImagePreviews();
+      };
+
+      // File input change handler
+      cropImage.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        selectedFiles = [...selectedFiles, ...files].slice(0, 5);
+        updateImagePreviews();
+      });
+
+      // Enhanced drag and drop
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => {
+          dropArea.classList.add('dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => {
+          dropArea.classList.remove('dragover');
+        }, false);
+      });
+
+      dropArea.addEventListener('drop', function(e) {
+        const files = Array.from(e.dataTransfer.files);
+        selectedFiles = [...selectedFiles, ...files].slice(0, 5);
+        updateImagePreviews();
+      });
+
+      // Form validation
+      function validateForm() {
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+          const group = field.closest('.form-group');
+          if (!field.value.trim()) {
+            group.classList.add('error');
+            group.classList.remove('success');
+            isValid = false;
+          } else {
+            group.classList.remove('error');
+            group.classList.add('success');
+          }
+        });
+
+        return isValid;
+      }
+
+      // Show message function
+      function showMessage(message, type = 'success') {
+        const messageEl = document.createElement('div');
+        messageEl.className = `message ${type}`;
+        messageEl.innerHTML = `
+          <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+          ${message}
+        `;
+        document.body.appendChild(messageEl);
+        
+        setTimeout(() => messageEl.classList.add('show'), 100);
+        setTimeout(() => {
+          messageEl.classList.remove('show');
+          setTimeout(() => messageEl.remove(), 300);
+        }, 3000);
+      }
+
+      // Enhanced form submission
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+          showMessage('Please fill in all required fields', 'error');
+          return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <div class="loading"></div>
+          Uploading Product...
+        `;
+
+        // Get form data
+        const title = document.getElementById('cropTitle').value;
+        const description = document.getElementById('cropDescription').value;
+        const quantity = document.getElementById('quantity').value;
+        const price = document.getElementById('price').value;
+        const category = document.getElementById('category').value;
+        const location = document.getElementById('pickupLocation').value;
+
+        // Process images
+        let imageUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"%3E%3Crect width="400" height="240" fill="%23e8f5e8"/%3E%3Ctext x="200" y="120" text-anchor="middle" fill="%234a8f5f" font-size="18"%3ENo Image%3C/text%3E%3C/svg%3E';
+
+        if (selectedFiles.length > 0) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            imageUrl = ev.target.result;
+            savePost();
+          };
+          reader.readAsDataURL(selectedFiles[0]);
+        } else {
+          savePost();
+        }
+
+        function savePost() {
+          // Simulate upload delay
+          setTimeout(() => {
+            const postData = {
+              title: title,
+              description: description,
+              available: quantity + ' kg',
+              price: '₹' + price + '/kg',
+              location: location,
+              category: category,
+              image: imageUrl,
+              timestamp: new Date().toISOString(),
+              likes: Math.floor(Math.random() * 50),
+              comments: Math.floor(Math.random() * 20),
+              verified: true
+            };
+
+            // Save to localStorage
+            const existingPosts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+            const newPost = {
+              id: Date.now(),
+              userId: 'currentUser',
+              userName: 'John Farmer',
+              userAvatar: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"%3E%3Ccircle cx="24" cy="24" r="24" fill="%234a8f5f"/%3E%3Ctext x="24" y="28" text-anchor="middle" fill="white" font-size="16" font-weight="bold"%3EJF%3C/text%3E%3C/svg%3E',
+              ...postData
+            };
+            
+            existingPosts.unshift(newPost);
+            localStorage.setItem('cropPosts', JSON.stringify(existingPosts));
+
+            // Reset form
+            form.reset();
+            selectedFiles = [];
+            imagePreviewList.innerHTML = '';
+            document.querySelectorAll('.form-group').forEach(group => {
+              group.classList.remove('error', 'success');
+            });
+
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+              <i class="fas fa-upload"></i>
+              Upload Product
+            `;
+
+            // Show success message
+            showMessage('🎉 Product uploaded successfully!', 'success');
+            
+            // Redirect after delay
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 2000);
+          }, 2000);
+        }
+      });
+
+      // Real-time validation
+      form.querySelectorAll('input, textarea, select').forEach(field => {
+        field.addEventListener('blur', function() {
+          const group = this.closest('.form-group');
+          if (this.hasAttribute('required')) {
+            if (!this.value.trim()) {
+              group.classList.add('error');
+              group.classList.remove('success');
+            } else {
+              group.classList.remove('error');
+              group.classList.add('success');
+            }
+          }
+        });
+      });
+
+      // Add smooth animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      // Observe form elements
+      document.querySelectorAll('.form-group, .photo-upload-area').forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+      });
+    });
+  </script>
+</body>
+</html>

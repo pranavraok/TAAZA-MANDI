@@ -1,0 +1,78 @@
+/* Footer Main Container */
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px 30px 30px;
+}
+
+/* Footer Brand */
+.footer-brand {
+  color: #43a047;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Footer Section Titles */
+.footer-section-title {
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 1.07em;
+}
+
+/* Footer Lists */
+.footer-links, .footer-resources, .footer-connect {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li, .footer-resources li, .footer-connect li {
+  margin-bottom: 6px;
+}
+
+/* Footer Links */
+.footer-links a, .footer-resources a, .footer-connect a {
+  color: #333;
+  text-decoration: none;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover, .footer-resources a:hover, .footer-connect a:hover {
+  color: #43a047;
+}
+
+/* Footer Copyright */
+.footer-copyright {
+  text-align: center;
+  color: #888;
+  font-size: 0.98em;
+  padding: 10px 0 0 0;
+}
+
+.footer-copyright .made-with-love {
+  float: right;
+  color: #e53935;
+  font-size: 0.98em;
+  margin-right: 30px;
+}
+
+/* Responsive Footer */
+@media (max-width: 1100px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+  }
+}
+  

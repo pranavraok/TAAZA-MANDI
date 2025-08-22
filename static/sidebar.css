@@ -1,0 +1,116 @@
+/* Sidebar Profile */
+.sidebar-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 24px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.sidebar-profile img {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #43a047;
+  margin-bottom: 12px;
+}
+
+.sidebar-profile .name {
+  font-weight: 700;
+  font-size: 1.15em;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.sidebar-profile .role {
+  color: #43a047;
+  font-size: 0.98em;
+  margin-bottom: 8px;
+}
+
+.sidebar-profile .profile-link {
+  color: #388e3c;
+  font-size: 0.98em;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Sidebar Section Titles */
+.sidebar-section-title {
+  font-size: 0.9em;
+  color: #43a047;
+  font-weight: 700;
+  margin: 24px 0 8px 24px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Sidebar Menu Lists */
+.sidebar-menu, .sidebar-resources, .sidebar-settings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li, .sidebar-resources li, .sidebar-settings li {
+  margin-bottom: 2px;
+}
+
+/* Sidebar Menu Links */
+.sidebar-menu a, .sidebar-resources a, .sidebar-settings a {
+  color: #222;
+  text-decoration: none;
+  font-size: 1.07em;
+  padding: 12px 24px;
+  display: block;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-menu a:hover, .sidebar-resources a:hover, .sidebar-settings a:hover {
+  background: #e8f5e9;
+  color: #43a047;
+  border-left-color: #43a047;
+}
+
+/* Sidebar Help Section */
+.sidebar-help {
+  background: #e8f5e9;
+  border-radius: 10px;
+  margin: 24px 18px 0 18px;
+  padding: 18px 16px;
+  color: #388e3c;
+  font-size: 1em;
+  text-align: left;
+}
+
+.sidebar-help strong {
+  color: #222;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sidebar-help .view-guides-btn {
+  display: block;
+  margin-top: 14px;
+  background: #43a047;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  width: 100%;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.sidebar-help .view-guides-btn:hover {
+  background: #388e3c;
+}
+  

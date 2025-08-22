@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taaza Mandi - Role Selection</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='user_select.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to TAAZA MANDI</h1>
+    <p class="subtitle">
+      Please select your role to continue. Your experience will be tailored based on your selection.
+    </p>
+
+    <div class="card-container">
+      <!-- Seller -->
+      <div class="role-card">
+        <form method="POST" action="">
+          <img src="{{ url_for('static', filename='img/seller.png') }}" alt="Seller">
+          <h2>SELLER</h2>
+          <p>As a seller on TAAZA MANDI, you can:</p>
+          <ul>
+            <li>✔ List your agricultural products directly to potential buyers.</li>
+            <li>✔ Get fair market prices without middlemen.</li>
+            <li>✔ Access market insights and price trends.</li>
+            <li>✔ Connect with a wide network of buyers across the country.</li>
+            <li>✔ Predict the crop for your location using advanced analytics.</li>
+          </ul>
+          <button type="submit" name="user_type" value="seller" class="btn">Continue as Seller</button>
+        </form>
+      </div>
+
+      <!-- Buyer -->
+      <div class="role-card">
+        <form method="POST" action="">
+          <img src="{{ url_for('static', filename='img/buyer.png') }}" alt="Buyer">
+          <h2>BUYER</h2>
+          <p>As a buyer on TAAZA MANDI, you can:</p>
+          <ul>
+            <li>✔ Purchase fresh produce directly from farmers.</li>
+            <li>✔ Get competitive prices on quality agricultural products.</li>
+            <li>✔ Verify product quality and source information.</li>
+            <li>✔ Support local farmers and sustainable agriculture.</li>
+          </ul>
+          <button type="submit" name="user_type" value="buyer" class="btn">Continue as Buyer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

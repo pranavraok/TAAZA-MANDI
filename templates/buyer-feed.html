@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAAZA MANDI - Marketplace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --error: #f56565;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      display: grid;
+      grid-template-areas:
+        "nav nav"
+        "sidebar feed"
+        "footer footer";
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+
+    /* Enhanced Navbar */
+    header {
+      grid-area: nav;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 72px;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar input[type="text"] {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 2rem;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .navbar input[type="text"]::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .navbar input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .navbar ul li a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .navbar ul li a:hover {
+      color: white;
+    }
+
+    .navbar ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .navbar ul li a:hover::after {
+      width: 100%;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .auth-buttons button {
+      padding: 0.6rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .auth-buttons button:first-child {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-buttons button:last-child {
+      background: white;
+      color: var(--primary-green);
+      border-color: white;
+    }
+
+    .auth-buttons button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Enhanced Sidebar */
+    aside {
+      grid-area: sidebar;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-md);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1rem;
+      background: var(--secondary-green);
+    }
+
+    .sidebar-profile .name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-profile .role {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .profile-link {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: white;
+      color: var(--primary-green);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-link:hover {
+      background: var(--primary-green);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-section-title {
+      padding: 1.5rem 2rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 1rem;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      font-weight: 500;
+      gap: 0.75rem;
+    }
+
+    .sidebar-menu a:hover {
+      background: var(--light-green);
+      color: var(--primary-green);
+      transform: translateX(4px);
+    }
+
+    .sidebar-help {
+      background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
+      border-radius: var(--radius-lg);
+      margin: 1.5rem;
+      padding: 1.5rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+    }
+
+    .sidebar-help strong {
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .view-guides-btn {
+      display: block;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      width: 100%;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .view-guides-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Enhanced Main Content */
+    main {
+      grid-area: feed;
+      padding: 2rem 0 0 0;
+      background: transparent;
+      min-height: 100vh;
+    }
+
+    .market-header {
+      max-width: 1200px;
+      margin: 0 auto 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .market-title {
+      color: var(--text-primary);
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .market-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    /* Enhanced Filters */
+    .market-filters {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .market-filters label {
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .market-filters select,
+    .market-filters input[type="text"] {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-light);
+      font-size: 0.95rem;
+      background: var(--ultra-light-green);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      font-family: inherit;
+      min-width: 150px;
+    }
+
+    .market-filters select:focus,
+    .market-filters input[type="text"]:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
+    }
+
+    .sort-label {
+      margin-left: auto;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sort-select {
+      min-width: 180px;
+    }
+
+    /* Enhanced Product Grid */
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Enhanced Product Cards */
+    .product-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 0;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--secondary-green);
+    }
+
+    .product-card:hover::before {
+      opacity: 1;
+    }
+
+    .product-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem 1.5rem 0 1.5rem;
+    }
+
+    .product-card-header img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--light-green);
+      background: var(--secondary-green);
+    }
+
+    .product-card-header .user-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .product-card-header .user-info .name {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.125rem;
+    }
+
+    .product-card-header .user-info .time {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .product-description {
+      color: var(--text-secondary);
+      margin: 1rem 1.5rem 0 1.5rem;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      margin: 1rem 0 0 0;
+      background: var(--light-green);
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 1.5rem 0 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .product-tag {
+      background: var(--light-green);
+      color: var(--primary-green);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+    }
+
+    .product-tag:hover {
+      background: var(--secondary-green);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .product-details-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 1.5rem 0 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+      background: var(--ultra-light-green);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .product-details-row .icon {
+      color: var(--secondary-green);
+      font-size: 1.1rem;
+      margin-right: 0.25rem;
+    }
+
+    .product-details-row .detail {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-weight: 600;
+      background: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
+    }
+
+    .product-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 1rem 1.5rem 0 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .product-actions-row .action {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .product-actions-row .action:hover {
+      color: var(--secondary-green);
+      background: var(--light-green);
+    }
+
+    .product-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 1rem 1.5rem 0 1.5rem;
+    }
+
+    .share-link {
+      color: var(--secondary-green);
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .share-link:hover {
+      background: var(--light-green);
+      transform: translateY(-1px);
+    }
+
+    .contact-seller-section {
+      margin: 1rem 1.5rem 0 1.5rem;
+    }
+
+    .btn-contact {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-contact:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin: 1rem 1.5rem 1.5rem 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .btn-green, .btn-outline {
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.5rem;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .btn-green {
+      background: var(--primary-green);
+      color: white;
+      border-color: var(--primary-green);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-green:hover {
+      background: var(--secondary-green);
+      border-color: var(--secondary-green);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary-green);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-outline:hover {
+      background: var(--light-green);
+      border-color: var(--secondary-green);
+      transform: translateY(-2px);
+    }
+
+    /* Enhanced Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-secondary);
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-green);
+    }
+
+    .empty-state h3 {
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* Enhanced Pagination */
+    .pagination-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 3rem 0 2rem 0;
+    }
+
+    .pagination-row button {
+      min-width: 120px;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* Enhanced Footer */
+    footer {
+      grid-area: footer;
+      background: var(--card-bg);
+      padding: 3rem 0 1rem 0;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-light);
+      margin-top: 2rem;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links, .footer-resources, .footer-connect {
+      list-style: none;
+    }
+
+    .footer-links li, .footer-resources li, .footer-connect li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a, .footer-resources a, .footer-connect a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover, .footer-resources a:hover, .footer-connect a:hover {
+      color: var(--primary-green);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      body {
+        grid-template-columns: 280px 1fr;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      body {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "nav"
+          "feed"
+          "footer";
+      }
+      aside {
+        display: none;
+      }
+      main {
+        padding: 1rem 0 0 0;
+      }
+      .navbar ul {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .market-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .market-title {
+        font-size: 2rem;
+        text-align: center;
+      }
+      
+      .market-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+      
+      .sort-label {
+        margin-left: 0;
+      }
+      
+      .navbar input[type="text"] {
+        margin: 0 1rem;
+      }
+      
+      .auth-buttons {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 0.5rem;
+      }
+      
+      .navbar input[type="text"] {
+        margin: 0;
+        width: 100%;
+      }
+      
+      .market-title {
+        font-size: 1.75rem;
+      }
+      
+      .product-card-header,
+      .product-description,
+      .product-tags,
+      .product-details-row,
+      .product-actions-row,
+      .contact-seller-section,
+      .product-actions {
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+    }
+
+    /* Loading Animation */
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    .loading-shimmer {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200px 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    /* Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Focus States */
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
+    }
+
+    /* Badge for verified sellers */
+    .verified-badge {
+      background: var(--success);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-left: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-seedling"></i>
+        TAAZA MANDI
+      </div>
+      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="market.html">Market</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <button>Login</button>
+        <button>Sign Up</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Enhanced Sidebar -->
+  <aside>
+    <div class="sidebar-profile">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EB%3C/text%3E%3C/svg%3E" alt="Profile">
+      <div class="name">Ravi Kumar</div>
+      <div class="role">
+        <i class="fas fa-shopping-cart"></i>
+        Buyer Account
+      </div>
+      <a href="profile.html" class="profile-link">
+        <i class="fas fa-user"></i>
+        View Profile
+      </a>
+    </div>
+    
+    <div class="sidebar-section-title">📍 Navigation</div>
+    <ul class="sidebar-menu">
+      <li><a href="buyer-feed.html"><i class="fas fa-store"></i> Marketplace</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+      <li><a href="market.html"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+    </ul>
+    
+    <div class="sidebar-help">
+      <strong>
+        <i class="fas fa-question-circle"></i>
+        Need Help?
+      </strong>
+      Check out our guides on how to connect with farmers and purchase fresh produce.
+      <a href="#" class="view-guides-btn">
+        <i class="fas fa-book-open"></i>
+        View Guides
+      </a>
+    </div>
+  </aside>
+
+  <!-- Enhanced Main Content -->
+  <main>
+    <div class="market-header">
+      <div class="market-title">
+        <i class="fas fa-store"></i>
+        Fresh Produce Marketplace
+      </div>
+      <div class="market-subtitle">Browse fresh produce directly from farmers across India 🇮🇳</div>
+      
+      <div class="market-filters">
+        <label for="category">
+          <i class="fas fa-filter"></i>
+          Filter by:
+        </label>
+        <select id="category">
+          <option>All Categories</option>
+          <option>🥬 Vegetables</option>
+          <option>🍎 Fruits</option>
+          <option>🌾 Grains</option>
+          <option>🫘 Pulses</option>
+          <option>🌶️ Spices</option>
+        </select>
+        
+        <select id="location">
+          <option>All India</option>
+          <option>Maharashtra</option>
+          <option>Punjab</option>
+          <option>Uttar Pradesh</option>
+          <option>Uttarakhand</option>
+          <option>Haryana</option>
+          <option>Gujarat</option>
+        </select>
+        
+        <span class="sort-label">
+          <i class="fas fa-sort"></i>
+          Sort by:
+        </span>
+        <select class="sort-select">
+          <option>Latest First</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Most Popular</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="market-grid" id="dynamicFeed">
+      <!-- Dynamic content will be loaded here -->
+    </div>
+    
+    <div class="pagination-row">
+      <button class="btn-outline">
+        <i class="fas fa-chevron-left"></i>
+        Previous
+      </button>
+      <button class="btn-green">
+        Next
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </main>
+
+  <!-- Enhanced Footer -->
+  <footer>
+    <div class="footer-main">
+      <div>
+        <div class="footer-brand">
+          <i class="fas fa-seedling"></i>
+          TAAZA MANDI
+        </div>
+        <div>Connecting farmers directly to buyers through a simple and efficient marketplace platform that empowers rural communities.</div>
+      </div>
+      <div>
+        <div class="footer-section-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="market.html"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+          <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-section-title">Farmer Resources</div>
+        <ul class="footer-resources">
+          <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+          <li><a href="https://agriwelfare.gov.in/en/Major"><i class="fas fa-university"></i> Government Schemes</a></li>
+          <li><a href="equipments.html"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+          <li><a href="#"><i class="fas fa-tags"></i> Best Deals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-section-title">Connect With Us</div>
+        <ul class="footer-connect">
+          <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+          <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+          <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="mailto:support@taazamandi.com"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center;color:#718096;font-size:0.9rem;padding:2rem 0 1rem 0;border-top:1px solid var(--border-light);margin-top:2rem;">
+      © 2025 TAAZA MANDI. All Rights Reserved. | Made with ❤️ for farmers
+    </div>
+  </footer>
+
+  <script>
+    // Enhanced JavaScript functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      loadBuyerFeed();
+      initializeFilters();
+      initializeAnimations();
+    });
+
+    function loadBuyerFeed() {
+      const feedContainer = document.getElementById('dynamicFeed');
+      if (!feedContainer) return;
+
+      // Get posts from localStorage
+      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+
+      if (posts.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <h3>No products available yet</h3>
+            <p>Check back later for fresh produce from local farmers or encourage farmers to start posting their products!</p>
+          </div>
+        `;
+        return;
+      }
+
+      feedContainer.innerHTML = '';
+      
+      // Create sample data if localStorage is empty
+      const samplePosts = posts.length > 0 ? posts : [
+        {
+          id: 1,
+          title: "Fresh Organic Tomatoes",
+          description: "Premium quality Roma tomatoes grown without pesticides. Perfect for restaurants and local markets.",
+          available: "500 kg",
+          price: "₹40/kg",
+          location: "Punjab",
+          category: "Vegetables",
+          image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🍅 Fresh Tomatoes%3C/text%3E%3C/svg%3E",
+          timestamp: new Date(Date.now() - 2*60*60*1000).toISOString(),
+          likes: 24,
+          comments: 5,
+          verified: true
+        },
+        {
+          id: 2,
+          title: "Premium Basmati Rice",
+          description: "Grade A quality basmati rice with excellent aroma and long grains. Bulk orders welcome!",
+          available: "2000 kg",
+          price: "₹80/kg",
+          location: "Haryana",
+          category: "Grains",
+          image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23f4fbf4'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🌾 Basmati Rice%3C/text%3E%3C/svg%3E",
+          timestamp: new Date(Date.now() - 5*60*60*1000).toISOString(),
+          likes: 45,
+          comments: 12,
+          verified: true
+        }
+      ];
+
+      samplePosts.forEach(post => {
+        const productCard = createProductCard(post);
+        feedContainer.appendChild(productCard);
+      });
+    }
+
+    function createProductCard(post) {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+
+      const postTime = new Date(post.timestamp);
+      const now = new Date();
+      const timeDiff = now - postTime;
+      const hoursAgo = Math.floor(timeDiff / (1000 * 60 * 60));
+      const timeText = hoursAgo === 0 ? 'Just posted' : `${hoursAgo} hour${hoursAgo > 1 ? 's' : ''} ago`;
+
+      card.innerHTML = `
+        <div class="product-card-header">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%236bb77b'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" alt="Farmer">
+          <div class="user-info">
+            <span class="name">
+              Verified Farmer
+              ${post.verified ? '<span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
+            </span>
+            <span class="time"><i class="fas fa-clock"></i> ${timeText}</span>
+          </div>
+        </div>
+        
+        <div class="product-description">
+          ${post.description}
+        </div>
+        
+        <img src="${post.image}" class="product-image" alt="${post.title}" loading="lazy">
+        
+        <div class="product-tags">
+          <span class="product-tag">
+            <i class="fas fa-tag"></i>
+            ${post.title}
+          </span>
+          <span class="product-tag">
+            <i class="fas fa-list"></i>
+            ${post.category}
+          </span>
+          <span class="product-tag">
+            <i class="fas fa-map-marker-alt"></i>
+            ${post.location}
+          </span>
+        </div>
+        
+        <div class="product-details-row">
+          <span class="detail">
+            <i class="fas fa-rupee-sign icon"></i>
+            ${post.price.replace('₹', '').replace('/kg', '')}/kg
+          </span>
+          <span class="detail">
+            <i class="fas fa-weight-hanging icon"></i>
+            ${post.available}
+          </span>
+          <span class="detail">
+            <i class="fas fa-truck icon"></i>
+            Delivery Available
+          </span>
+        </div>
+        
+        <div class="product-actions-row">
+          <span class="action" onclick="likeProduct(${post.id})">
+            <i class="fas fa-heart"></i>
+            <span>${post.likes || 0} likes</span>
+          </span>
+          <span class="action">
+            <i class="fas fa-comment"></i>
+            <span>${post.comments || 0} comments</span>
+          </span>
+        </div>
+        
+        <div class="product-card-footer">
+          <a href="#" class="share-link" onclick="shareProduct(${post.id})">
+            <i class="fas fa-share"></i>
+            Share
+          </a>
+        </div>
+        
+        <div class="contact-seller-section">
+          <button class="btn-contact" onclick="contactSeller(${post.id})">
+            <i class="fas fa-phone"></i>
+            Contact Seller
+          </button>
+        </div>
+        
+        <div class="product-actions">
+          <button class="btn-outline" onclick="addToCart(${post.id})">
+            <i class="fas fa-shopping-cart"></i>
+            Add to Cart
+          </button>
+          <button class="btn-green" onclick="buyNow(${post.id})">
+            <i class="fas fa-bolt"></i>
+            Buy Now
+          </button>
+        </div>
+      `;
+
+      return card;
+    }
+
+    function initializeFilters() {
+      const categoryFilter = document.getElementById('category');
+      const locationFilter = document.getElementById('location');
+      const sortSelect = document.querySelector('.sort-select');
+
+      [categoryFilter, locationFilter, sortSelect].forEach(filter => {
+        filter.addEventListener('change', function() {
+          // Add filter logic here
+          console.log('Filter changed:', this.value);
+        });
+      });
+    }
+
+    function initializeAnimations() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    }
+
+    // Enhanced interaction functions
+    function contactSeller(postId) {
+      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+      const post = posts.find(p => p.id === postId);
+      
+      if (post) {
+        // Create modal or redirect to contact page
+        alert(`📞 Contacting seller for: ${post.title}\n📍 Location: ${post.location}\n💰 Price: ${post.price}\n\nPhone: +91 98765-43210\nWhatsApp available 24/7`);
+      }
+    }
+
+    function buyNow(postId) {
+      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+      const post = posts.find(p => p.id === postId);
+      
+      if (post) {
+        alert(`🛒 Initiating purchase for: ${post.title}\n📦 Quantity: ${post.available}\n💰 Price: ${post.price}\n\nRedirecting to checkout...`);
+      }
+    }
+
+    function addToCart(postId) {
+      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+      const post = posts.find(p => p.id === postId);
+      
+      if (post) {
+        alert(`✅ Added to cart: ${post.title}\n💰 Price: ${post.price}`);
+      }
+    }
+
+    function likeProduct(postId) {
+      const heartIcon = event.target.closest('.action').querySelector('i');
+      const likeCount = event.target.closest('.action').querySelector('span');
+      
+      heartIcon.style.color = heartIcon.style.color === 'red' ? '' : 'red';
+      heartIcon.style.transform = 'scale(1.2)';
+      
+      setTimeout(() => {
+        heartIcon.style.transform = 'scale(1)';
+      }, 200);
+    }
+
+    function shareProduct(postId) {
+      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+      const post = posts.find(p => p.id === postId);
+      
+      if (post && navigator.share) {
+        navigator.share({
+          title: post.title,
+          text: post.description,
+          url: window.location.href
+        });
+      } else {
+        alert('📤 Share link copied to clipboard!');
+      }
+    }
+  </script>
+</body>
+</html>
