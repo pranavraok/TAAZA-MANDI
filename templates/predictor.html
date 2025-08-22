@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAAZA MANDI - Connect Directly with Farmers</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts (Poppins & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS for animations and specific styles -->
+    <style>
+        /* Custom font family */
+        body {
+            font-family: 'Poppins', 'Inter', sans-serif;
+        }
+
+        /* NEW Primary Colors */
+        .bg-primary-green { background-color: #4CAF50; }
+        .text-primary-green { color: #2d5016; } /* Kept darker green for text for readability */
+        .border-primary-green { border-color: #4CAF50; }
+        .bg-dark-green { background-color: #1a3a0a; }
+
+        /* NEW Backgrounds */
+        .bg-light-background { background-color: #F5F9F0; }
+        .bg-light-green-gradient { background: linear-gradient(to bottom, #e8f5e8, #F5F9F0); }
+        
+        /* Hero background image */
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ url_for("static", filename="images/hero-bg.jpg") }}');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Geometric pattern for final CTA */
+        .cta-bg-pattern {
+            background-image: 
+                linear-gradient(rgba(45, 80, 22, 0.9), rgba(45, 80, 22, 0.9)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Nav item hover effect */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease-in-out;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ffffff;
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-in-out;
+        }
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Scroll Animation: Fade in up */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    
+    <script>
+        // Custom Tailwind config
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#4CAF50',
+                        'text-green': '#2d5016',
+                        'dark-green': '#1a3a0a',
+                        'light-background': '#F5F9F0',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Header Section -->
+    <header id="header" class="bg-primary-green sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold flex items-center">
+                <i class="fas fa-leaf mr-2"></i>
+                TAAZA MANDI
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-white nav-link">Home</a>
+                <a href="#about" class="text-white nav-link">About Us</a>
+                <a href="#services" class="text-white nav-link">Services</a>
+                <a href="#contact" class="text-white nav-link">Contact Us</a>
+                <div class="relative">
+                    <input type="search" placeholder="Search..." class="bg-white text-gray-700 rounded-full py-1 px-4 w-48 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    <button class="absolute right-0 top-0 mt-1 mr-2 text-gray-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-4">
+                <button id="login-btn" class="text-white py-2 px-4 rounded-full transition-all duration-300 hover:bg-white hover:text-green-800">Login</button>
+                <button id="signup-btn" class="bg-white text-primary-green font-semibold py-2 px-4 rounded-full transition-all duration-300 hover:bg-opacity-90 transform hover:scale-105">Sign Up</button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary-green pb-4">
+            <a href="#home" class="block text-white text-center py-2 px-4 hover:bg-green-600">Home</a>
+            <a href="#about" class="block text-white text-center py-2 px-4 hover:bg-green-600">About Us</a>
+            <a href="#services" class="block text-white text-center py-2 px-4 hover:bg-green-600">Services</a>
+            <a href="#contact" class="block text-white text-center py-2 px-4 hover:bg-green-600">Contact Us</a>
+            <div class="px-4 pt-4">
+                <input type="search" placeholder="Search..." class="bg-white text-gray-700 rounded-full py-2 px-4 w-full focus:outline-none">
+            </div>
+            <div class="flex justify-center mt-4 space-x-4">
+                <button id="mobile-login-btn" class="text-white py-2 px-4 rounded-full border border-white">Login</button>
+                <button id="mobile-signup-btn" class="bg-white text-primary-green font-semibold py-2 px-4 rounded-full">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-bg h-screen flex items-center">
+            <div class="container mx-auto px-6 text-left text-white">
+                <div class="w-full md:w-1/2">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight fade-in-up">Connect Directly with Farmers</h1>
+                    <p class="text-lg md:text-xl mb-8 fade-in-up" style="animation-delay: 0.2s;">Our platform offers a seamless open market for both farmers and buyers to create a transparent and efficient ecosystem, connecting you directly with the source.</p>
+                    <div class="flex space-x-4 fade-in-up" style="animation-delay: 0.4s;">
+                        <a href="{{ url_for('register') }}" class="bg-primary-green text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-green-600 transition-all duration-300 transform hover:scale-105">Get Started</a>
+                        <a href="#about" class="bg-transparent border-2 border-white text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-white hover:text-green-800 transition-all duration-300 transform hover:scale-105">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose TAAZA MANDI Section -->
+        <section id="about" class="py-20 bg-light-background">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-text-green fade-in-up">Why Choose TAAZA MANDI?</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto fade-in-up" style="animation-delay: 0.2s;">Our platform offers a seamless open market for both farmers and buyers to create a transparent and efficient ecosystem, connecting you directly with the source.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center fade-in-up transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="text-5xl text-primary-green mb-4"><i class="fas fa-users"></i></div>
+                        <h3 class="text-xl font-bold text-text-green mb-2">Direct Farmer Contact</h3>
+                        <p class="text-gray-600 mb-4">Forward your products with easy and seamless listing. Buyers can browse and connect directly with you.</p>
+                        <a href="#services" class="text-text-green font-semibold hover:text-primary-green transition-colors">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                    <!-- Feature Card 2 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center fade-in-up transform hover:-translate-y-2 transition-transform duration-300" style="animation-delay: 0.2s;">
+                        <div class="text-5xl text-primary-green mb-4"><i class="fas fa-brain"></i></div>
+                        <h3 class="text-xl font-bold text-text-green mb-2">Smart Crop Predictor</h3>
+                        <p class="text-gray-600 mb-4">AI-powered tool that helps farmers decide what to grow next for maximum profitability and sustainability.</p>
+                        <a href="#services" class="text-text-green font-semibold hover:text-primary-green transition-colors">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                    <!-- Feature Card 3 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center fade-in-up transform hover:-translate-y-2 transition-transform duration-300" style="animation-delay: 0.4s;">
+                        <div class="text-5xl text-primary-green mb-4"><i class="fas fa-university"></i></div>
+                        <h3 class="text-xl font-bold text-text-green mb-2">Government Schemes</h3>
+                        <p class="text-gray-600 mb-4">Stay updated with the latest agricultural policies and schemes from the government to help you grow your business.</p>
+                        <a href="#services" class="text-text-green font-semibold hover:text-primary-green transition-colors">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How TAAZA MANDI Works Section -->
+        <section id="services" class="py-20 bg-light-green-gradient">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-text-green fade-in-up">How TAAZA MANDI Works</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto fade-in-up" style="animation-delay: 0.2s;">A simple, three-step process at the heart of our e-commerce to create a fair and profitable marketplace for agricultural produce.</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <!-- Left Side: Steps -->
+                    <div class="w-full md:w-1/2 space-y-8 fade-in-up">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-12 w-12 rounded-full bg-text-green text-white flex items-center justify-center text-xl font-bold">1</div>
+                            <div class="ml-6">
+                                <h3 class="text-xl font-bold text-text-green">Farmers Post Their Products</h3>
+                                <p class="mt-2 text-gray-600">Farmers can easily list their products with details and photos of their harvest, set prices, and manage their inventory.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-12 w-12 rounded-full bg-text-green text-white flex items-center justify-center text-xl font-bold">2</div>
+                            <div class="ml-6">
+                                <h3 class="text-xl font-bold text-text-green">Buyers Browse and Connect</h3>
+                                <p class="mt-2 text-gray-600">Buyers search for specific produce, browse by location, and directly connect with farmers to negotiate and purchase.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-12 w-12 rounded-full bg-text-green text-white flex items-center justify-center text-xl font-bold">3</div>
+                            <div class="ml-6">
+                                <h3 class="text-xl font-bold text-text-green">Secure Transactions</h3>
+                                <p class="mt-2 text-gray-600">We facilitate secure payments and help arrange logistics for a hassle-free transaction from farm to table.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Side: Illustration -->
+                    <div class="w-full md:w-1/2 fade-in-up" style="animation-delay: 0.3s;">
+                        <img src="{{ url_for('static', filename='images/how-it-works.png') }}" alt="Illustration of the Taaza Mandi process: a farmer lists produce on a phone, a buyer browses on a tablet, and a truck signifies delivery." class="rounded-lg shadow-lg w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Featured Produce Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-text-green fade-in-up">Featured Produce</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto fade-in-up" style="animation-delay: 0.2s;">Discover fresh, high-quality produce directly from farms across India.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Product Card 1 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 fade-in-up">
+                        <img src="{{ url_for('static', filename='images/organic-tomatoes.jpg') }}" alt="Fresh, ripe organic tomatoes on the vine" class="w-full h-48 object-cover group-hover:opacity-90 transition-opacity">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-green">Organic Tomatoes</h3>
+                            <p class="text-gray-600 mt-1">Fresh from the farm, bursting with flavor.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-lg font-bold text-green-700">₹50/kg</span>
+                                <div class="text-yellow-400">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-sm text-gray-500">
+                                <img src="{{ url_for('static', filename='images/ramesh-kumar-avatar.jpg') }}" alt="Avatar of Ramesh Kumar" class="w-8 h-8 rounded-full mr-2 object-cover">
+                                <span>Ramesh Kumar</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 fade-in-up" style="animation-delay: 0.2s;">
+                        <img src="{{ url_for('static', filename='images/premium-wheat.jpg') }}" alt="Golden grains of premium wheat in a field" class="w-full h-48 object-cover group-hover:opacity-90 transition-opacity">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-green">Premium Wheat</h3>
+                            <p class="text-gray-600 mt-1">High-quality wheat grains for your daily needs.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-lg font-bold text-green-700">₹30/kg</span>
+                                <div class="text-yellow-400">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                             <div class="flex items-center mt-4 text-sm text-gray-500">
+                                <img src="{{ url_for('static', filename='images/suresh-singh-avatar.jpg') }}" alt="Avatar of Suresh Singh" class="w-8 h-8 rounded-full mr-2 object-cover">
+                                <span>Suresh Singh</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 fade-in-up" style="animation-delay: 0.4s;">
+                        <img src="{{ url_for('static', filename='images/fresh-spinach.jpg') }}" alt="Fresh Spinach" class="w-full h-48 object-cover group-hover:opacity-90 transition-opacity">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-green">Fresh Spinach</h3>
+                            <p class="text-gray-600 mt-1">Nutrient-rich spinach, picked fresh for you.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-lg font-bold text-green-700">₹20/bunch</span>
+                                <div class="text-yellow-400">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-sm text-gray-500">
+                                <img src="{{ url_for('static', filename='images/anita-devi-avatar.jpg') }}" alt="Avatar of Anita Devi" class="w-8 h-8 rounded-full mr-2 object-cover">
+                                <span>Anita Devi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 fade-in-up" style="animation-delay: 0.6s;">
+                        <img src="{{ url_for('static', filename='images/authentic-mangoes.jpg') }}" alt="Authentic Mangoes" class="w-full h-48 object-cover group-hover:opacity-90 transition-opacity">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-green">Authentic Mangoes</h3>
+                            <p class="text-gray-600 mt-1">Sweet and juicy mangoes from the best orchards.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-lg font-bold text-green-700">₹120/kg</span>
+                                <div class="text-yellow-400">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-sm text-gray-500">
+                                <img src="{{ url_for('static', filename='images/venkatesh-rao-avatar.jpg') }}" alt="Avatar of Venkatesh Rao" class="w-8 h-8 rounded-full mr-2 object-cover">
+                                <span>Venkatesh Rao</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12 fade-in-up">
+                    <a href="{{ url_for('user_select') }}" class="bg-primary-green text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-green-600 transition-all duration-300 transform hover:scale-105">View All Produce</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="py-20 bg-light-background">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                     <!-- Left: Image -->
+                    <div class="w-full md:w-1/2 fade-in-up">
+                        <img src="{{ url_for('static', filename='images/community.jpg') }}" alt="A diverse group of smiling Indian farmers and buyers interacting at a market" class="rounded-lg shadow-2xl w-full h-auto object-cover">
+                    </div>
+                    <!-- Right: Stats -->
+                    <div class="w-full md:w-1/2 text-center md:text-left fade-in-up" style="animation-delay: 0.3s;">
+                        <h2 class="text-3xl md:text-4xl font-bold text-text-green mb-4">Join Our Growing Community</h2>
+                        <p class="text-gray-600 mb-8">We are a thriving network of farmers, buyers, and agricultural enthusiasts coming together to revolutionize the way we trade produce.</p>
+                        <div class="grid grid-cols-2 gap-8 text-center mb-8">
+                            <div>
+                                <h3 class="text-4xl font-bold text-green-700 counter" data-target="10000">0+</h3>
+                                <p class="text-gray-600">Farmers</p>
+                            </div>
+                            <div>
+                                <h3 class="text-4xl font-bold text-green-700 counter" data-target="5000">0+</h3>
+                                <p class="text-gray-600">Buyers</p>
+                            </div>
+                            <div>
+                                <h3 class="text-4xl font-bold text-green-700 counter" data-target="20">0+</h3>
+                                <p class="text-gray-600">States</p>
+                            </div>
+                            <div>
+                                <h3 class="text-4xl font-bold text-green-700 counter" data-target="20000000">₹0Cr+</h3>
+                                <p class="text-gray-600">Transactions</p>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('register') }}" class="bg-primary-green text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-green-600 transition-all duration-300 transform hover:scale-105">Join Community</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-text-green fade-in-up">What Our Users Say</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto fade-in-up" style="animation-delay: 0.2s;">Hear from farmers and buyers who have transformed their agricultural business with TAAZA MANDI.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-light-background p-8 rounded-lg shadow-lg fade-in-up transform hover:scale-105 transition-transform duration-300">
+                        <div class="flex items-center mb-4">
+                            <img src="{{ url_for('static', filename='images/priya-sharma-testimonial.jpg') }}" alt="Headshot of Ramesh Kumar, an Indian organic farmer" class="w-16 h-16 rounded-full mr-4 border-2 border-primary-green object-cover">
+                            <div>
+                                <h4 class="font-bold text-text-green">Ramesh Kumar</h4>
+                                <p class="text-sm text-gray-600">Organic Farmer, Uttar Pradesh</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">"TAAZA MANDI has changed my life. I can now sell my produce directly to buyers across the country and get a fair price. The platform is so easy to use!"</p>
+                        <div class="text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-light-background p-8 rounded-lg shadow-lg fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.2s;">
+                        <div class="flex items-center mb-4">
+                            <img src="{{ url_for('static', filename='images/venkatesh-rao-testimonial.jpg') }}" alt="Headshot of Priya Sharma, an Indian restaurant owner" class="w-16 h-16 rounded-full mr-4 border-2 border-primary-green object-cover">
+                            <div>
+                                <h4 class="font-bold text-text-green">Priya Sharma</h4>
+                                <p class="text-sm text-gray-600">Restaurant Owner, Delhi</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">"Finding fresh, organic produce for my restaurant was always a challenge. With TAAZA MANDI, I can connect with farmers directly and get the best quality ingredients."</p>
+                        <div class="text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="bg-light-background p-8 rounded-lg shadow-lg fade-in-up transform hover:scale-105 transition-transform duration-300" style="animation-delay: 0.4s;">
+                        <div class="flex items-center mb-4">
+                            <img src="{{ url_for('static', filename='images/venkatesh-rao-avatar.jpg') }}" alt="Headshot of Venkatesh Rao, an Indian distributor" class="w-16 h-16 rounded-full mr-4 border-2 border-primary-green object-cover">
+                            <div>
+                                <h4 class="font-bold text-text-green">Venkatesh Rao</h4>
+                                <p class="text-sm text-gray-600">Distributor, Karnataka</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">"The platform's logistics support and secure payment system make it incredibly reliable for bulk purchases. It has streamlined my entire supply chain."</p>
+                        <div class="text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section id="contact" class="py-20 cta-bg-pattern">
+            <div class="container mx-auto px-6 text-center text-white">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 fade-in-up">Ready to Transform Your Agricultural Business?</h2>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto fade-in-up" style="animation-delay: 0.2s;">Join thousands of farmers and buyers who are building a better agricultural future on TAAZA MANDI's platform.</p>
+                <div class="flex justify-center space-x-4 fade-in-up" style="animation-delay: 0.4s;">
+                    <a href="{{ url_for('register') }}" class="bg-white text-green-800 py-3 px-8 rounded-full text-lg font-semibold hover:bg-gray-200 transition-all duration-300 transform hover:scale-105">Get Started</a>
+                    <a href="#about" class="bg-transparent border-2 border-white text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-white hover:text-green-800 transition-all duration-300 transform hover:scale-105">Learn More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-green text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Column 1: About -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-leaf mr-2"></i>TAAZA MANDI</h3>
+                    <p class="text-gray-400">Connecting farmers directly to buyers, creating a transparent and efficient marketplace for agricultural produce.</p>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                <!-- Column 3: Farmer Resources -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Farmer Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Support Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Government Schemes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Subscription Plans</a></li>
+                    </ul>
+                </div>
+                <!-- Column 4: Contact Form -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Connect With Us</h3>
+                    <p class="text-gray-400 mb-4">Subscribe to our newsletter for updates.</p>
+                    <!-- Backend Integration Point: Newsletter Signup -->
+                    <form id="newsletter-form">
+                        <div class="flex">
+                            <input type="email" id="newsletter-email" placeholder="Your Email" class="w-full bg-gray-800 text-white rounded-l-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary-green" required>
+                            <button type="submit" class="bg-primary-green text-white py-2 px-4 rounded-r-md hover:bg-green-600 transition-colors">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <p id="newsletter-status" class="text-sm mt-2"></p>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 TAAZA MANDI. All Rights Reserved. | <a href="#" class="hover:text-white">Privacy Policy</a> | <a href="#" class="hover:text-white">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Supabase Client Initialization
+            const { createClient } = window.supabase;
+            const supabase = createClient('https://wesrjuxmbudivggitawl.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3JqdXhtYnVkaXZnZ2l0YXdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NDA3OTYsImV4cCI6MjA3MTQxNjc5Nn0.KTHwj3jAGWC-9d5gIL6Znr2u22ycdpo1VXq8JHJq3Jg');
+
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Login Handler
+            document.getElementById('login-btn').addEventListener('click', async () => {
+                const email = prompt('Enter your email:');
+                const password = prompt('Enter your password:');
+                if (email && password) {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+                    if (error) {
+                        alert('Login failed: ' + error.message);
+                    } else if (data.session) {
+                        fetch('{{ url_for("login") }}', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: `token=${data.session.access_token}`
+                        }).then(response => {
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                            } else {
+                                response.json().then(data => alert(data.message || 'Login successful, but redirection failed.'));
+                            }
+                        }).catch(err => alert('Error: ' + err.message));
+                    }
+                }
+            });
+
+            // Signup Handler
+            document.getElementById('signup-btn').addEventListener('click', async () => {
+                const email = prompt('Enter your email:');
+                const password = prompt('Enter your password:');
+                if (email && password) {
+                    const { data, error } = await supabase.auth.signUp({
+                        email: email,
+                        password: password
+                    });
+                    if (error) {
+                        alert('Signup failed: ' + error.message);
+                    } else {
+                        alert('Signup successful! Please check your email for verification.');
+                        if (data.session) {
+                            fetch('{{ url_for("register") }}', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: `token=${data.session.access_token}`
+                            }).then(response => {
+                                if (response.redirected) {
+                                    window.location.href = response.url;
+                                }
+                            }).catch(err => alert('Error: ' + err.message));
+                        }
+                    }
+                }
+            });
+
+            // Mobile Login and Signup Handlers
+            document.getElementById('mobile-login-btn').addEventListener('click', () => document.getElementById('login-btn').click());
+            document.getElementById('mobile-signup-btn').addEventListener('click', () => document.getElementById('signup-btn').click());
+
+            // Intersection Observer for scroll animations
+            const animatedElements = document.querySelectorAll('.fade-in-up');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => observer.observe(el));
+
+            // Counter Animation
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = +counter.getAttribute('data-target');
+                        const duration = 2000;
+                        const increment = target / (duration / 16);
+                        
+                        let current = 0;
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                if (target >= 1000000) {
+                                    counter.innerText = `₹${(current / 10000000).toFixed(1)}Cr+`;
+                                } else if (target >= 1000) {
+                                    counter.innerText = `${Math.ceil(current / 1000)}k+`;
+                                } else {
+                                    counter.innerText = `${Math.ceil(current)}+`;
+                                }
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                if (target >= 10000000) {
+                                    counter.innerText = `₹${(target / 10000000)}Cr+`;
+                                } else if (target >= 1000) {
+                                    counter.innerText = `${(target / 1000)}+`;
+                                } else {
+                                    counter.innerText = `${target}+`;
+                                }
+                            }
+                        };
+                        updateCounter();
+                        observer.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.8 });
+
+            document.querySelectorAll('.counter').forEach(counter => {
+                counterObserver.observe(counter);
+            });
+            
+            // Backend Integration Point: Newsletter Form Submission
+            const newsletterForm = document.getElementById('newsletter-form');
+            const newsletterEmail = document.getElementById('newsletter-email');
+            const newsletterStatus = document.getElementById('newsletter-status');
+
+            newsletterForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = newsletterEmail.value;
+                newsletterStatus.textContent = 'Submitting...';
+                newsletterStatus.classList.remove('text-red-500', 'text-green-500');
+
+                try {
+                    const response = await fetch('{{ url_for("newsletter_signup") }}', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ email: email })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    const result = await response.json();
+                    newsletterStatus.textContent = 'Thank you for subscribing!';
+                    newsletterStatus.classList.add('text-green-500');
+                    newsletterEmail.value = '';
+
+                } catch (error) {
+                    console.error('Submission failed:', error);
+                    newsletterStatus.textContent = 'Subscription failed. Please try again.';
+                    newsletterStatus.classList.add('text-red-500');
+                }
+            });
+        });
+
+        // Include Supabase JS
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body>
+</html>

@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 import jwt
 from datetime import datetime
 
-# Load environment variables
+# Load environment variables (though hardcoded for now)
 load_dotenv()
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_URL = "https://wesrjuxmbudivggitawl.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3JqdXhtYnVkaXZnZ2l0YXdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NDA3OTYsImV4cCI6MjA3MTQxNjc5Nn0.KTHwj3jAGWC-9d5gIL6Znr2u22ycdpo1VXq8JHJq3Jg"
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # For session management
@@ -27,7 +27,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         token = session.get('token')
         if not token or not verify_token(token):
-            return redirect(url_for('login'))
+            return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -38,17 +38,23 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # This is a placeholder; actual auth will be handled by Supabase JS in auth.js
-        session['token'] = request.form.get('token')  # Expect token from frontend
-        return redirect(url_for('user_select'))
+        token = request.form.get('token')  # Expect token from Supabase JS
+        if token and verify_token(token):
+            session['token'] = token
+            return redirect(url_for('user_select'))
+        else:
+            return render_template('index.html', error="Invalid login credentials. Please try again.")
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Placeholder; auth.js will handle registration with Supabase
-        session['token'] = request.form.get('token')
-        return redirect(url_for('user_select'))
+        token = request.form.get('token')  # Expect token from Supabase JS after registration
+        if token and verify_token(token):
+            session['token'] = token
+            return redirect(url_for('user_select'))
+        else:
+            return render_template('index.html', error="Registration failed. Please try again.")
     return render_template('index.html')
 
 @app.route('/user-select', methods=['GET', 'POST'])
@@ -79,7 +85,7 @@ def logout():
     session.pop('token', None)
     session.pop('user', None)
     session.pop('user_type', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 @app.route('/verify-token', methods=['POST'])
 def verify_token_endpoint():
@@ -87,6 +93,19 @@ def verify_token_endpoint():
     if verify_token(token):
         return jsonify({"status": "success", "message": "Token is valid"})
     return jsonify({"status": "error", "message": "Invalid token"}), 401
+
+@app.route('/api/newsletter', methods=['POST'])
+def newsletter_signup():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        if not email:
+            return jsonify({"status": "error", "message": "Email is required"}), 400
+        # Here you would typically save the email to a database
+        # For now, just simulate a successful response
+        return jsonify({"status": "success", "message": "Subscription successful"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
