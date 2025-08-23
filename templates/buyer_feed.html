@@ -937,39 +937,32 @@
       </div>
       <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="market.html">Market</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="{{url_for('index')}}">Home</a></li>
+        <li><a href="{{url_for('market')}}">Market</a></li>
+        <li><a href="{{url_for('about')}}">About Us</a></li>
+        <li><a href="{{url_for('contact')}}">Contact</a></li>
       </ul>
-      <div class="auth-buttons">
-        <button>Login</button>
-        <button>Sign Up</button>
-      </div>
     </nav>
   </header>
 
   <!-- Enhanced Sidebar -->
   <aside>
     <div class="sidebar-profile">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EB%3C/text%3E%3C/svg%3E" alt="Profile">
-      <div class="name">Ravi Kumar</div>
-      <div class="role">
-        <i class="fas fa-shopping-cart"></i>
-        Buyer Account
-      </div>
-      <a href="profile.html" class="profile-link">
-        <i class="fas fa-user"></i>
-        View Profile
-      </a>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile" id="sidebar-profile-pic">
+      <div class="name" id="sidebar-name">Loading...</div>
+      <div class="role" id="sidebar-role">✨ Loading...</div>
+<a href="{{ url_for('seller_profile') }}" class="profile-link">
+  <i class="fas fa-user"></i>
+  View Profile
+</a>
     </div>
     
     <div class="sidebar-section-title">📍 Navigation</div>
     <ul class="sidebar-menu">
-      <li><a href="buyer-feed.html"><i class="fas fa-store"></i> Marketplace</a></li>
-      <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-      <li><a href="market.html"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+      <li><a href="{{url_for('buyer_feed')}}"><i class="fas fa-store"></i> Marketplace</a></li>
+      <li><a href="{{url_for('about')}}"><i class="fas fa-info-circle"></i> About Us</a></li>
+      <li><a href="{{url_for('market_prices')}}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+      <li><a href="{{url_for('contact')}}"><i class="fas fa-envelope"></i> Contact Us</a></li>
     </ul>
     
     <div class="sidebar-help">
@@ -978,7 +971,7 @@
         Need Help?
       </strong>
       Check out our guides on how to connect with farmers and purchase fresh produce.
-      <a href="#" class="view-guides-btn">
+      <a href="{{url_for('guides')}}" class="view-guides-btn">
         <i class="fas fa-book-open"></i>
         View Guides
       </a>
@@ -1060,27 +1053,27 @@
       <div>
         <div class="footer-section-title">Quick Links</div>
         <ul class="footer-links">
-          <li><a href="market.html"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-          <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
-          <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          <li><a href="{{url_for('market')}}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+          <li><a href="{{url_for('about')}}"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="{{url_for('contact')}}"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          <li><a href="{{url_for('faq')}}"><i class="fas fa-question-circle"></i> FAQ</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-section-title">Farmer Resources</div>
         <ul class="footer-resources">
-          <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+          <li><a href="{{url_for('predictor')}}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
           <li><a href="https://agriwelfare.gov.in/en/Major"><i class="fas fa-university"></i> Government Schemes</a></li>
-          <li><a href="equipments.html"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
-          <li><a href="#"><i class="fas fa-tags"></i> Best Deals</a></li>
+          <li><a href="{{url_for('equipment')}}"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+          <li><a href="{{url_for('deals')}}"><i class="fas fa-tags"></i> Best Deals</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-section-title">Connect With Us</div>
         <ul class="footer-connect">
-          <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-          <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-          <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="https://facebook.com/taazamandi"><i class="fab fa-facebook"></i> Facebook</a></li>
+          <li><a href="https://twitter.com/taazamandi"><i class="fab fa-twitter"></i> Twitter</a></li>
+          <li><a href="https://instagram.com/taazamandi"><i class="fab fa-instagram"></i> Instagram</a></li>
           <li><a href="mailto:support@taazamandi.com"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
         </ul>
       </div>
@@ -1091,20 +1084,49 @@
   </footer>
 
   <script>
+    // Initialize Supabase client
+    const { createClient } = supabase;
+    const supabaseUrl = 'YOUR_SUPABASE_URL';
+    const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     // Enhanced JavaScript functionality
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadUserData();
       loadBuyerFeed();
       initializeFilters();
       initializeAnimations();
     });
 
+    // Load user data from Supabase
+    async function loadUserData() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) throw error || new Error('No authenticated user');
+
+        const { data, error: profileError } = await supabase
+          .from('profiles')
+          .select('full_name, role')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        document.getElementById('sidebar-name').textContent = profile.data.full_name;
+        document.getElementById('sidebar-role').textContent = `✨ ${profile.data.role.charAt(0).toUpperCase() + profile.data.role.slice(1)} Account`;
+      } catch (error) {
+        console.error('Error loading user data:', error.message);
+        document.getElementById('sidebar-name').textContent = 'Guest User';
+        document.getElementById('sidebar-role').textContent = '✨ Guest Account';
+      }
+    }
+
     function loadBuyerFeed() {
       const feedContainer = document.getElementById('dynamicFeed');
       if (!feedContainer) return;
 
-      // Get posts from localStorage
+      // Get posts from localStorage or Supabase
       const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-
       if (posts.length === 0) {
         feedContainer.innerHTML = `
           <div class="empty-state">
@@ -1120,39 +1142,7 @@
 
       feedContainer.innerHTML = '';
       
-      // Create sample data if localStorage is empty
-      const samplePosts = posts.length > 0 ? posts : [
-        {
-          id: 1,
-          title: "Fresh Organic Tomatoes",
-          description: "Premium quality Roma tomatoes grown without pesticides. Perfect for restaurants and local markets.",
-          available: "500 kg",
-          price: "₹40/kg",
-          location: "Punjab",
-          category: "Vegetables",
-          image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🍅 Fresh Tomatoes%3C/text%3E%3C/svg%3E",
-          timestamp: new Date(Date.now() - 2*60*60*1000).toISOString(),
-          likes: 24,
-          comments: 5,
-          verified: true
-        },
-        {
-          id: 2,
-          title: "Premium Basmati Rice",
-          description: "Grade A quality basmati rice with excellent aroma and long grains. Bulk orders welcome!",
-          available: "2000 kg",
-          price: "₹80/kg",
-          location: "Haryana",
-          category: "Grains",
-          image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23f4fbf4'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🌾 Basmati Rice%3C/text%3E%3C/svg%3E",
-          timestamp: new Date(Date.now() - 5*60*60*1000).toISOString(),
-          likes: 45,
-          comments: 12,
-          verified: true
-        }
-      ];
-
-      samplePosts.forEach(post => {
+      posts.forEach(post => {
         const productCard = createProductCard(post);
         feedContainer.appendChild(productCard);
       });
@@ -1277,7 +1267,7 @@
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
+          if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
           }

@@ -78,6 +78,7 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      text-decoration: none;
     }
 
     .navbar input[type="text"] {
@@ -140,40 +141,6 @@
       width: 100%;
     }
 
-    .auth-buttons {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .auth-buttons button {
-      padding: 0.6rem 1.5rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .auth-buttons button:first-child {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border-color: rgba(255,255,255,0.3);
-      backdrop-filter: blur(10px);
-    }
-
-    .auth-buttons button:last-child {
-      background: white;
-      color: var(--primary-green);
-      border-color: white;
-    }
-
-    .auth-buttons button:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
-    }
-
-
     /* Enhanced Sidebar */
     aside {
       grid-area: sidebar;
@@ -190,17 +157,35 @@
       text-align: center;
       background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
       border-bottom: 1px solid var(--border-light);
+      position: relative;
     }
 
-    .sidebar-profile img {
+    .sidebar-profile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+    }
+
+    .profile-avatar {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      object-fit: cover;
       border: 4px solid white;
       box-shadow: var(--shadow-md);
       margin-bottom: 1rem;
       background: var(--secondary-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .sidebar-profile .name {
@@ -214,6 +199,10 @@
       color: var(--text-secondary);
       font-size: 0.9rem;
       margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
     .profile-link {
@@ -244,16 +233,16 @@
       letter-spacing: 0.5px;
     }
 
-    .sidebar-menu, .sidebar-resources, .sidebar-settings {
+    .sidebar-menu {
       list-style: none;
       padding: 0 1rem;
     }
 
-    .sidebar-menu li, .sidebar-resources li, .sidebar-settings li {
+    .sidebar-menu li {
       margin-bottom: 0.25rem;
     }
 
-    .sidebar-menu a, .sidebar-resources a, .sidebar-settings a {
+    .sidebar-menu a {
       display: flex;
       align-items: center;
       padding: 0.75rem 1rem;
@@ -262,9 +251,10 @@
       border-radius: var(--radius-md);
       transition: all 0.3s ease;
       font-weight: 500;
+      gap: 0.75rem;
     }
 
-    .sidebar-menu a:hover, .sidebar-resources a:hover, .sidebar-settings a:hover {
+    .sidebar-menu a:hover {
       background: var(--light-green);
       color: var(--primary-green);
       transform: translateX(4px);
@@ -296,6 +286,9 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
     .feed-actions {
@@ -437,6 +430,11 @@
       object-fit: cover;
       margin: 1rem 0 0 0;
       background: var(--light-green);
+      transition: transform 0.3s ease;
+    }
+
+    .crop-card:hover .crop-image {
+      transform: scale(1.05);
     }
 
     .crop-tags {
@@ -454,6 +452,13 @@
       border-radius: var(--radius-sm);
       padding: 0.375rem 0.75rem;
       border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+    }
+
+    .crop-tag:hover {
+      background: var(--secondary-green);
+      color: white;
+      transform: translateY(-1px);
     }
 
     .crop-details-row {
@@ -494,11 +499,13 @@
       gap: 0.375rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      padding: 0.25rem 0;
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--radius-sm);
     }
 
     .crop-actions-row .action:hover {
       color: var(--secondary-green);
+      background: var(--light-green);
     }
 
     .contact-seller-section {
@@ -539,12 +546,16 @@
       text-align: center;
       padding: 4rem 2rem;
       color: var(--text-secondary);
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
     }
 
     .empty-icon {
       font-size: 4rem;
       margin-bottom: 1.5rem;
-      color: var(--text-light);
+      color: var(--secondary-green);
     }
 
     .empty-state h3 {
@@ -615,6 +626,9 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .footer-section-title {
@@ -636,6 +650,9 @@
       color: var(--text-secondary);
       text-decoration: none;
       transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .footer-links a:hover, .footer-resources a:hover, .footer-connect a:hover {
@@ -700,10 +717,6 @@
       .navbar input {
         margin: 0 1rem;
       }
-      
-      .auth-buttons {
-        display: none;
-      }
     }
 
     @media (max-width: 480px) {
@@ -764,69 +777,114 @@
   <!-- Top Navbar -->
   <header>
     <nav class="navbar">
-      <div class="logo">
+      <a href="{{ url_for('index') }}" class="logo">
         <i class="fas fa-seedling"></i>
         TAAZA MANDI
-      </div>
-      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
+      </a>
+      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits..." id="searchInput">
       <ul>
-        <li><a href="/templates/seller-feed.html">Home</a></li>
-        <li><a href="/templates/market.html">Market</a></li>
-        <li><a href="/templates/about.html">About Us</a></li>
-        <li><a href="/templates/contact.html">Contact</a></li>
+        <li><a href="{{ url_for('seller_feed') }}">Home</a></li>
+        <li><a href="{{ url_for('post_upload') }}">Post</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
-      <div class="auth-buttons">
-        <button>Login</button>
-        <button>Sign Up</button>
-      </div>
     </nav>
   </header>
 
-  <!-- Sidebar -->
+  <!-- ✅ DYNAMIC SIDEBAR WITH USER DATA -->
   <aside>
     <div class="sidebar-profile">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile">
-      <div class="name">John Farmer</div>
-      <div class="role">✨ Seller Account</div>
-      <a href="profile.html" class="profile-link">
-        <i class="fas fa-user"></i>
-        View Profile
-      </a>
+      <!-- Dynamic Avatar -->
+      <div class="profile-avatar" id="sidebarAvatar">
+        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
+          {{ session.user.user_metadata.first_name[0]|upper }}
+        {% else %}
+          <i class="fas fa-user"></i>
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Name -->
+      <div class="name" id="sidebarName">
+        {% if session.user and session.user.user_metadata %}
+          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
+        {% elif session.user %}
+          {{ session.user.email.split('@')[0]|title }}
+        {% else %}
+          Loading...
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Role -->
+      <div class="role" id="sidebarRole">
+        <i class="fas fa-seedling"></i>
+        {% if session.user_role == 'seller' %}
+          Seller Account
+        {% elif session.user_role == 'buyer' %}
+          Buyer Account
+        {% else %}
+          Loading...
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Profile Link -->
+      {% if session.user_role == 'seller' %}
+        <a href="{{ url_for('seller_profile') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% elif session.user_role == 'buyer' %}
+        <a href="{{ url_for('buyer_profile') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% else %}
+        <a href="{{ url_for('user_select') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          Complete Setup
+        </a>
+      {% endif %}
     </div>
     
     <div class="sidebar-section-title">Dashboard</div>
     <ul class="sidebar-menu">
-      <li><a href="/templates/seller-feed.html"><i class="fas fa-home"></i> Feed</a></li>
-      <li><a href="/templates/post-upload.html"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+      <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+      <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
     </ul>
     
     <div class="sidebar-section-title">Resources</div>
-    <ul class="sidebar-resources">
-      <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="https://agriwelfare.gov.in/en/Major"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="/templates/post-upload.html"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+    <ul class="sidebar-menu">
+      <li><a href="#"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+      <li><a href="https://agriwelfare.gov.in/en/Major" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
+      <li><a href="#"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
     </ul>
     
     <div class="sidebar-section-title">Settings</div>
-    <ul class="sidebar-settings">
-      <li><a href="#"><i class="fas fa-cog"></i>   Account Settings</a></li>
-      <li><a href="#"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('seller_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
+      <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+      {% if session.user %}
+        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      {% endif %}
     </ul>
   </aside>
 
-  <!-- Feed -->
+  <!-- Feed Content -->
   <main>
     <div class="feed-header">
       <h1 class="section-title">
         <i class="fas fa-seedling"></i>
-        Seller Feed
+        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
+          {{ session.user.user_metadata.first_name }}'s Feed
+        {% else %}
+          Seller Feed
+        {% endif %}
       </h1>
       <div class="feed-actions">
         <button class="btn-outline">
           <i class="fas fa-filter"></i>
           Filter
         </button>
-        <a href="/templates/post-upload.html" class="btn-green">
+        <a href="{{ url_for('post_upload') }}" class="btn-green">
           <i class="fas fa-plus"></i>
           New Post
         </a>
@@ -1016,17 +1074,17 @@
       <div>
         <div class="footer-section-title">Quick Links</div>
         <ul class="footer-links">
-          <li><a href="market.html"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-          <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+          <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
+          <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-section-title">Farmer Resources</div>
         <ul class="footer-resources">
-          <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-          <li><a href="https://agriwelfare.gov.in/en/Major"><i class="fas fa-university"></i> Government Schemes</a></li>
-          <li><a href="/templates/equipment.html"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+          <li><a href="#"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+          <li><a href="https://agriwelfare.gov.in/en/Major" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
+          <li><a href="#"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
         </ul>
       </div>
       <div>
@@ -1035,7 +1093,7 @@
           <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
           <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
           <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+          <li><a href="mailto:support@taazamandi.com"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
         </ul>
       </div>
     </div>
@@ -1045,8 +1103,33 @@
   </footer>
 
   <script>
-    // Enhanced JavaScript functionality
+    // Enhanced JavaScript functionality with user data
     document.addEventListener('DOMContentLoaded', function() {
+      // Load user data for sidebar
+      loadUserData();
+      
+      // Initialize animations and interactions
+      initializeAnimations();
+      setupInteractions();
+      setupSearch();
+    });
+
+    function loadUserData() {
+      // User data is now dynamically loaded from Flask session in the HTML template
+      const userData = {
+        name: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session.user else '') }}",
+        role: "{{ session.user_role if session.user_role else 'User' }}",
+        email: "{{ session.user.email if session.user else '' }}",
+        avatar: "{{ session.user.user_metadata.first_name[0]|upper if session.user and session.user.user_metadata and session.user.user_metadata.first_name else 'U' }}"
+      };
+      if (userData.email) {
+        console.log('Current user:', userData);
+      } else {
+        console.log('No user session found');
+      }
+    }
+
+    function initializeAnimations() {
       // Smooth animations for crop cards
       const observerOptions = {
         threshold: 0.1,
@@ -1069,7 +1152,9 @@
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(card);
       });
+    }
 
+    function setupInteractions() {
       // Enhanced interactions
       document.querySelectorAll('.action').forEach(action => {
         action.addEventListener('click', function() {
@@ -1110,35 +1195,42 @@
         });
       });
 
-      // Add ripple animation
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes ripple {
-          to {
-            transform: scale(4);
-            opacity: 0;
-          }
-        }
-      `;
-      document.head.appendChild(style);
-
-      // Search functionality
-      const searchInput = document.querySelector('.navbar input');
-      searchInput.addEventListener('input', function() {
-        // Add search logic here
-        console.log('Searching for:', this.value);
-      });
-
       // Load more functionality
-      document.querySelector('.load-more-row button').addEventListener('click', function() {
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-        
-        setTimeout(() => {
-          this.innerHTML = '<i class="fas fa-chevron-down"></i> Load More Posts';
-          // Add more posts logic here
-        }, 1500);
-      });
-    });
+      const loadMoreBtn = document.querySelector('.load-more-row button');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+          this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+          
+          setTimeout(() => {
+            this.innerHTML = '<i class="fas fa-chevron-down"></i> Load More Posts';
+            // Add more posts logic here
+          }, 1500);
+        });
+      }
+    }
+
+    function setupSearch() {
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          console.log('Searching for:', this.value);
+          // Add search logic here
+        });
+      }
+    }
+
+    // Add ripple animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>

@@ -180,16 +180,46 @@
 
         /* Enhanced Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, rgba(45, 95, 63, 0.9), rgba(74, 143, 95, 0.8)), 
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%234a8f5f" width="1200" height="800"/><text x="600" y="400" text-anchor="middle" fill="white" font-size="80" font-weight="bold">🌾 Farm Fresh</text></svg>');
+            background: linear-gradient(135deg, rgba(45, 95, 63, 0.6), rgba(74, 143, 95, 0.5)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&crop=center');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
             color: white;
             position: relative;
             overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                        linear-gradient(135deg, 
+                            rgba(45, 95, 63, 0.7) 0%, 
+                            rgba(74, 143, 95, 0.6) 50%, 
+                            rgba(107, 183, 123, 0.5) 100%);
+            z-index: 1;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
+            z-index: 1;
         }
 
         .hero-content {
@@ -200,24 +230,50 @@
             grid-template-columns: 1fr;
             gap: 2rem;
             align-items: center;
+            position: relative;
+            z-index: 2;
         }
 
         .hero-text h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            background: linear-gradient(135deg, white, rgba(255,255,255,0.8));
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 900;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+            color: white;
+            position: relative;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 50%, #e6f3ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
+        .hero-text h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(90deg, #ffffff, #f0f8ff, rgba(255,255,255,0.6));
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(255,255,255,0.3);
+        }
+
         .hero-text p {
-            font-size: 1.25rem;
-            margin-bottom: 2.5rem;
-            color: rgba(255,255,255,0.9);
-            max-width: 600px;
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            color: rgba(255,255,255,0.98);
+            max-width: 700px;
+            line-height: 1.7;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.1);
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(240,248,255,0.95) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
         }
 
         .hero-buttons {
@@ -240,25 +296,33 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, white, #f0f0f0);
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
             color: var(--primary-green);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 4px 16px rgba(255,255,255,0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 6px 20px rgba(255,255,255,0.3);
+            background: linear-gradient(135deg, #ffffff, #f0f8ff);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: rgba(255,255,255,0.1);
             color: white;
-            border: 2px solid white;
+            border: 2px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
         .btn-secondary:hover {
-            background: white;
+            background: rgba(255,255,255,0.95);
             color: var(--primary-green);
             transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border-color: white;
         }
 
         /* Enhanced Sections */
@@ -673,6 +737,23 @@
             z-index: 1;
         }
 
+        .cta-content .section-title {
+            color: white !important;
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            -webkit-text-fill-color: unset !important;
+            background-clip: unset !important;
+        }
+
+        .cta-content .section-subtitle {
+            color: rgba(255,255,255,0.9) !important;
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            -webkit-text-fill-color: unset !important;
+            background-clip: unset !important;
+            filter: none !important;
+        }
+
         /* Enhanced Footer */
         .footer {
             background: var(--primary-green);
@@ -694,6 +775,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: white;
         }
 
         .footer-links {
@@ -1021,7 +1103,7 @@
                 <div class="products-grid">
                     <div class="product-card fade-in-up">
                         <div class="product-image">
-                            <i class="fas fa-apple-alt"></i>
+                            <img src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&h=300&fit=crop&crop=center" alt="Organic Tomatoes" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">Organic Tomatoes</h3>
@@ -1045,7 +1127,7 @@
 
                     <div class="product-card fade-in-up" style="animation-delay: 0.2s;">
                         <div class="product-image">
-                            <i class="fas fa-seedling"></i>
+                            <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=center" alt="Premium Wheat" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">Premium Wheat</h3>
@@ -1069,7 +1151,7 @@
 
                     <div class="product-card fade-in-up" style="animation-delay: 0.4s;">
                         <div class="product-image">
-                            <i class="fas fa-leaf"></i>
+                            <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=300&fit=crop&crop=center" alt="Fresh Spinach" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">Fresh Spinach</h3>
@@ -1093,7 +1175,7 @@
 
                     <div class="product-card fade-in-up" style="animation-delay: 0.6s;">
                         <div class="product-image">
-                            <i class="fas fa-apple-alt"></i>
+                            <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&h=300&fit=crop&crop=center" alt="Authentic Mangoes" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">Authentic Mangoes</h3>

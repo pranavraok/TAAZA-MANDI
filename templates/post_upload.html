@@ -73,6 +73,7 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      text-decoration: none;
     }
 
     .navbar input[type="text"] {
@@ -136,39 +137,6 @@
       width: 100%;
     }
 
-    .auth-buttons {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .auth-buttons button {
-      padding: 0.6rem 1.5rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .auth-buttons button:first-child {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border-color: rgba(255,255,255,0.3);
-      backdrop-filter: blur(10px);
-    }
-
-    .auth-buttons button:last-child {
-      background: white;
-      color: var(--primary-green);
-      border-color: white;
-    }
-
-    .auth-buttons button:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
-    }
-
     /* Main Content */
     main {
       padding: 3rem 0;
@@ -184,6 +152,10 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
     }
 
     .upload-subtitle {
@@ -391,6 +363,7 @@
 
     .form-group textarea,
     .form-group input[type="text"],
+    .form-group input[type="number"],
     .form-group select {
       width: 100%;
       padding: 1rem;
@@ -409,6 +382,7 @@
 
     .form-group textarea:focus,
     .form-group input[type="text"]:focus,
+    .form-group input[type="number"]:focus,
     .form-group select:focus {
       outline: none;
       border-color: var(--secondary-green);
@@ -440,14 +414,14 @@
       box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
     }
 
-    .input-row input[type="text"] {
+    .input-row input[type="number"] {
       border: none;
       background: transparent;
       padding: 0.75rem;
       flex: 1;
     }
 
-    .input-row input[type="text"]:focus {
+    .input-row input[type="number"]:focus {
       outline: none;
       box-shadow: none;
     }
@@ -566,6 +540,33 @@
       background: var(--error);
     }
 
+    /* Form Validation Styles */
+    .form-group.error input,
+    .form-group.error textarea,
+    .form-group.error select {
+      border-color: var(--error);
+      background: rgba(245, 101, 101, 0.05);
+    }
+
+    .form-group.error .error-message {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .form-group.success input,
+    .form-group.success textarea,
+    .form-group.success select {
+      border-color: var(--success);
+      background: rgba(72, 187, 120, 0.05);
+    }
+
+    .char-count {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: 0.25rem;
+    }
+
     /* Responsive Design */
     @media (max-width: 1024px) {
       .navbar ul {
@@ -598,10 +599,6 @@
         margin: 1rem 0 0 0;
         order: 3;
         flex-basis: 100%;
-      }
-      
-      .auth-buttons {
-        display: none;
       }
       
       .upload-heading {
@@ -648,25 +645,10 @@
       }
     }
 
-    /* Form Validation Styles */
-    .form-group.error input,
-    .form-group.error textarea,
-    .form-group.error select {
-      border-color: var(--error);
-      background: rgba(245, 101, 101, 0.05);
-    }
-
-    .form-group.error .error-message {
-      color: var(--error);
-      font-size: 0.85rem;
-      margin-top: 0.25rem;
-    }
-
-    .form-group.success input,
-    .form-group.success textarea,
-    .form-group.success select {
-      border-color: var(--success);
-      background: rgba(72, 187, 120, 0.05);
+    /* Focus States */
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
     }
   </style>
 </head>
@@ -674,21 +656,17 @@
   <!-- Enhanced Navbar -->
   <header>
     <nav class="navbar">
-      <div class="logo">
+      <a href="{{ url_for('index') }}" class="logo">
         <i class="fas fa-seedling"></i>
         TAAZA MANDI
-      </div>
+      </a>
       <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="market.html">Market</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('seller_feed') }}">Feed</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
-      <div class="auth-buttons">
-        <button>Login</button>
-        <button>Sign Up</button>
-      </div>
     </nav>
   </header>
 
@@ -700,12 +678,12 @@
     <p class="upload-subtitle">Share your fresh produce with buyers across the platform</p>
     
     <div class="upload-card">
-      <a href="index.html" class="back-btn">
+      <a href="{{ url_for('seller_feed') }}" class="back-btn">
         <i class="fas fa-arrow-left"></i>
         Back to Feed
       </a>
       
-      <form id="cropUploadForm" autocomplete="off">
+      <form id="cropUploadForm" autocomplete="off" enctype="multipart/form-data">
         <div class="form-flex">
           <!-- Enhanced Photo Upload Area -->
           <div class="photo-upload-area" id="dropArea">
@@ -753,9 +731,10 @@
               <input 
                 type="text" 
                 id="pickupLocation" 
-                name="pickupLocation" 
+                name="location" 
                 required 
                 placeholder="Enter your farm/warehouse location (City, State)"
+                value="{{ session.user.user_metadata.state if session.user and session.user.user_metadata and session.user.user_metadata.state else '' }}"
               >
             </div>
           </div>
@@ -852,7 +831,6 @@
   </footer>
 
   <script>
-    // Enhanced JavaScript functionality
     document.addEventListener('DOMContentLoaded', function() {
       const cropImage = document.getElementById('cropImage');
       const imagePreviewList = document.getElementById('imagePreviewList');
@@ -861,6 +839,15 @@
       const submitBtn = document.getElementById('submitBtn');
       const descriptionTextarea = document.getElementById('cropDescription');
       const charCount = document.querySelector('.char-count');
+
+      // ✅ SAFELY INJECT USER DATA FROM FLASK SESSION
+      const userData = {{ {
+        'name': session.user.user_metadata.first_name if session and session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session and session.user and session.user.email else ''),
+        'email': session.user.email if session and session.user and session.user.email else '',
+        'role': session.user_role if session and session.user_role else ''
+      } | tojson | safe }};
+
+      console.log('Current user:', userData);
 
       let selectedFiles = [];
 
@@ -971,8 +958,8 @@
         }, 3000);
       }
 
-      // Enhanced form submission
-      form.addEventListener('submit', function(e) {
+      // ✅ ENHANCED FORM SUBMISSION WITH SAFE USER DATA
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         if (!validateForm()) {
@@ -987,81 +974,76 @@
           Uploading Product...
         `;
 
-        // Get form data
-        const title = document.getElementById('cropTitle').value;
-        const description = document.getElementById('cropDescription').value;
-        const quantity = document.getElementById('quantity').value;
-        const price = document.getElementById('price').value;
-        const category = document.getElementById('category').value;
-        const location = document.getElementById('pickupLocation').value;
+        try {
+          // ✅ Create FormData for file upload support
+          const formData = new FormData();
+          
+          // Add form fields
+          formData.append('title', document.getElementById('cropTitle').value);
+          formData.append('description', document.getElementById('cropDescription').value);
+          formData.append('quantity', document.getElementById('quantity').value);
+          formData.append('price', document.getElementById('price').value);
+          formData.append('category', document.getElementById('category').value);
+          formData.append('location', document.getElementById('pickupLocation').value);
+          
+          // ✅ Add user info safely from userData object
+          if (userData.name) {
+            formData.append('seller_name', userData.name);
+          }
+          if (userData.email) {
+            formData.append('seller_email', userData.email);
+          }
+          if (userData.role) {
+            formData.append('seller_role', userData.role);
+          }
+          
+          // Add images
+          selectedFiles.forEach((file, index) => {
+            formData.append(`image_${index}`, file);
+          });
 
-        // Process images
-        let imageUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"%3E%3Crect width="400" height="240" fill="%23e8f5e8"/%3E%3Ctext x="200" y="120" text-anchor="middle" fill="%234a8f5f" font-size="18"%3ENo Image%3C/text%3E%3C/svg%3E';
+          console.log('Uploading product to Flask backend...');
 
-        if (selectedFiles.length > 0) {
-          const reader = new FileReader();
-          reader.onload = function(ev) {
-            imageUrl = ev.target.result;
-            savePost();
-          };
-          reader.readAsDataURL(selectedFiles[0]);
-        } else {
-          savePost();
-        }
+          // ✅ POST to Flask backend
+          const response = await fetch('{{ url_for("upload_product") }}', {
+            method: 'POST',
+            body: formData
+          });
 
-        function savePost() {
-          // Simulate upload delay
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Upload failed');
+          }
+
+          const result = await response.json();
+          console.log('Upload successful:', result);
+
+          // Reset form
+          form.reset();
+          selectedFiles = [];
+          imagePreviewList.innerHTML = '';
+          document.querySelectorAll('.form-group').forEach(group => {
+            group.classList.remove('error', 'success');
+          });
+
+          // Show success message
+          showMessage('🎉 Product uploaded successfully!', 'success');
+          
+          // Redirect to seller feed after delay
           setTimeout(() => {
-            const postData = {
-              title: title,
-              description: description,
-              available: quantity + ' kg',
-              price: '₹' + price + '/kg',
-              location: location,
-              category: category,
-              image: imageUrl,
-              timestamp: new Date().toISOString(),
-              likes: Math.floor(Math.random() * 50),
-              comments: Math.floor(Math.random() * 20),
-              verified: true
-            };
-
-            // Save to localStorage
-            const existingPosts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-            const newPost = {
-              id: Date.now(),
-              userId: 'currentUser',
-              userName: 'John Farmer',
-              userAvatar: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"%3E%3Ccircle cx="24" cy="24" r="24" fill="%234a8f5f"/%3E%3Ctext x="24" y="28" text-anchor="middle" fill="white" font-size="16" font-weight="bold"%3EJF%3C/text%3E%3C/svg%3E',
-              ...postData
-            };
-            
-            existingPosts.unshift(newPost);
-            localStorage.setItem('cropPosts', JSON.stringify(existingPosts));
-
-            // Reset form
-            form.reset();
-            selectedFiles = [];
-            imagePreviewList.innerHTML = '';
-            document.querySelectorAll('.form-group').forEach(group => {
-              group.classList.remove('error', 'success');
-            });
-
-            // Reset button
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `
-              <i class="fas fa-upload"></i>
-              Upload Product
-            `;
-
-            // Show success message
-            showMessage('🎉 Product uploaded successfully!', 'success');
-            
-            // Redirect after delay
-            setTimeout(() => {
-              window.location.href = 'index.html';
-            }, 2000);
+            window.location.href = '{{ url_for("seller_feed") }}';
           }, 2000);
+
+        } catch (error) {
+          console.error('Upload error:', error);
+          showMessage('❌ Upload failed: ' + error.message, 'error');
+        } finally {
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `
+            <i class="fas fa-upload"></i>
+            Upload Product
+          `;
         }
       });
 
@@ -1099,6 +1081,6 @@
         observer.observe(element);
       });
     });
-  </script>
+</script>
 </body>
 </html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAAZA MANDI - Buyer Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --error: #f56565;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Enhanced Navbar */
+    header {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 72px;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar input[type="text"] {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 2rem;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .navbar input[type="text"]::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .navbar input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .navbar ul li a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .navbar ul li a:hover {
+      color: white;
+    }
+
+    .navbar ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .navbar ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* Main Container */
+    .main-wrapper {
+      display: flex;
+      max-width: 1400px;
+      margin: 2rem auto;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+
+    /* Enhanced Sidebar */
+    aside {
+      width: 320px;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-lg);
+      border-radius: var(--radius-xl);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border-light);
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar-profile {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .sidebar-profile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1rem;
+      background: var(--secondary-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sidebar-profile .name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-profile .role {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-profile .location, .sidebar-profile .phone {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-section-title {
+      padding: 1.5rem 2rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 1rem 1rem;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      font-weight: 500;
+      gap: 0.75rem;
+    }
+
+    .sidebar-menu a:hover {
+      background: var(--light-green);
+      color: var(--primary-green);
+      transform: translateX(4px);
+    }
+
+    /* Main Content */
+    .main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .profile-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      margin-bottom: 1rem;
+    }
+
+    .profile-header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Account Settings */
+    .account-settings {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .account-settings::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .account-settings h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .account-settings h2 i {
+      color: var(--secondary-green);
+    }
+
+    .account-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .account-form label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .account-form label i {
+      color: var(--secondary-green);
+      width: 16px;
+    }
+
+    .account-form input,
+    .account-form textarea {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      background: var(--ultra-light-green);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .account-form input:focus,
+    .account-form textarea:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
+    }
+
+    .account-form input[readonly],
+    .account-form textarea[readonly] {
+      background: var(--ultra-light-green);
+      color: var(--text-secondary);
+    }
+
+    .account-form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .save-btn, .edit-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      margin-top: 1rem;
+    }
+
+    .save-btn:hover, .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .save-btn {
+      display: none;
+    }
+
+    /* Logout Button - Positioned below main container */
+    .logout-section {
+      max-width: 1400px;
+      margin: 3rem auto 4rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, var(--error), #e53e3e);
+      color: white;
+      border: none;
+      padding: 1rem 3rem;
+      border-radius: var(--radius-lg);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+      background: linear-gradient(135deg, #c53030, #9b2c2c);
+    }
+
+    /* Message Styles */
+    .message {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 500;
+    }
+
+    .message.success {
+      background: rgba(72, 187, 120, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(72, 187, 120, 0.2);
+    }
+
+    .message.error {
+      background: rgba(245, 101, 101, 0.1);
+      color: var(--error);
+      border: 1px solid rgba(245, 101, 101, 0.2);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .main-wrapper {
+        flex-direction: column;
+      }
+
+      aside {
+        width: 100%;
+        position: relative;
+        top: auto;
+      }
+
+      .account-form {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-wrapper {
+        margin: 1rem auto;
+        padding: 0 1rem;
+      }
+
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        height: auto;
+      }
+
+      .navbar input[type="text"] {
+        margin: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-seedling"></i>
+        TAAZA MANDI
+      </div>
+      <input type="text" placeholder="🔍 Search fresh produce, farmers...">
+      <ul>
+        <li><a href="/buyer-feed">Home</a></li>
+        <li><a href="/market">Market</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="main-wrapper">
+    <aside>
+      <div class="sidebar-profile">
+        <div class="profile-avatar" id="sidebarAvatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="name" id="sidebarName">Loading...</div>
+        <div class="role" id="sidebarRole">
+          <i class="fas fa-shopping-cart"></i>
+          Loading...
+        </div>
+        <div class="location" id="sidebarLocation">
+          <i class="fas fa-map-marker-alt"></i>
+          Loading location...
+        </div>
+        <div class="phone" id="sidebarPhone">
+          <i class="fas fa-phone"></i>
+          Loading phone...
+        </div>
+      </div>
+      
+      <div class="sidebar-section-title">Quick Links</div>
+      <ul class="sidebar-menu">
+        <li><a href="/buyer-feed"><i class="fas fa-home"></i> Feed</a></li>
+        <li><a href="/market"><i class="fas fa-shopping-bag"></i> Market</a></li>
+        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      </ul>
+    </aside>
+
+    <div class="main-container">
+      <div class="profile-header">
+        <h1>Buyer Profile</h1>
+        <p>Manage your account settings and personal information</p>
+      </div>
+
+      <!-- Message Display -->
+      <div id="message" class="message hidden">
+        <i class="fas fa-info-circle"></i>
+        <span id="message-text"></span>
+      </div>
+
+      <!-- Account Settings -->
+      <section class="account-settings">
+        <h2>
+          <i class="fas fa-user-cog"></i>
+          Account Settings
+        </h2>
+        
+        <form id="accountForm" class="account-form">
+          <div class="form-group">
+            <label>
+              <i class="fas fa-user"></i>
+              First Name
+            </label>
+            <input type="text" id="firstName" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-user"></i>
+              Last Name
+            </label>
+            <input type="text" id="lastName" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label>
+              <i class="fas fa-envelope"></i>
+              Email Address
+            </label>
+            <input type="email" id="email" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label>
+              <i class="fas fa-phone"></i>
+              Phone Number
+            </label>
+            <input type="text" id="phone" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label>
+              <i class="fas fa-map-marker-alt"></i>
+              State
+            </label>
+            <input type="text" id="state" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-users"></i>
+              User Type
+            </label>
+            <input type="text" id="userType" readonly>
+          </div>
+
+          <div class="form-group full-width">
+            <label>
+              <i class="fas fa-info-circle"></i>
+              About Me
+            </label>
+            <textarea id="about" readonly placeholder="Tell us about your preferences and what you're looking for..."></textarea>
+          </div>
+        </form>
+        
+        <button type="button" class="edit-btn" id="editBtn" onclick="toggleEditMode()">
+          <i class="fas fa-edit"></i>
+          Edit Profile
+        </button>
+
+        <button type="submit" class="save-btn" id="saveBtn" form="accountForm" style="display: none;">
+          <i class="fas fa-save"></i>
+          Save Changes
+        </button>
+      </section>
+    </div>
+  </div>
+
+  <!-- Logout Button - Positioned below main container -->
+  <div class="logout-section">
+    <button class="logout-btn" id="logoutBtn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      Logout
+    </button>
+  </div>
+
+  <script>
+    // Initialize Supabase client - Replace with your actual credentials
+    const supabaseUrl = '{{ config.SUPABASE_URL if config else "YOUR_SUPABASE_URL" }}';
+    const supabaseKey = '{{ config.SUPABASE_ANON_KEY if config else "YOUR_SUPABASE_ANON_KEY" }}';
+    const { createClient } = supabase;
+    const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+    let editMode = false;
+
+    // Show message function
+    function showMessage(message, type = 'success') {
+      const messageDiv = document.getElementById('message');
+      const messageText = document.getElementById('message-text');
+      
+      if (messageDiv && messageText) {
+        messageDiv.className = `message ${type}`;
+        messageText.textContent = message;
+        messageDiv.classList.remove('hidden');
+        
+        setTimeout(() => {
+          messageDiv.classList.add('hidden');
+        }, 5000);
+      }
+    }
+
+    // Load user data from Flask session
+    async function loadUserData() {
+      try {
+        // For Flask integration, data will be injected via templates
+        const userData = {
+          firstName: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata else 'Priya' }}",
+          lastName: "{{ session.user.user_metadata.last_name if session.user and session.user.user_metadata else 'Sharma' }}",
+          email: "{{ session.user.email if session.user else 'priya.sharma@example.com' }}",
+          phone: "{{ session.user.user_metadata.phone if session.user and session.user.user_metadata else '+91 9876543210' }}",
+          state: "{{ session.user.user_metadata.state if session.user and session.user.user_metadata else 'Delhi' }}",
+          userType: "{{ session.user.user_metadata.user_type if session.user and session.user.user_metadata else 'Buyer' }}",
+          about: "Health-conscious buyer looking for fresh, organic produce from local farmers."
+        };
+
+        // Populate form fields
+        document.getElementById('firstName').value = userData.firstName;
+        document.getElementById('lastName').value = userData.lastName;
+        document.getElementById('email').value = userData.email;
+        document.getElementById('phone').value = userData.phone;
+        document.getElementById('state').value = userData.state;
+        document.getElementById('userType').value = userData.userType.charAt(0).toUpperCase() + userData.userType.slice(1);
+        document.getElementById('about').value = userData.about;
+
+        // Update sidebar
+        const fullName = `${userData.firstName} ${userData.lastName}`;
+        document.getElementById('sidebarName').textContent = fullName;
+        document.getElementById('sidebarRole').innerHTML = `<i class="fas fa-shopping-cart"></i> ${userData.userType} Account`;
+        document.getElementById('sidebarLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${userData.state}`;
+        document.getElementById('sidebarPhone').innerHTML = `<i class="fas fa-phone"></i> ${userData.phone}`;
+
+        console.log('User data loaded successfully');
+      } catch (error) {
+        console.error('Error loading user data:', error);
+        showMessage('Failed to load profile data', 'error');
+      }
+    }
+
+    // Toggle edit mode
+    function toggleEditMode() {
+      editMode = !editMode;
+      const inputs = document.querySelectorAll('#accountForm input:not(#email):not(#userType), #accountForm textarea');
+      const saveBtn = document.getElementById('saveBtn');
+      const editBtn = document.getElementById('editBtn');
+
+      inputs.forEach(input => {
+        input.readOnly = !editMode;
+        if (editMode) {
+          input.style.background = 'white';
+          input.style.borderColor = 'var(--border-light)';
+        } else {
+          input.style.background = 'var(--ultra-light-green)';
+        }
+      });
+
+      if (editMode) {
+        saveBtn.style.display = 'inline-flex';
+        editBtn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+        editBtn.style.background = 'var(--error)';
+        showMessage('Edit mode enabled. Make your changes and click Save.', 'success');
+      } else {
+        saveBtn.style.display = 'none';
+        editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Profile';
+        editBtn.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
+      }
+    }
+
+    // Save account form
+    document.getElementById("accountForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const saveBtn = document.getElementById('saveBtn');
+      const originalContent = saveBtn.innerHTML;
+      
+      // Show loading
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<div class="loading"></div> Saving...';
+
+      try {
+        // Here you would send data to Flask backend or Supabase
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+
+        showMessage("Profile updated successfully!", 'success');
+        
+        // Update sidebar with new data
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const phone = document.getElementById('phone').value;
+        const state = document.getElementById('state').value;
+        
+        document.getElementById('sidebarName').textContent = `${firstName} ${lastName}`;
+        document.getElementById('sidebarPhone').innerHTML = `<i class="fas fa-phone"></i> ${phone}`;
+        document.getElementById('sidebarLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${state}`;
+
+        toggleEditMode(); // Exit edit mode
+      } catch (error) {
+        console.error('Save error:', error);
+        showMessage("Failed to update profile. Please try again.", 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalContent;
+      }
+    });
+
+    // Logout function
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        showMessage("Logging out...", 'success');
+        setTimeout(() => {
+          window.location.href = '/logout';
+        }, 1000);
+      }
+    }
+
+    // Load data when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+      
+      // Add entrance animation
+      setTimeout(() => {
+        document.querySelector('.main-wrapper').style.opacity = '0';
+        document.querySelector('.main-wrapper').style.transform = 'translateY(20px)';
+        document.querySelector('.main-wrapper').style.transition = 'all 0.6s ease';
+        
+        requestAnimationFrame(() => {
+          document.querySelector('.main-wrapper').style.opacity = '1';
+          document.querySelector('.main-wrapper').style.transform = 'translateY(0)';
+        });
+      }, 100);
+    });
+  </script>
+</body>
+</html>
