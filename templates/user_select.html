@@ -3,50 +3,638 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taaza Mandi - Role Selection</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='user_select.css') }}">
+  <title>TAAZA MANDI - Choose Your Role</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --error: #f56565;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .selection-container {
+      max-width: 900px;
+      width: 100%;
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--border-light);
+    }
+
+    .selection-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+    }
+
+    .selection-header {
+      text-align: center;
+      padding: 3rem 2rem 2rem 2rem;
+      background: linear-gradient(135deg, var(--ultra-light-green), white);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .brand h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand i {
+      font-size: 2.5rem;
+      color: var(--secondary-green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .selection-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .selection-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .role-selection {
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .role-card {
+      background: white;
+      border: 3px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .role-card:nth-child(2) {
+      animation-delay: 0.6s;
+    }
+
+    .role-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .role-card:hover {
+      border-color: var(--secondary-green);
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .role-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .role-card.selected {
+      border-color: var(--secondary-green);
+      background: var(--light-green);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-8px);
+    }
+
+    .role-card.selected::before {
+      transform: scaleX(1);
+    }
+
+    .role-icon {
+      font-size: 5rem;
+      color: var(--secondary-green);
+      margin-bottom: 2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .role-card:nth-child(2) .role-icon {
+      animation-delay: -1.5s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .role-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .role-description {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .role-features {
+      list-style: none;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .role-features li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .role-features li:not(:last-child) {
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .role-features i {
+      color: var(--success);
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .proceed-section {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border-light);
+      background: var(--ultra-light-green);
+    }
+
+    .btn-proceed {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 1.25rem 4rem;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-md);
+      opacity: 0.5;
+      pointer-events: none;
+      transform: scale(0.95);
+    }
+
+    .btn-proceed.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .btn-proceed:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .btn-proceed:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: scale(0.95);
+    }
+
+    .selection-note {
+      margin-top: 1.5rem;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      font-style: italic;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Success Animation */
+    .success-checkmark {
+      display: inline-block;
+      font-size: 1.2rem;
+      animation: checkmark 0.6s ease-in-out;
+    }
+
+    @keyframes checkmark {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* Message Styles */
+    .message {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 500;
+    }
+
+    .message.success {
+      background: rgba(72, 187, 120, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(72, 187, 120, 0.2);
+    }
+
+    .message.error {
+      background: rgba(245, 101, 101, 0.1);
+      color: var(--error);
+      border: 1px solid rgba(245, 101, 101, 0.2);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .role-selection {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 1.5rem;
+      }
+
+      .selection-header {
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+      }
+
+      .selection-title {
+        font-size: 2.5rem;
+      }
+
+      .selection-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .role-card {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .role-icon {
+        font-size: 4rem;
+      }
+
+      .role-title {
+        font-size: 1.8rem;
+      }
+
+      .btn-proceed {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .selection-title {
+        font-size: 2rem;
+      }
+
+      .brand h1 {
+        font-size: 2rem;
+      }
+
+      .brand i {
+        font-size: 2rem;
+      }
+    }
+
+    /* Focus States */
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to TAAZA MANDI</h1>
-    <p class="subtitle">
-      Please select your role to continue. Your experience will be tailored based on your selection.
-    </p>
+  <div class="selection-container">
+    <div class="selection-header">
+      <div class="brand">
+        <i class="fas fa-seedling"></i>
+        <h1>TAAZA MANDI</h1>
+      </div>
+      <h2 class="selection-title">Choose Your Role</h2>
+      <p class="selection-subtitle">
+        Select how you'd like to use TAAZA MANDI to get started with your agricultural journey
+      </p>
+    </div>
 
-    <div class="card-container">
-      <!-- Seller -->
-      <div class="role-card">
-        <form method="POST" action="">
-          <img src="{{ url_for('static', filename='img/seller.png') }}" alt="Seller">
-          <h2>SELLER</h2>
-          <p>As a seller on TAAZA MANDI, you can:</p>
-          <ul>
-            <li>✔ List your agricultural products directly to potential buyers.</li>
-            <li>✔ Get fair market prices without middlemen.</li>
-            <li>✔ Access market insights and price trends.</li>
-            <li>✔ Connect with a wide network of buyers across the country.</li>
-            <li>✔ Predict the crop for your location using advanced analytics.</li>
-          </ul>
-          <button type="submit" name="user_type" value="seller" class="btn">Continue as Seller</button>
-        </form>
+    <div id="message" class="message hidden">
+      <i class="fas fa-info-circle"></i>
+      <span id="message-text"></span>
+    </div>
+
+    <div class="role-selection">
+      <div class="role-card" data-role="buyer" onclick="selectRole('buyer')">
+        <div class="role-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h3 class="role-title">I'm a Buyer</h3>
+        <p class="role-description">
+          Looking to purchase fresh produce directly from farmers
+        </p>
+        <ul class="role-features">
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Browse fresh produce from local farms
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Connect directly with farmers
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Get the best prices without middlemen
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Support local agriculture
+          </li>
+        </ul>
       </div>
 
-      <!-- Buyer -->
-      <div class="role-card">
-        <form method="POST" action="">
-          <img src="{{ url_for('static', filename='img/buyer.png') }}" alt="Buyer">
-          <h2>BUYER</h2>
-          <p>As a buyer on TAAZA MANDI, you can:</p>
-          <ul>
-            <li>✔ Purchase fresh produce directly from farmers.</li>
-            <li>✔ Get competitive prices on quality agricultural products.</li>
-            <li>✔ Verify product quality and source information.</li>
-            <li>✔ Support local farmers and sustainable agriculture.</li>
-          </ul>
-          <button type="submit" name="user_type" value="buyer" class="btn">Continue as Buyer</button>
-        </form>
+      <div class="role-card" data-role="seller" onclick="selectRole('seller')">
+        <div class="role-icon">
+          <i class="fas fa-tractor"></i>
+        </div>
+        <h3 class="role-title">I'm a Seller</h3>
+        <p class="role-description">
+          Ready to sell my farm produce directly to buyers
+        </p>
+        <ul class="role-features">
+          <li>
+            <i class="fas fa-check-circle"></i>
+            List your produce with photos
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Set your own prices
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Reach buyers across the country
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            Grow your farming business
+          </li>
+        </ul>
       </div>
     </div>
+
+    <div class="proceed-section">
+      <button class="btn-proceed" id="proceedBtn" onclick="proceedWithRole()">
+        <i class="fas fa-arrow-right"></i>
+        Continue
+      </button>
+      <p class="selection-note">
+        You can change your role anytime in your profile settings
+      </p>
+    </div>
   </div>
+
+  <script>
+    let selectedRole = null;
+
+    // Show message function
+    function showMessage(message, type = 'info') {
+      const messageDiv = document.getElementById('message');
+      const messageText = document.getElementById('message-text');
+      
+      if (messageDiv && messageText) {
+        messageDiv.className = `message ${type}`;
+        messageText.textContent = message;
+        messageDiv.classList.remove('hidden');
+        
+        setTimeout(() => {
+          messageDiv.classList.add('hidden');
+        }, 5000);
+      }
+    }
+
+    function selectRole(role) {
+      selectedRole = role;
+      
+      // Remove selected class from all cards
+      document.querySelectorAll('.role-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked card
+      document.querySelector(`[data-role="${role}"]`).classList.add('selected');
+      
+      // Enable proceed button
+      const proceedBtn = document.getElementById('proceedBtn');
+      proceedBtn.classList.add('active');
+      
+      // Update button text and icon based on selection
+      const icon = role === 'buyer' ? 'shopping-cart' : 'tractor';
+      const text = role === 'buyer' ? 'Enter as Buyer' : 'Enter as Seller';
+      proceedBtn.innerHTML = `<i class="fas fa-${icon}"></i> ${text}`;
+      
+      // Show success message
+      const roleText = role === 'buyer' ? 'Buyer' : 'Seller';
+      showMessage(`✅ ${roleText} role selected! Click continue to proceed.`, 'success');
+    }
+
+    async function proceedWithRole() {
+      if (!selectedRole) {
+        showMessage('❌ Please select a role first', 'error');
+        return;
+      }
+
+      const proceedBtn = document.getElementById('proceedBtn');
+      const originalContent = proceedBtn.innerHTML;
+      
+      // Show loading state
+      proceedBtn.disabled = true;
+      proceedBtn.innerHTML = '<div class="loading"></div> Setting up your account...';
+
+      try {
+        console.log('🔧 Sending role to Flask:', selectedRole);
+        
+        const response = await fetch('/user_select', {  // ✅ FIXED: Changed from /user-select to /user_select
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            role: selectedRole
+          })
+        });
+
+        console.log('🔧 Flask response status:', response.status);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Server error: ${response.status} - ${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log('✅ Flask response:', result);
+
+        if (result.status === 'success') {
+          // Show success with checkmark
+          proceedBtn.innerHTML = '<span class="success-checkmark">✅</span> Success! Redirecting...';
+          
+          showMessage('🎉 Role saved successfully! Redirecting to your dashboard...', 'success');
+          
+          setTimeout(() => {
+            console.log('🔧 Redirecting to:', result.redirect_url);
+            window.location.href = result.redirect_url;
+          }, 1500);
+        } else {
+          throw new Error(result.message || 'Failed to save role');
+        }
+
+      } catch (error) {
+        console.error('❌ Role selection error:', error);
+        showMessage('❌ Something went wrong: ' + error.message, 'error');
+        
+        proceedBtn.disabled = false;
+        proceedBtn.innerHTML = originalContent;
+      }
+    }
+
+    // Add entrance animation
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        document.querySelector('.selection-container').style.opacity = '0';
+        document.querySelector('.selection-container').style.transform = 'translateY(30px)';
+        document.querySelector('.selection-container').style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        
+        requestAnimationFrame(() => {
+          document.querySelector('.selection-container').style.opacity = '1';
+          document.querySelector('.selection-container').style.transform = 'translateY(0)';
+        });
+      }, 100);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && selectedRole) {
+        proceedWithRole();
+      } else if (e.key === '1') {
+        selectRole('buyer');
+      } else if (e.key === '2') {
+        selectRole('seller');
+      }
+    });
+</script>
+
 </body>
 </html>

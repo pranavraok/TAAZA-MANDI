@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAAZA MANDI - Real-Time Market Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: #f6faef;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 72px;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar input[type="text"] {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 2rem;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .navbar input[type="text"]::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .navbar input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .navbar ul li a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .navbar ul li a:hover {
+      color: white;
+    }
+
+    .navbar ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .navbar ul li a:hover::after {
+      width: 100%;
+    }
+
+    .navbar ul li a.active {
+      color: white;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .auth-buttons button {
+      padding: 0.6rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .auth-buttons button:first-child {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-buttons button:last-child {
+      background: white;
+      color: var(--primary-green);
+      border-color: white;
+    }
+
+    .auth-buttons button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    aside {
+      grid-area: sidebar;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-md);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1rem;
+      background: var(--secondary-green);
+    }
+
+    .sidebar-profile .name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-profile .role {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-link {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: white;
+      color: var(--primary-green);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-link:hover {
+      background: var(--primary-green);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-section-title {
+      padding: 1.5rem 2rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-menu, .sidebar-resources, .sidebar-settings {
+      list-style: none;
+      padding: 0 1rem;
+    }
+
+    .sidebar-menu li, .sidebar-resources li, .sidebar-settings li {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-menu a, .sidebar-resources a, .sidebar-settings a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .sidebar-menu a:hover, .sidebar-resources a:hover, .sidebar-settings a:hover {
+      background: var(--light-green);
+      color: var(--primary-green);
+      transform: translateX(4px);
+    }
+
+    .sidebar-menu a.active, .sidebar-resources a.active {
+      background: var(--light-green);
+      color: var(--primary-green);
+      border-left: 4px solid var(--primary-green);
+    }
+
+    /* Main Content */
+    .main-container {
+      grid-area: main;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      flex: 1;
+    }
+
+    /* Market Overview Cards */
+    .market-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .overview-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .overview-card h3 {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .overview-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .overview-card .change {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .change.positive {
+      color: #10b981;
+    }
+
+    .change.negative {
+      color: #ef4444;
+    }
+
+    /* Charts Section */
+    .charts-section {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .chart-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* Top Products Table */
+    .top-products {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .top-products h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .product-table th,
+    .product-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .product-table th {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .product-table td {
+      color: var(--text-primary);
+    }
+
+    .price-change {
+      font-weight: 500;
+    }
+
+    .price-change.positive {
+      color: #10b981;
+    }
+
+    .price-change.negative {
+      color: #ef4444;
+    }
+
+    /* Real-time Updates */
+    .real-time-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--light-green);
+      color: var(--primary-green);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(107, 183, 123, 0.7);
+      }
+      
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(107, 183, 123, 0);
+      }
+      
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(107, 183, 123, 0);
+      }
+    }
+
+    /* e-NAM Updates Section */
+    .e-nam-updates {
+      margin-top: 3rem;
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .e-nam-updates h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-green);
+      margin-bottom: 1rem;
+    }
+
+    .e-nam-updates ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .e-nam-updates li {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .e-nam-updates li:before {
+      content: '✔';
+      color: var(--accent-green);
+      position: absolute;
+      left: 0;
+    }
+
+    .e-nam-updates a {
+      color: var(--primary-green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .e-nam-updates a:hover {
+      text-decoration: underline;
+    }
+
+    /* e-NAM Trade Data Table */
+    .e-nam-trade-data {
+      margin-top: 3rem;
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .e-nam-trade-data h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-green);
+      margin-bottom: 1rem;
+    }
+
+    .trade-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .trade-table th, .trade-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .trade-table th {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .trade-table td {
+      color: var(--text-primary);
+    }
+
+    footer {
+      background: var(--primary-green);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-content p {
+      margin-bottom: 1rem;
+    }
+
+    .social-links a {
+      color: white;
+      margin: 0 1rem;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--accent-green);
+    }
+
+    @media (max-width: 768px) {
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+      }
+
+      .navbar input[type="text"] {
+        margin: 0 0 1rem 0;
+        max-width: 100%;
+      }
+
+      .navbar ul {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      aside {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .e-nam-updates {
+        margin-top: 2rem;
+      }
+    }
+
+    @media (min-width: 769px) {
+      body {
+        display: grid;
+        grid-template-areas:
+          "nav nav"
+          "sidebar main"
+          "footer footer";
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: 72px 1fr auto;
+      }
+
+      header {
+        grid-area: nav;
+      }
+
+      aside {
+        grid-area: sidebar;
+      }
+
+      .main-container {
+        grid-area: main;
+      }
+
+      footer {
+        grid-area: footer;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-seedling"></i>
+        TAAZA MANDI
+      </div>
+      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="market.html" class="active">Market</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <button>Login</button>
+        <button>Sign Up</button>
+      </div>
+    </nav>
+  </header>
+
+  <aside>
+    <div class="sidebar-profile">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile">
+      <div class="name">John Farmer</div>
+      <div class="role">✨ Seller Account</div>
+      <a href="profile.html" class="profile-link">
+        <i class="fas fa-user"></i>
+        View Profile
+      </a>
+    </div>
+    
+    <div class="sidebar-section-title">Dashboard</div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><i class="fas fa-home"></i> Feed</a></li>
+      <li><a href="/templates/post-upload.html"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+    </ul>
+    
+    <div class="sidebar-section-title">Resources</div>
+    <ul class="sidebar-resources">
+      <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+      <li><a href="government-schemes.html"><i class="fas fa-university"></i> Government Schemes</a></li>
+      <li><a href="/templates/post-upload.html"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+    </ul>
+    
+    <div class="sidebar-section-title">Settings</div>
+    <ul class="sidebar-settings">
+      <li><a href="#"><i class="fas fa-cog"></i> Account Settings</a></li>
+      <li><a href="#"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-container">
+    <!-- Real-time Indicator -->
+    <div class="real-time-indicator">
+      <div class="pulse"></div>
+      <span>Live Data • Last updated: <span id="lastUpdate">Just now</span></span>
+    </div>
+
+    <!-- Market Overview -->
+    <div class="market-overview">
+      <div class="overview-card">
+        <h3>Total Products</h3>
+        <div class="value" id="totalProducts">1,247</div>
+        <div class="change positive">+12 today</div>
+      </div>
+      <div class="overview-card">
+        <h3>Average Price</h3>
+        <div class="value" id="avgPrice">₹2,450</div>
+        <div class="change positive">+5.2% this week</div>
+      </div>
+      <div class="overview-card">
+        <h3>Active Sellers</h3>
+        <div class="value" id="activeSellers">89</div>
+        <div class="change positive">+3 today</div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <!-- Price Trends Chart -->
+      <div class="chart-card">
+        <h3>Price Trends (Last 30 Days)</h3>
+        <div class="chart-container">
+          <canvas id="priceChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Market Distribution -->
+      <div class="chart-card">
+        <h3>Market Distribution</h3>
+        <div class="chart-container">
+          <canvas id="distributionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Products Table -->
+    <div class="top-products">
+      <h3>Top Performing Products</h3>
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Current Price</th>
+            <th>Change</th>
+            <th>Volume</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody id="topProductsTable">
+          <!-- Data will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- e-NAM Updates -->
+    <div class="e-nam-updates">
+      <h2>e-NAM Updates</h2>
+      <ul>
+        <li>Circulation of Revised National Agriculture Market (e-NAM) Operational Guidelines. <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
+        <li>New Operational Guideline of e-NAM is available in the resource section. <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
+        <li>Upcoming Training Schedule Link. <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
+        <li>New 21 Mandis integration in Rajasthan. 21 new mandis added on eNAM in Rajasthan. Now total 1410 mandis are on eNAM.</li>
+        <li>MODEL GUIDELINES for Quality Control Laboratory at Mandis under e-NAM - <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
+        <li>New 56 Mandis integration in Tamilnadu. 56 new mandis added on eNAM in Tamilnadu. Now total 1466 mandis are on eNAM.</li>
+        <li>New 7 Mandis integration in Rajasthan. 7 new mandis added on eNAM in Rajasthan. Now total 1473 mandis are on eNAM.</li>
+        <li>e-NAM welcomes all the FPOs & requests to register for trading on e-NAM to avail benefits from the transparent system. Kindly reach us on our Toll-Free No.1800 270 0224</li>
+        <li>e-NAM PoP Launched by Honourable Union Agriculture Minister on 14th July'2022</li>
+      </ul>
+    </div>
+
+    <!-- e-NAM Trade Data -->
+    <div class="e-nam-trade-data">
+      <h2>e-NAM Mandis Trade Details</h2>
+      <p>Data fetched from e-NAM via public API (data.gov.in). Note: The API returned no records for recent dates excluding rice and wheat. Using sample data based on recent web search results for August 2024 for other crops.</p>
+      <table class="trade-table">
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>APMC's</th>
+            <th>Commodity</th>
+            <th>Min Price</th>
+            <th>Modal Price</th>
+            <th>Max Price</th>
+            <th>Arrival</th>
+            <th>Traded</th>
+            <th>Unit</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="tradeDataTable">
+          <!-- Data will be populated by JavaScript from API -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 TAAZA MANDI. All rights reserved. | Contact: support@taazamandi.com | Phone: +91-123-456-7890</p>
+      <div class="social-links">
+        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Sample fallback data based on web search for August 2024 (prices in Rs per quintal unless noted), excluding rice and wheat
+    const sampleRecords = [
+      { State: 'Tamil Nadu', District: 'Chennai', Market: 'Chennai', Commodity: 'Groundnut', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-23', Min_Price: 7500, Max_Price: 7800, Modal_Price: 7650, Arrivals: '150 Qtl', Traded: '120 Qtl' },
+      { State: 'Maharashtra', District: 'Mumbai', Market: 'Mumbai', Commodity: 'Cotton', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-22', Min_Price: 6800, Max_Price: 7000, Modal_Price: 6900, Arrivals: '200 Qtl', Traded: '180 Qtl' },
+      { State: 'Rajasthan', District: 'Jaipur', Market: 'Jaipur', Commodity: 'Maize', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-21', Min_Price: 1850, Max_Price: 2000, Modal_Price: 1925, Arrivals: '300 Qtl', Traded: '250 Qtl' },
+      { State: 'Gujarat', District: 'Ahmedabad', Market: 'Ahmedabad', Commodity: 'Turmeric', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-20', Min_Price: 9000, Max_Price: 9500, Modal_Price: 9250, Arrivals: '100 Qtl', Traded: '80 Qtl' },
+      { State: 'Karnataka', District: 'Bengaluru', Market: 'Bengaluru', Commodity: 'Soybean', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-23', Min_Price: 4100, Max_Price: 4300, Modal_Price: 4200, Arrivals: '250 Qtl', Traded: '200 Qtl' },
+      { State: 'Punjab', District: 'Ludhiana', Market: 'Ludhiana', Commodity: 'Mustard', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-22', Min_Price: 5500, Max_Price: 5800, Modal_Price: 5650, Arrivals: '180 Qtl', Traded: '150 Qtl' },
+      { State: 'Andhra Pradesh', District: 'Vijayawada', Market: 'Vijayawada', Commodity: 'Chilli', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-21', Min_Price: 12000, Max_Price: 12500, Modal_Price: 12250, Arrivals: '120 Qtl', Traded: '100 Qtl' },
+      { State: 'Telangana', District: 'Hyderabad', Market: 'Hyderabad', Commodity: 'Coriander', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-20', Min_Price: 7000, Max_Price: 7500, Modal_Price: 7250, Arrivals: '150 Qtl', Traded: '130 Qtl' },
+      { State: 'Haryana', District: 'Rohtak', Market: 'Rohtak', Commodity: 'Bajra', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-23', Min_Price: 2200, Max_Price: 2400, Modal_Price: 2300, Arrivals: '200 Qtl', Traded: '170 Qtl' },
+      { State: 'Uttar Pradesh', District: 'Lucknow', Market: 'Lucknow', Commodity: 'Potato', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-22', Min_Price: 1500, Max_Price: 1700, Modal_Price: 1600, Arrivals: '300 Qtl', Traded: '250 Qtl' },
+    ];
+
+    let priceChart;
+    let distributionChart;
+
+    // Initialize charts with initial data
+    function initCharts(records) {
+      const commodities = [...new Set(records.map(r => r.Commodity))];
+      const dates = [...new Set(records.map(r => r.Arrival_Date))].sort();
+
+      // Price Trends Chart - Average modal price per day
+      const avgPrices = dates.map(date => {
+        const dayRecords = records.filter(r => r.Arrival_Date === date);
+        const sumModal = dayRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0);
+        return dayRecords.length ? sumModal / dayRecords.length : 0;
+      });
+
+      const priceCtx = document.getElementById('priceChart').getContext('2d');
+      priceChart = new Chart(priceCtx, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Average Modal Price (₹)',
+            data: avgPrices,
+            borderColor: '#2d5f3f',
+            backgroundColor: 'rgba(45, 95, 63, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: {
+                color: '#e2e8f0'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // Market Distribution Chart - Count by commodity
+      const commodityCounts = commodities.map(com => records.filter(r => r.Commodity === com).length);
+
+      const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+      distributionChart = new Chart(distributionCtx, {
+        type: 'doughnut',
+        data: {
+          labels: commodities,
+          datasets: [{
+            data: commodityCounts,
+            backgroundColor: [
+              '#2d5f3f',
+              '#4a8f5f',
+              '#6bb77b',
+              '#8bc34a',
+              '#cddc39',
+              '#ffeb3b' // Add more colors if needed
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+
+    // Populate top products table - Group by commodity, average prices
+    function populateTopProducts(records) {
+      const commodities = [...new Set(records.map(r => r.Commodity))];
+      const tableBody = document.getElementById('topProductsTable');
+      tableBody.innerHTML = '';
+
+      commodities.forEach(com => {
+        const comRecords = records.filter(r => r.Commodity === com);
+        const avgPrice = comRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0) / comRecords.length;
+        const change = (Math.random() * 10 - 5).toFixed(1); // Random change for demo
+        const volume = (Math.random() * 2 + 1).toFixed(1) + 'M';
+        const trend = change > 0 ? 'up' : 'down';
+
+        const row = document.createElement('tr');
+        const changeClass = change >= 0 ? 'positive' : 'negative';
+        const changeIcon = change >= 0 ? '↗' : '↘';
+        
+        row.innerHTML = `
+          <td><strong>${com}</strong></td>
+          <td>₹${Math.round(avgPrice).toLocaleString()}</td>
+          <td class="price-change ${changeClass}">${changeIcon} ${Math.abs(change)}%</td>
+          <td>₹${volume}</td>
+          <td><i class="fas fa-${trend === 'up' ? 'arrow-up' : 'arrow-down'}" style="color: ${trend === 'up' ? '#10b981' : '#ef4444'}"></i></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Fetch e-NAM trade data from public API, excluding rice and wheat
+    async function fetchENAMData() {
+      const apiKey = '579b464db66ec23bdd000001776fdbde97c3454a6f5aee2052b6107e';
+      const fromDate = new Date();
+      fromDate.setDate(fromDate.getDate() - 30); // Last 30 days
+      const toDate = new Date();
+      const fromStr = fromDate.toISOString().split('T')[0];
+      const toStr = toDate.toISOString().split('T')[0];
+
+      const url = `https://api.data.gov.in/resource/9ef84268-d588-465f-a308-a306f897cc66?api-key=${apiKey}&format=json&limit=200&filters[arrival_date][ge]=${fromStr}&filters[arrival_date][le]=${toStr}&filters[commodity][ne]=Rice&filters[commodity][ne]=Wheat`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        if (data.records.length > 0) {
+          populateTradeTable(data.records);
+          initCharts(data.records);
+          populateTopProducts(data.records);
+          updateOverview(data.records);
+        } else {
+          throw new Error('No records found');
+        }
+      } catch (error) {
+        console.error('Failed to fetch e-NAM data:', error);
+        // Fallback to sample data
+        populateTradeTable(sampleRecords);
+        initCharts(sampleRecords);
+        populateTopProducts(sampleRecords);
+        updateOverview(sampleRecords);
+      }
+    }
+
+    // Update overview cards from records
+    function updateOverview(records) {
+      const uniqueCommodities = new Set(records.map(r => r.Commodity)).size;
+      const avgModal = records.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0) / records.length;
+      const uniqueMarkets = new Set(records.map(r => r.Market)).size;
+
+      document.getElementById('totalProducts').textContent = uniqueCommodities.toLocaleString();
+      document.getElementById('avgPrice').textContent = `₹${Math.round(avgModal).toLocaleString()}`;
+      document.getElementById('activeSellers').textContent = uniqueMarkets.toLocaleString();
+    }
+
+    // Populate e-NAM trade table
+    function populateTradeTable(records) {
+      const tableBody = document.getElementById('tradeDataTable');
+      tableBody.innerHTML = '';
+
+      records.forEach(record => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${record.state || record.State || 'N/A'}</td>
+          <td>${record.apmc || record.Market || 'N/A'}</td>
+          <td>${record.commodity || record.Commodity || 'N/A'}</td>
+          <td>₹${record.min_price || record.Min_Price || 'N/A'}</td>
+          <td>₹${record.modal_price || record.Modal_Price || 'N/A'}</td>
+          <td>₹${record.max_price || record.Max_Price || 'N/A'}</td>
+          <td>${record.commodity_arrivals || record.Arrivals || 'N/A'}</td>
+          <td>${record.commodity_traded || record.Traded || 'N/A'}</td>
+          <td>${record.unit || 'Qtl'}</td>
+          <td>${record.date || record.Arrival_Date || 'N/A'}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Update last update time
+    function updateLastUpdate() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById('lastUpdate').textContent = timeString;
+    }
+
+    // Simulate real-time updates
+    function simulateRealTimeUpdates() {
+      setInterval(() => {
+        fetchENAMData(); // Refetch API for live updates
+        updateLastUpdate();
+      }, 30000); // Update every 30 seconds
+    }
+
+    // Initialize everything when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      fetchENAMData(); // Initial fetch
+      updateLastUpdate();
+      simulateRealTimeUpdates();
+    });
+  </script>
+</body>
+</html>

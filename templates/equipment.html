@@ -312,6 +312,18 @@
       font-weight: 500;
     }
 
+    .category-section {
+      margin-bottom: 3rem;
+    }
+
+    .category-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 1.5rem;
+      padding: 0 1rem;
+    }
+
     /* Enhanced Filters */
     .equipment-filters {
       display: flex;
@@ -434,6 +446,21 @@
       transform: scale(1.05);
     }
 
+    .certified-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--success);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
     .equipment-content {
       padding: 1.5rem;
       flex: 1;
@@ -507,7 +534,7 @@
       margin-top: auto;
     }
 
-    .btn-rent, .btn-buy {
+    .btn-buy {
       flex: 1;
       padding: 0.75rem 1rem;
       border-radius: var(--radius-md);
@@ -523,21 +550,6 @@
       gap: 0.5rem;
       border: 2px solid transparent;
       box-shadow: var(--shadow-sm);
-    }
-
-    .btn-rent {
-      background: white;
-      color: var(--primary-green);
-      border-color: var(--primary-green);
-    }
-
-    .btn-rent:hover {
-      background: var(--light-green);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .btn-buy {
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
       color: white;
       border-color: var(--primary-green);
@@ -687,18 +699,6 @@
       gap: 0.75rem;
       border: 2px solid transparent;
       box-shadow: var(--shadow-sm);
-    }
-
-    .modal-btn-rent {
-      background: white;
-      color: var(--primary-green);
-      border-color: var(--primary-green);
-    }
-
-    .modal-btn-rent:hover {
-      background: var(--light-green);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
     }
 
     .modal-btn-buy {
@@ -981,11 +981,11 @@
         </label>
         <select id="category">
           <option>All Categories</option>
-          <option>🚜 Machinery</option>
-          <option>🔧 Tools</option>
-          <option>🌱 Fertilizers</option>
-          <option>🌾 Seeds</option>
-          <option>💧 Irrigation</option>
+          <option>Vehicles</option>
+          <option>Tools</option>
+          <option>Fertilizers</option>
+          <option>Irrigation</option>
+          <option>Seeds</option>
         </select>
         
         <select id="location">
@@ -1088,34 +1088,88 @@
               <i class="fas fa-map-marker-alt"></i>
               <span></span>
             </p>
+            <p id="modalCertification">
+              <i class="fas fa-certificate"></i>
+              <span></span>
+            </p>
           </div>
         </div>
         <div class="modal-actions">
-          <button class="modal-btn modal-btn-rent" onclick="rentEquipment()">
-            <i class="fas fa-home"></i>
-            Rent Now
-          </button>
-          <button class="modal-btn modal-btn-buy" onclick="buyEquipment()">
+          <a id="modalBuyLink" class="modal-btn modal-btn-buy" href="#" target="_blank">
             <i class="fas fa-shopping-cart"></i>
-            Buy Now
-          </button>
+            Buy Now on IndiaMart
+          </a>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Enhanced Equipment data with icons
+    // Enhanced Equipment data with more products in tools, irrigation, fertilizers (manure), and seeds
     const equipmentData = [
+      // Vehicles
       {
         id: 1,
         title: "John Deere Tractor 5050",
-        category: "Machinery",
+        category: "Vehicles",
         description: "Powerful 50 HP tractor with advanced features for efficient farming operations. Perfect for small to medium farms with excellent fuel efficiency.",
         price: "₹8,50,000",
         location: "Punjab",
-        icon: "fas fa-tractor"
+        icon: "fas fa-tractor",
+        certified: true,
+        certificationDetails: "Certified by ISO 9001:2015 and Indian Agricultural Standards (IAS)",
+        indiamartLink: "https://www.indiamart.com/proddetail/john-deere-5050-d-tractor-2851303659612.html"
       },
+      {
+        id: 5,
+        title: "Seed Drill Machine",
+        category: "Vehicles",
+        description: "Precision seed drill for accurate seed placement. Increases crop yield and reduces seed wastage. Easy to operate.",
+        price: "₹1,20,000",
+        location: "Haryana",
+        icon: "fas fa-seedling",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/seed-drills-6710688055.html"
+      },
+      {
+        id: 6,
+        title: "Harvester Combine",
+        category: "Vehicles",
+        description: "Advanced combine harvester for wheat, rice, and other grains. High efficiency and low grain loss. GPS-enabled navigation.",
+        price: "₹15,00,000",
+        location: "Punjab",
+        icon: "fas fa-truck-loading",
+        certified: true,
+        certificationDetails: "Certified by ISO 9001:2015 and IAS",
+        indiamartLink: "https://www.indiamart.com/proddetail/harvester-combine-23193481533.html"
+      },
+      {
+        id: 9,
+        title: "Mahindra Tractor 575 DI",
+        category: "Vehicles",
+        description: "Reliable 45 HP tractor suitable for various farming tasks. Known for durability and low maintenance.",
+        price: "₹6,50,000",
+        location: "Maharashtra",
+        icon: "fas fa-tractor",
+        certified: true,
+        certificationDetails: "Certified by ISO 9001:2015",
+        indiamartLink: "https://www.indiamart.com/proddetail/mahindra-tractor-575-di-2851303659613.html"
+      },
+      {
+        id: 10,
+        title: "Farmtrac Tractor 60",
+        category: "Vehicles",
+        description: "60 HP tractor with powerful engine and comfortable cabin. Ideal for heavy-duty operations.",
+        price: "₹7,80,000",
+        location: "Uttar Pradesh",
+        icon: "fas fa-tractor",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/farmtrac-tractor-60-2851303659614.html"
+      },
+
+      // Tools
       {
         id: 2,
         title: "Rotavator Attachment",
@@ -1123,43 +1177,10 @@
         description: "High-quality rotavator for soil preparation and cultivation. Compatible with most tractor models. Durable steel construction.",
         price: "₹45,000",
         location: "Maharashtra",
-        icon: "fas fa-cog"
-      },
-      {
-        id: 3,
-        title: "Organic Manure Pack",
-        category: "Fertilizers",
-        description: "Premium organic manure made from natural ingredients. Promotes healthy soil and plant growth. 100% chemical-free.",
-        price: "₹2,500",
-        location: "Uttar Pradesh",
-        icon: "fas fa-leaf"
-      },
-      {
-        id: 4,
-        title: "Drip Irrigation System",
-        category: "Irrigation",
-        description: "Complete drip irrigation setup for efficient water management. Includes filters and controllers. Saves up to 50% water.",
-        price: "₹35,000",
-        location: "Gujarat",
-        icon: "fas fa-tint"
-      },
-      {
-        id: 5,
-        title: "Seed Drill Machine",
-        category: "Machinery",
-        description: "Precision seed drill for accurate seed placement. Increases crop yield and reduces seed wastage. Easy to operate.",
-        price: "₹1,20,000",
-        location: "Haryana",
-        icon: "fas fa-seedling"
-      },
-      {
-        id: 6,
-        title: "Harvester Combine",
-        category: "Machinery",
-        description: "Advanced combine harvester for wheat, rice, and other grains. High efficiency and low grain loss. GPS-enabled navigation.",
-        price: "₹15,00,000",
-        location: "Punjab",
-        icon: "fas fa-truck-loading"
+        icon: "fas fa-cog",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/brush-cutter-rotavator-attachment-22644255312.html"
       },
       {
         id: 7,
@@ -1168,8 +1189,185 @@
         description: "High-pressure sprayer for pesticides and fertilizers. Covers large areas efficiently. Adjustable nozzles included.",
         price: "₹8,500",
         location: "Karnataka",
-        icon: "fas fa-spray-can"
+        icon: "fas fa-spray-can",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/kdagrotech/sprayer-pump-electric-motor.html"
       },
+      {
+        id: 11,
+        title: "Plough",
+        category: "Tools",
+        description: "Heavy-duty plough for deep tillage. Made from high-carbon steel for longevity.",
+        price: "₹25,000",
+        location: "Punjab",
+        icon: "fas fa-tools",
+        certified: true,
+        certificationDetails: "Certified by BIS",
+        indiamartLink: "https://www.indiamart.com/proddetail/plough-2851303659615.html"
+      },
+      {
+        id: 12,
+        title: "Harrow",
+        category: "Tools",
+        description: "Disc harrow for soil leveling and weed control. Adjustable angles for versatility.",
+        price: "₹35,000",
+        location: "Haryana",
+        icon: "fas fa-tools",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/harrow-2851303659616.html"
+      },
+      {
+        id: 13,
+        title: "Cultivator",
+        category: "Tools",
+        description: "Spring-loaded cultivator for inter-row cultivation. Reduces soil compaction.",
+        price: "₹28,000",
+        location: "Uttar Pradesh",
+        icon: "fas fa-tools",
+        certified: true,
+        certificationDetails: "Certified by IAS",
+        indiamartLink: "https://www.indiamart.com/proddetail/cultivator-2851303659617.html"
+      },
+      {
+        id: 14,
+        title: "Weeder",
+        category: "Tools",
+        description: "Manual weeder for precise weed removal in vegetable gardens.",
+        price: "₹1,500",
+        location: "Maharashtra",
+        icon: "fas fa-tools",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/weeder-2851303659618.html"
+      },
+
+      // Fertilizers (Manure)
+      {
+        id: 3,
+        title: "Organic Manure Pack",
+        category: "Fertilizers",
+        description: "Premium organic manure made from natural ingredients. Promotes healthy soil and plant growth. 100% chemical-free.",
+        price: "₹2,500",
+        location: "Uttar Pradesh",
+        icon: "fas fa-leaf",
+        certified: true,
+        certificationDetails: "Certified by Organic Certification Board (OCB)",
+        indiamartLink: "https://www.indiamart.com/proddetail/organic-manure-17746981097.html"
+      },
+      {
+        id: 15,
+        title: "Vermicompost",
+        category: "Fertilizers",
+        description: "Nutrient-rich vermicompost from earthworms. Improves soil structure and water retention.",
+        price: "₹1,200",
+        location: "Tamil Nadu",
+        icon: "fas fa-leaf",
+        certified: true,
+        certificationDetails: "Certified by OCB",
+        indiamartLink: "https://www.indiamart.com/proddetail/vermicompost-2851303659619.html"
+      },
+      {
+        id: 16,
+        title: "Cow Dung Manure",
+        category: "Fertilizers",
+        description: "Traditional cow dung manure, dried and powdered. Rich in nitrogen.",
+        price: "₹800",
+        location: "Gujarat",
+        icon: "fas fa-leaf",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/cow-dung-manure-2851303659620.html"
+      },
+      {
+        id: 17,
+        title: "NPK Fertilizer",
+        category: "Fertilizers",
+        description: "Balanced NPK fertilizer for all crops. Promotes growth, flowering, and fruiting.",
+        price: "₹1,500",
+        location: "Punjab",
+        icon: "fas fa-leaf",
+        certified: true,
+        certificationDetails: "Certified by BIS",
+        indiamartLink: "https://www.indiamart.com/proddetail/npk-fertilizer-2851303659621.html"
+      },
+      {
+        id: 18,
+        title: "Bio Fertilizer",
+        category: "Fertilizers",
+        description: "Microbial bio-fertilizer for nitrogen fixation. Eco-friendly alternative to chemical fertilizers.",
+        price: "₹2,000",
+        location: "Karnataka",
+        icon: "fas fa-leaf",
+        certified: true,
+        certificationDetails: "Certified by OCB",
+        indiamartLink: "https://www.indiamart.com/proddetail/bio-fertilizer-2851303659622.html"
+      },
+
+      // Irrigation
+      {
+        id: 4,
+        title: "Drip Irrigation System",
+        category: "Irrigation",
+        description: "Complete drip irrigation setup for efficient water management. Includes filters and controllers. Saves up to 50% water.",
+        price: "₹35,000",
+        location: "Gujarat",
+        icon: "fas fa-tint",
+        certified: true,
+        certificationDetails: "Certified by Bureau of Indian Standards (BIS)",
+        indiamartLink: "https://www.indiamart.com/proddetail/drip-irrigation-system-16120457191.html"
+      },
+      {
+        id: 19,
+        title: "Sprinkler Irrigation System",
+        category: "Irrigation",
+        description: "Overhead sprinkler system for uniform water distribution. Suitable for large fields.",
+        price: "₹25,000",
+        location: "Maharashtra",
+        icon: "fas fa-tint",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/sprinkler-irrigation-system-2851303659623.html"
+      },
+      {
+        id: 20,
+        title: "Submersible Pump",
+        category: "Irrigation",
+        description: "Efficient submersible pump for deep wells. High discharge rate and energy efficient.",
+        price: "₹15,000",
+        location: "Uttar Pradesh",
+        icon: "fas fa-tint",
+        certified: true,
+        certificationDetails: "Certified by BIS",
+        indiamartLink: "https://www.indiamart.com/proddetail/submersible-pump-2851303659624.html"
+      },
+      {
+        id: 21,
+        title: "Solar Water Pump",
+        category: "Irrigation",
+        description: "Eco-friendly solar-powered water pump. No electricity required, ideal for remote areas.",
+        price: "₹50,000",
+        location: "Rajasthan",
+        icon: "fas fa-tint",
+        certified: true,
+        certificationDetails: "Certified by MNRE",
+        indiamartLink: "https://www.indiamart.com/proddetail/solar-water-pump-2851303659625.html"
+      },
+      {
+        id: 22,
+        title: "Pivot Irrigation System",
+        category: "Irrigation",
+        description: "Center pivot irrigation for large-scale farming. Automated and water-efficient.",
+        price: "₹2,00,000",
+        location: "Punjab",
+        icon: "fas fa-tint",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/pivot-irrigation-system-2851303659626.html"
+      },
+
+      // Seeds
       {
         id: 8,
         title: "Hybrid Seeds Collection",
@@ -1177,7 +1375,58 @@
         description: "Premium hybrid seeds for various crops. High yield potential and disease resistance. Certified by agricultural department.",
         price: "₹1,800",
         location: "Tamil Nadu",
-        icon: "fas fa-spa"
+        icon: "fas fa-spa",
+        certified: true,
+        certificationDetails: "Certified by Seed Certification Agency (SCA)",
+        indiamartLink: "https://www.indiamart.com/solar-agrotech-pvt-ltd/hybrid-seeds.html"
+      },
+      {
+        id: 23,
+        title: "Wheat Seeds",
+        category: "Seeds",
+        description: "High-yielding wheat seeds suitable for rabi season. Drought resistant variety.",
+        price: "₹2,200",
+        location: "Haryana",
+        icon: "fas fa-spa",
+        certified: true,
+        certificationDetails: "Certified by SCA",
+        indiamartLink: "https://www.indiamart.com/proddetail/wheat-seeds-2851303659627.html"
+      },
+      {
+        id: 24,
+        title: "Rice Seeds",
+        category: "Seeds",
+        description: "Hybrid rice seeds for higher productivity. Short duration crop.",
+        price: "₹3,000",
+        location: "Punjab",
+        icon: "fas fa-spa",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/rice-seeds-2851303659628.html"
+      },
+      {
+        id: 25,
+        title: "Vegetable Seeds Kit",
+        category: "Seeds",
+        description: "Assorted vegetable seeds including tomato, brinjal, and okra. Organic certified.",
+        price: "₹1,000",
+        location: "Uttar Pradesh",
+        icon: "fas fa-spa",
+        certified: true,
+        certificationDetails: "Certified by OCB",
+        indiamartLink: "https://www.indiamart.com/proddetail/vegetable-seeds-kit-2851303659629.html"
+      },
+      {
+        id: 26,
+        title: "Cotton Seeds",
+        category: "Seeds",
+        description: "Bt cotton seeds for pest resistance. High fiber quality.",
+        price: "₹4,500",
+        location: "Gujarat",
+        icon: "fas fa-spa",
+        certified: true,
+        certificationDetails: "Certified by SCA",
+        indiamartLink: "https://www.indiamart.com/proddetail/cotton-seeds-2851303659630.html"
       }
     ];
 
@@ -1216,7 +1465,7 @@
       initializeAnimations();
     }
 
-    // Create enhanced equipment card
+    // Create enhanced equipment card with certification label
     function createEquipmentCard(item) {
       const card = document.createElement('div');
       card.className = 'equipment-card';
@@ -1226,6 +1475,7 @@
         <div class="equipment-image">
           <i class="${item.icon}"></i>
         </div>
+        ${item.certified ? '<div class="certified-label"><i class="fas fa-check-circle"></i> Certified</div>' : ''}
         <div class="equipment-content">
           <h3 class="equipment-title">${item.title}</h3>
           <span class="equipment-category">
@@ -1244,14 +1494,10 @@
             </span>
           </div>
           <div class="equipment-actions">
-            <button class="btn-rent" onclick="event.stopPropagation(); rentEquipment(${item.id})">
-              <i class="fas fa-home"></i>
-              Rent
-            </button>
-            <button class="btn-buy" onclick="event.stopPropagation(); buyEquipment(${item.id})">
+            <a href="${item.indiamartLink}" target="_blank" class="btn-buy" onclick="event.stopPropagation();">
               <i class="fas fa-shopping-cart"></i>
-              Buy
-            </button>
+              Buy on IndiaMart
+            </a>
           </div>
         </div>
       `;
@@ -1277,7 +1523,7 @@
       const sort = document.getElementById('sort-select').value;
 
       let filtered = equipmentData.filter(item => {
-        const categoryMatch = category === 'All Categories' || item.category === category.replace(/^🚜|🔧|🌱|🌾|💧\s*/, '');
+        const categoryMatch = category === 'All Categories' || item.category === category;
         const locationMatch = location === 'All India' || item.location === location;
         return categoryMatch && locationMatch;
       });
@@ -1335,6 +1581,8 @@
       document.getElementById('modalCategory').querySelector('span').textContent = `Category: ${equipment.category}`;
       document.getElementById('modalPrice').querySelector('span').textContent = `Price: ${equipment.price}`;
       document.getElementById('modalLocation').querySelector('span').textContent = `Location: ${equipment.location}`;
+      document.getElementById('modalCertification').querySelector('span').textContent = `Certification: ${equipment.certificationDetails}`;
+      document.getElementById('modalBuyLink').href = equipment.indiamartLink;
       
       document.getElementById('equipmentModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
@@ -1344,22 +1592,6 @@
       document.getElementById('equipmentModal').style.display = 'none';
       document.body.style.overflow = 'auto';
       currentEquipment = null;
-    }
-
-    function rentEquipment(id) {
-      const equipment = id ? equipmentData.find(item => item.id === id) : currentEquipment;
-      if (equipment) {
-        alert(`🏠 Renting: ${equipment.title}\n💰 Price: ${equipment.price}\n📍 Location: ${equipment.location}\n\n📞 Contact: +91 98765-43210\n✅ Rental agreement will be prepared!`);
-        closeModal();
-      }
-    }
-
-    function buyEquipment(id) {
-      const equipment = id ? equipmentData.find(item => item.id === id) : currentEquipment;
-      if (equipment) {
-        alert(`🛒 Purchasing: ${equipment.title}\n💰 Price: ${equipment.price}\n📍 Location: ${equipment.location}\n\n📞 Contact: +91 98765-43210\n✅ Purchase order confirmed!`);
-        closeModal();
-      }
     }
 
     // Enhanced event listeners

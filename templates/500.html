@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server Error - TAAZA MANDI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-xl: 20px;
+      --radius-md: 12px;
+      --error: #f56565;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .error-container {
+      max-width: 600px;
+      text-align: center;
+      background: var(--card-bg);
+      padding: 3rem 2rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .error-icon {
+      font-size: 6rem;
+      color: var(--error);
+      margin-bottom: 2rem;
+    }
+
+    .error-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .error-message {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .btn-home {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-home:hover {
+      transform: translateY(-2px);
+    }
+
+    .brand {
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--secondary-green);
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="brand">
+      <i class="fas fa-seedling"></i> TAAZA MANDI
+    </div>
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h1 class="error-title">500</h1>
+    <p class="error-message">
+      Internal Server Error<br>
+      Something went wrong on our end. Please try again later.
+    </p>
+    <a href="{{ url_for('index') }}" class="btn-home">
+      <i class="fas fa-home"></i>
+      Back to Home
+    </a>
+  </div>
+</body>
+</html>
