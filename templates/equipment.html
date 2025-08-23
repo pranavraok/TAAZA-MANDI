@@ -432,7 +432,6 @@
     .equipment-image {
       width: 100%;
       height: 220px;
-      object-fit: cover;
       background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
       display: flex;
       align-items: center;
@@ -440,6 +439,23 @@
       font-size: 3rem;
       color: var(--secondary-green);
       transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .equipment-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    .equipment-image i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
     }
 
     .equipment-card:hover .equipment-image {
@@ -1116,6 +1132,7 @@
         price: "₹8,50,000",
         location: "Punjab",
         icon: "fas fa-tractor",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/325004277/FJ/IX/IJ/147316834/john-deere-5050-d-tractor-1000x1000.jpg",
         certified: true,
         certificationDetails: "Certified by ISO 9001:2015 and Indian Agricultural Standards (IAS)",
         indiamartLink: "https://www.indiamart.com/proddetail/john-deere-5050-d-tractor-2851303659612.html"
@@ -1128,6 +1145,7 @@
         price: "₹1,20,000",
         location: "Haryana",
         icon: "fas fa-seedling",
+        image: "https://3.imimg.com/data3/WW/LL/MY-5494738/a-1000x1000.png",
         certified: false,
         certificationDetails: "Not certified",
         indiamartLink: "https://www.indiamart.com/proddetail/seed-drills-6710688055.html"
@@ -1140,6 +1158,7 @@
         price: "₹15,00,000",
         location: "Punjab",
         icon: "fas fa-truck-loading",
+        image: "https://5.imimg.com/data5/ANDROID/Default/2021/2/FJ/DV/BM/110139306/product-jpeg-1000x1000.jpg",
         certified: true,
         certificationDetails: "Certified by ISO 9001:2015 and IAS",
         indiamartLink: "https://www.indiamart.com/proddetail/harvester-combine-23193481533.html"
@@ -1152,9 +1171,10 @@
         price: "₹6,50,000",
         location: "Maharashtra",
         icon: "fas fa-tractor",
+        image: "https://5.imimg.com/data5/SELLER/Default/2021/10/KF/XK/OY/22078775/mahindra-575-di-xp-plus-tractor-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by ISO 9001:2015",
-        indiamartLink: "https://www.indiamart.com/proddetail/mahindra-tractor-575-di-2851303659613.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/mahindra-yuvo-575-di-tractor-16110635488.html?pos=1.3&kwd=mahindra%20tractor%20575%20di&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_B_0_P-|-res:RC2|ktp:N0|stype:attr=1-br|mtp:Brn|wc:4|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17939|com-cf:nl|ptrs:na|mc:182280|cat:370|qry_typ:P|lang:en|rtn:5-0-1-0-1-1-2|tyr:1|qrd:250823|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|crs=glb|r=4"
       },
       {
         id: 10,
@@ -1164,9 +1184,10 @@
         price: "₹7,80,000",
         location: "Uttar Pradesh",
         icon: "fas fa-tractor",
+        image: "https://4.imimg.com/data4/TA/AG/ANDROID-9875516/product-250x250.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/farmtrac-tractor-60-2851303659614.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/escorts-farmtrac-tractor-13081774588.html?pos=1&kwd=farmtrac%20tractor%2060&tags=rk:C|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_C_0_P-|-res:RC2|ktp:N0|stype:attr=1-br|mtp:Brn|wc:3|lcf:0|cq:bengaluru|qr_nm:gl-gd|cs:17667|com-cf:nl|ptrs:na|mc:192496|cat:370|qry_typ:P|lang:en|rtn:2-0-2-1-3-2-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|crs=xnh-city|r=3"
       },
 
       // Tools
@@ -1178,6 +1199,7 @@
         price: "₹45,000",
         location: "Maharashtra",
         icon: "fas fa-cog",
+        image: "https://5.imimg.com/data5/SELLER/Default/2020/9/TP/EL/YK/5887859/rotavator-tiller-attachment-for-brush-cutter-1000x1000.jpeg",
         certified: false,
         certificationDetails: "Not certified",
         indiamartLink: "https://www.indiamart.com/proddetail/brush-cutter-rotavator-attachment-22644255312.html"
@@ -1190,6 +1212,7 @@
         price: "₹8,500",
         location: "Karnataka",
         icon: "fas fa-spray-can",
+        image: "https://5.imimg.com/data5/SELLER/Default/2021/4/MU/DV/LR/4733472/earth-motor-110-psi-500x500.jpeg",
         certified: false,
         certificationDetails: "Not certified",
         indiamartLink: "https://www.indiamart.com/kdagrotech/sprayer-pump-electric-motor.html"
@@ -1202,9 +1225,10 @@
         price: "₹25,000",
         location: "Punjab",
         icon: "fas fa-tools",
+        image: "https://5.imimg.com/data5/SELLER/Default/2024/6/429331884/LV/DP/AN/137254333/mouldboard-ploughs-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by BIS",
-        indiamartLink: "https://www.indiamart.com/proddetail/plough-2851303659615.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/agricultural-mould-board-plough-24334171312.html?pos=4&kwd=plough&tags=rk:TS|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_TS_0_P-|-res:RC2|ktp:N0|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:14846|com-cf:nl|ptrs:na|mc:151904|cat:815|qry_typ:P|lang:en|rtn:1-0-0-0-3-5-1|tyr:1|qrd:250821|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|r=5"
       },
       {
         id: 12,
@@ -1214,9 +1238,10 @@
         price: "₹35,000",
         location: "Haryana",
         icon: "fas fa-tools",
+        image: "https://2.imimg.com/data2/YC/YQ/MY-1106860/offset-harrow-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/harrow-2851303659616.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/offset-harrow-1963093191.html?pos=2&kwd=harrow&tags=rk:T|plc:1|dt:0|db:01||dtp:p||sv:VGP|rsf:gd|ri:VGP_T_0_P-|-res:RC2|ktp:N0|mtp:G|wc:1|lcf:2|cq:bengaluru|qr_nm:gl-gd|cs:14751|com-cf:nl|ptrs:na|mc:7463|cat:370|qry_typ:P|lang:en|rtn:1-0-0-0-1-7-1|tyr:1|qrd:250822|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
       },
       {
         id: 13,
@@ -1226,9 +1251,10 @@
         price: "₹28,000",
         location: "Uttar Pradesh",
         icon: "fas fa-tools",
+        image: "https://5.imimg.com/data5/SELLER/Default/2025/4/503456994/GA/JK/SW/9622219/4i1a0744-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by IAS",
-        indiamartLink: "https://www.indiamart.com/proddetail/cultivator-2851303659617.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/9-tyne-staright-rigid-cultivator-2856376688633.html?pos=4&kwd=cultivator&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p||sv:M|rsf:gd|ri:M_B_0_P-|-res:RC3|ktp:N0|mtp:G|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15230|com-cf:nl|ptrs:na|mc:20907|cat:815|qry_typ:P|lang:en|rtn:1-0-0-0-4-5-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4"
       },
       {
         id: 14,
@@ -1238,9 +1264,10 @@
         price: "₹1,500",
         location: "Maharashtra",
         icon: "fas fa-tools",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/12/367756244/WX/UN/IP/36802604/-pwp-109-170p-propelling-weeder-agricultural-power-weeder-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/weeder-2851303659618.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/pwp-109-170p-propelling-weeder-agricultural-power-weeder-2853047052548.html?pos=3&kwd=weeder&tags=rk:A|plc:1|dt:0|db:01||dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:14833|com-cf:nl|ptrs:na|mc:141966|cat:150|qry_typ:P|lang:en|rtn:0-0-0-0-3-7-0|tyr:1|qrd:250818|mrd:250805|prdt:250823|pfen:1|gli:G0I0|v=4|r=3"
       },
 
       // Fertilizers (Manure)
@@ -1252,6 +1279,7 @@
         price: "₹2,500",
         location: "Uttar Pradesh",
         icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/PS/HW/MY-4375096/land-safe-organic-plant-booster-1000x1000.jpg",
         certified: true,
         certificationDetails: "Certified by Organic Certification Board (OCB)",
         indiamartLink: "https://www.indiamart.com/proddetail/organic-manure-17746981097.html"
@@ -1264,9 +1292,10 @@
         price: "₹1,200",
         location: "Tamil Nadu",
         icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/TL/TE/MY-13359918/vermicompost-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by OCB",
-        indiamartLink: "https://www.indiamart.com/proddetail/vermicompost-2851303659619.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/vermicompost-organic-fertilizer-17729700797.html?pos=1&kwd=vermicompost&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:L|rsf:gd|ri:L_A_0_P-|-res:RC3|ktp:N0|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15371|com-cf:nl|ptrs:na|mc:2728|cat:99|qry_typ:P|lang:en|rtn:0-0-0-0-1-9-0|tyr:1|qrd:250823|mrd:250601|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
       },
       {
         id: 16,
@@ -1276,9 +1305,10 @@
         price: "₹800",
         location: "Gujarat",
         icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/10/356508085/ZZ/KW/MB/13359918/cow-dung-manure-250x250.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/cow-dung-manure-2851303659620.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/cow-dung-manure-2852761241273.html?pos=1&kwd=cow%20dung%20manure&tags=rk:TS|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_TS_0_P-|-res:RC2|ktp:PB0|stype:attr=1|mtp:S|wc:3|lcf:0|cq:bengaluru|qr_nm:gl-gd|cs:16374|com-cf:nl|ptrs:na|mc:657203|cat:99|qry_typ:P|lang:en|rtn:1-0-0-0-2-5-2|tyr:1|qrd:250823|mrd:250729|prdt:250823|gli:G0I0|v=4|r=4"
       },
       {
         id: 17,
@@ -1288,9 +1318,10 @@
         price: "₹1,500",
         location: "Punjab",
         icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/SELLER/Default/2024/7/438837746/PR/AS/GK/13868726/compressjpeg-online-image-1-250x250.png",
         certified: true,
         certificationDetails: "Certified by BIS",
-        indiamartLink: "https://www.indiamart.com/proddetail/npk-fertilizer-2851303659621.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/npk-fertilizer-11-11-8-2854555595388.html?pos=3&kwd=npk%20fertilizer&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:S|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16747|com-cf:nl|ptrs:na|mc:43849|cat:99|qry_typ:P|lang:en|rtn:0-0-0-0-2-8-0|tyr:1|qrd:250823|mrd:250721|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
       },
       {
         id: 18,
@@ -1300,9 +1331,10 @@
         price: "₹2,000",
         location: "Karnataka",
         icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/SELLER/Default/2022/12/BB/II/TB/13868726/rhizobia-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by OCB",
-        indiamartLink: "https://www.indiamart.com/proddetail/bio-fertilizer-2851303659622.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/rhizobia-bio-fertilizer-2849116988212.html?pos=1&kwd=bio%20fertilizer&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:G|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16074|com-cf:nl|ptrs:na|mc:527|cat:99|qry_typ:P|lang:en|rtn:0-0-0-0-0-9-1|tyr:1|qrd:250821|mrd:250823|prdt:250823|gli:G0I0|v=4|r=4"
       },
 
       // Irrigation
@@ -1314,6 +1346,7 @@
         price: "₹35,000",
         location: "Gujarat",
         icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/KA/EU/GLADMIN-27181904/drip-irrigation-system-1000x1000.png",
         certified: true,
         certificationDetails: "Certified by Bureau of Indian Standards (BIS)",
         indiamartLink: "https://www.indiamart.com/proddetail/drip-irrigation-system-16120457191.html"
@@ -1326,9 +1359,10 @@
         price: "₹25,000",
         location: "Maharashtra",
         icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/SELLER/Default/2024/6/426324817/LW/DW/PG/2427230/product-jpeg-250x250.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/sprinkler-irrigation-system-2851303659623.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/aluminum-sprinkler-irrigation-system-2854203125430.html?pos=2&kwd=sprinkler%20irrigation%20system&tags=rk:C|plc:1|dt:0|db:01|prc:1|dtp:p||sv:M|rsf:gd|ri:M_C_0_P-|-res:RC3|ktp:N0|mtp:G|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16944|com-cf:nl|ptrs:na|mc:38243|cat:815|qry_typ:P|lang:en|rtn:2-0-1-0-2-5-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4"
       },
       {
         id: 20,
@@ -1338,9 +1372,10 @@
         price: "₹15,000",
         location: "Uttar Pradesh",
         icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/SELLER/Default/2021/8/AZ/NI/AE/1869952/submersible-sewage-pumps-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by BIS",
-        indiamartLink: "https://www.indiamart.com/proddetail/submersible-pump-2851303659624.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/borewell-submersible-pump-24164815062.html?pos=2&kwd=submersible%20pump&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:S|rsf:gd|ri:S_A_0_P-|-res:RC4|ktp:N0|mtp:G|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15702|com-cf:nl|ptrs:na|mc:2085|cat:85|qry_typ:P|lang:en|rtn:0-0-0-0-2-8-0|tyr:1|qrd:250823|mrd:250816|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
       },
       {
         id: 21,
@@ -1350,9 +1385,10 @@
         price: "₹50,000",
         location: "Rajasthan",
         icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/SELLER/Default/2025/3/499502999/BD/PB/XW/89835025/solar-pumps-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by MNRE",
-        indiamartLink: "https://www.indiamart.com/proddetail/solar-water-pump-2851303659625.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/solar-water-pump-2852877651612.html?pos=2&kwd=solar%20water%20pump&tags=rk:A|plc:1|dt:0|db:01||dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:S|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17017|com-cf:nl|ptrs:na|mc:139150|cat:517|qry_typ:P|lang:en|rtn:0-0-0-0-3-7-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
       },
       {
         id: 22,
@@ -1362,9 +1398,10 @@
         price: "₹2,00,000",
         location: "Punjab",
         icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/SELLER/Default/2025/5/507345743/TC/YT/TB/1080311/agricultural-irrigation-systems-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/pivot-irrigation-system-2851303659626.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/agricultural-irrigation-systems-4985514762.html?pos=2&kwd=pivot%20irrigation%20system&tags=rk:TS|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:M|rsf:gd|ri:M_TS_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17732|com-cf:nl|ptrs:na|mc:10310|cat:815|qry_typ:P|lang:en|rtn:1-0-0-0-1-7-1|tyr:1|qrd:250817|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|r=3"
       },
 
       // Seeds
@@ -1376,9 +1413,10 @@
         price: "₹1,800",
         location: "Tamil Nadu",
         icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/SELLER/Default/2025/2/486331153/QB/RM/GD/239154742/organic-hybrid-bajra-seed-250x250.jpeg",
         certified: true,
         certificationDetails: "Certified by Seed Certification Agency (SCA)",
-        indiamartLink: "https://www.indiamart.com/solar-agrotech-pvt-ltd/hybrid-seeds.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/organic-hybrid-bajra-seed-2855731279991.html?pos=4&kwd=hybrid%20seeds%20collections&tags=rk:T|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_T_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:G|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17148|com-cf:nl|ptrs:na|mc:10813|cat:14|qry_typ:P|lang:en|rtn:0-0-0-0-5-5-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|gli:G0I0|v=4|r=4"
       },
       {
         id: 23,
@@ -1388,9 +1426,10 @@
         price: "₹2,200",
         location: "Haryana",
         icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/ANDROID/Default/2025/6/516164376/EU/TD/HW/242483203/product-jpeg-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by SCA",
-        indiamartLink: "https://www.indiamart.com/proddetail/wheat-seeds-2851303659627.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/wheat-seeds-2856626178848.html?pos=1&kwd=wheat%20seeds&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_B_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16362|com-cf:nl|ptrs:na|mc:41024|cat:14|qry_typ:P|lang:en|rtn:2-0-0-2-1-5-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4|r=2"
       },
       {
         id: 24,
@@ -1400,9 +1439,10 @@
         price: "₹3,000",
         location: "Punjab",
         icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/JK/BF/GLADMIN-10325502/hybrid-seeds-of-rice-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/rice-seeds-2851303659628.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/hybrid-rice-seeds-16039208873.html?pos=1&kwd=rice%20seeds&tags=rk:C|plc:1|dt:0|db:01||dtp:p||sv:VGP|rsf:gd|ri:VGP_C_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16611|com-cf:nl|ptrs:na|mc:5679|cat:14|qry_typ:P|lang:en|rtn:2-0-0-2-3-3-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|qcr:1|pfen:1|gli:G0I0|v=4|r=4"
       },
       {
         id: 25,
@@ -1412,9 +1452,10 @@
         price: "₹1,000",
         location: "Uttar Pradesh",
         icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/SELLER/Default/2022/1/NE/FG/RB/126949226/ng-kitchecn-seed-kit-combo-250x250.png",
         certified: true,
         certificationDetails: "Certified by OCB",
-        indiamartLink: "https://www.indiamart.com/proddetail/vegetable-seeds-kit-2851303659629.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/ng-kitchecn-seed-kit-combo-24669065288.html?pos=2&kwd=vegetable%20seeds%20kit&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_B_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:G|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16541|com-cf:nl|ptrs:na|mc:1606|cat:14|qry_typ:P|lang:en|rtn:1-0-1-1-3-4-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|gli:G0I0|v=4|r=3"
       },
       {
         id: 26,
@@ -1424,9 +1465,10 @@
         price: "₹4,500",
         location: "Gujarat",
         icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/SELLER/Default/2024/3/400318533/CZ/BF/CX/18861196/cotton-seeds-250x250.png",
         certified: true,
         certificationDetails: "Certified by SCA",
-        indiamartLink: "https://www.indiamart.com/proddetail/cotton-seeds-2851303659630.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/cotton-seeds-9855262948.html?pos=3&kwd=cotton%20seeds&tags=rk:C|plc:1|dt:0|db:01|prc:1|dtp:p||sv:M|rsf:gd|ri:M_C_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15968|com-cf:nl|ptrs:na|mc:26086|cat:14|qry_typ:P|lang:en|rtn:1-0-1-0-5-2-1|tyr:1|qrd:250823|mrd:250601|prdt:250823|gli:G0I0|v=4|r=3"
       }
     ];
 
@@ -1473,7 +1515,8 @@
 
       card.innerHTML = `
         <div class="equipment-image">
-          <i class="${item.icon}"></i>
+          <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <i class="${item.icon}" style="display: none;"></i>
         </div>
         ${item.certified ? '<div class="certified-label"><i class="fas fa-check-circle"></i> Certified</div>' : ''}
         <div class="equipment-content">

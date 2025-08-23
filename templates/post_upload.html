@@ -656,16 +656,16 @@
   <!-- Enhanced Navbar -->
   <header>
     <nav class="navbar">
-      <a href="{{ url_for('index') }}" class="logo">
+      <a href="#" class="logo">
         <i class="fas fa-seedling"></i>
         TAAZA MANDI
       </a>
       <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
       <ul>
-        <li><a href="{{ url_for('index') }}">Home</a></li>
-        <li><a href="{{ url_for('seller_feed') }}">Feed</a></li>
-        <li><a href="{{ url_for('about') }}">About Us</a></li>
-        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Feed</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -678,12 +678,12 @@
     <p class="upload-subtitle">Share your fresh produce with buyers across the platform</p>
     
     <div class="upload-card">
-      <a href="{{ url_for('seller_feed') }}" class="back-btn">
+      <a href="#" class="back-btn">
         <i class="fas fa-arrow-left"></i>
         Back to Feed
       </a>
       
-      <form id="cropUploadForm" autocomplete="off" enctype="multipart/form-data">
+      <form id="cropUploadForm" autocomplete="off">
         <div class="form-flex">
           <!-- Enhanced Photo Upload Area -->
           <div class="photo-upload-area" id="dropArea">
@@ -734,7 +734,6 @@
                 name="location" 
                 required 
                 placeholder="Enter your farm/warehouse location (City, State)"
-                value="{{ session.user.user_metadata.state if session.user and session.user.user_metadata and session.user.user_metadata.state else '' }}"
               >
             </div>
           </div>
@@ -831,256 +830,226 @@
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const cropImage = document.getElementById('cropImage');
-      const imagePreviewList = document.getElementById('imagePreviewList');
-      const dropArea = document.getElementById('dropArea');
-      const form = document.getElementById('cropUploadForm');
-      const submitBtn = document.getElementById('submitBtn');
-      const descriptionTextarea = document.getElementById('cropDescription');
-      const charCount = document.querySelector('.char-count');
+  document.addEventListener('DOMContentLoaded', function() {
+    const cropImage = document.getElementById('cropImage');
+    const imagePreviewList = document.getElementById('imagePreviewList');
+    const dropArea = document.getElementById('dropArea');
+    const form = document.getElementById('cropUploadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const descriptionTextarea = document.getElementById('cropDescription');
+    const charCount = document.querySelector('.char-count');
 
-      // ✅ SAFELY INJECT USER DATA FROM FLASK SESSION
-      const userData = {{ {
-        'name': session.user.user_metadata.first_name if session and session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session and session.user and session.user.email else ''),
-        'email': session.user.email if session and session.user and session.user.email else '',
-        'role': session.user_role if session and session.user_role else ''
-      } | tojson | safe }};
+    let selectedFiles = [];
 
-      console.log('Current user:', userData);
+    console.log('Page loaded, form elements found');
 
-      let selectedFiles = [];
+    // Character counter
+    descriptionTextarea.addEventListener('input', function() {
+      const count = this.value.length;
+      charCount.textContent = `${count}/500 characters`;
+      charCount.style.color = count > 450 ? 'var(--warning)' : 'var(--text-light)';
+    });
 
-      // Character counter for description
-      descriptionTextarea.addEventListener('input', function() {
-        const count = this.value.length;
-        charCount.textContent = `${count}/500 characters`;
-        charCount.style.color = count > 450 ? 'var(--warning)' : 'var(--text-light)';
+    // Image preview + remove button
+    function updateImagePreviews() {
+      imagePreviewList.innerHTML = '';
+      selectedFiles.forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            const previewDiv = document.createElement('div');
+            previewDiv.className = 'image-preview';
+            previewDiv.innerHTML = `
+              <img src="${ev.target.result}" alt="Preview ${index + 1}">
+              <button type="button" class="remove-image" data-index="${index}">
+                <i class="fas fa-times"></i>
+              </button>
+            `;
+            imagePreviewList.appendChild(previewDiv);
+          };
+          reader.readAsDataURL(file);
+        }
       });
+    }
 
-      // Enhanced image preview with remove functionality
-      function updateImagePreviews() {
-        imagePreviewList.innerHTML = '';
-        selectedFiles.forEach((file, index) => {
-          if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-              const previewDiv = document.createElement('div');
-              previewDiv.className = 'image-preview';
-              previewDiv.innerHTML = `
-                <img src="${ev.target.result}" alt="Preview ${index + 1}">
-                <button type="button" class="remove-image" onclick="removeImage(${index})">
-                  <i class="fas fa-times"></i>
-                </button>
-              `;
-              imagePreviewList.appendChild(previewDiv);
-            };
-            reader.readAsDataURL(file);
-          }
-        });
+    // Remove image functionality
+    imagePreviewList.addEventListener('click', function(e) {
+      if (e.target.closest('.remove-image')) {
+        const idx = parseInt(e.target.closest('.remove-image').dataset.index);
+        selectedFiles.splice(idx, 1);
+        updateImagePreviews();
+      }
+    });
+
+    // File input change
+    cropImage.addEventListener('change', function(e) {
+      const files = Array.from(e.target.files);
+      selectedFiles = [...selectedFiles, ...files].slice(0, 5);
+      updateImagePreviews();
+    });
+
+    // Drag & drop functionality
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) { 
+      e.preventDefault(); 
+      e.stopPropagation(); 
+    }
+
+    ['dragenter', 'dragover'].forEach(ev => {
+      dropArea.addEventListener(ev, () => dropArea.classList.add('dragover'));
+    });
+    
+    ['dragleave', 'drop'].forEach(ev => {
+      dropArea.addEventListener(ev, () => dropArea.classList.remove('dragover'));
+    });
+
+    dropArea.addEventListener('drop', function(e) {
+      const files = Array.from(e.dataTransfer.files);
+      selectedFiles = [...selectedFiles, ...files].slice(0, 5);
+      updateImagePreviews();
+    });
+
+    // Form validation
+    function validateForm() {
+      let isValid = true;
+      const requiredFields = form.querySelectorAll('[required]');
+      
+      requiredFields.forEach(field => {
+        const group = field.closest('.form-group');
+        if (!field.value.trim()) {
+          group.classList.add('error');
+          group.classList.remove('success');
+          isValid = false;
+        } else {
+          group.classList.remove('error');
+          group.classList.add('success');
+        }
+      });
+      
+      return isValid;
+    }
+
+    // Show floating message
+    function showMessage(message, type = 'success') {
+      const msg = document.createElement('div');
+      msg.className = `message ${type}`;
+      msg.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+      document.body.appendChild(msg);
+      
+      setTimeout(() => msg.classList.add('show'), 100);
+      setTimeout(() => {
+        msg.classList.remove('show');
+        setTimeout(() => msg.remove(), 300);
+      }, 3000);
+    }
+
+    // Form submit handler
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      console.log('Form submitted');
+      
+      if (!validateForm()) {
+        showMessage('Please fill in all required fields', 'error');
+        return;
       }
 
-      // Remove image function
-      window.removeImage = function(index) {
-        selectedFiles.splice(index, 1);
-        updateImagePreviews();
+      // Disable submit button and show loading
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<div class="loading"></div> Uploading Product...`;
+
+      // Get form data
+      const formData = {
+        id: Date.now(),
+        title: document.getElementById('cropTitle').value.trim(),
+        description: document.getElementById('cropDescription').value.trim(),
+        quantity: document.getElementById('quantity').value + ' kg',
+        price: '₹' + document.getElementById('price').value + '/kg',
+        category: document.getElementById('category').value,
+        location: document.getElementById('pickupLocation').value.trim(),
+        seller_name: 'Farmer',
+        seller_email: 'farmer@example.com',
+        seller_role: 'seller',
+        timestamp: new Date().toISOString(),
+        likes: 0,
+        comments: 0,
+        verified: true,
+        available: document.getElementById('quantity').value + ' kg available'
       };
 
-      // File input change handler
-      cropImage.addEventListener('change', function(e) {
-        const files = Array.from(e.target.files);
-        selectedFiles = [...selectedFiles, ...files].slice(0, 5);
-        updateImagePreviews();
-      });
+      console.log('Form data prepared:', formData);
 
-      // Enhanced drag and drop
-      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false);
-      });
-
-      function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
+      // Handle image
+      if (selectedFiles.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          formData.image = e.target.result;
+          savePost(formData);
+        };
+        reader.readAsDataURL(selectedFiles[0]);
+      } else {
+        // Use placeholder image based on category
+        const categoryImages = {
+          'Vegetables': `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='20' font-weight='bold'%3E🥬 ${formData.title}%3C/text%3E%3C/svg%3E`,
+          'Fruits': `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='20' font-weight='bold'%3E🍎 ${formData.title}%3C/text%3E%3C/svg%3E`,
+          'Grains': `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23f4fbf4'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='20' font-weight='bold'%3E🌾 ${formData.title}%3C/text%3E%3C/svg%3E`,
+          'Pulses': `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='20' font-weight='bold'%3E🫘 ${formData.title}%3C/text%3E%3C/svg%3E`,
+          'Spices': `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='20' font-weight='bold'%3E🌶️ ${formData.title}%3C/text%3E%3C/svg%3E`,
+          'Others': `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='20' font-weight='bold'%3E🌱 ${formData.title}%3C/text%3E%3C/svg%3E`
+        };
+        formData.image = categoryImages[formData.category] || categoryImages['Others'];
+        savePost(formData);
       }
 
-      ['dragenter', 'dragover'].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => {
-          dropArea.classList.add('dragover');
-        }, false);
-      });
-
-      ['dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => {
-          dropArea.classList.remove('dragover');
-        }, false);
-      });
-
-      dropArea.addEventListener('drop', function(e) {
-        const files = Array.from(e.dataTransfer.files);
-        selectedFiles = [...selectedFiles, ...files].slice(0, 5);
-        updateImagePreviews();
-      });
-
-      // Form validation
-      function validateForm() {
-        let isValid = true;
-        const requiredFields = form.querySelectorAll('[required]');
-        
-        requiredFields.forEach(field => {
-          const group = field.closest('.form-group');
-          if (!field.value.trim()) {
-            group.classList.add('error');
-            group.classList.remove('success');
-            isValid = false;
-          } else {
-            group.classList.remove('error');
-            group.classList.add('success');
-          }
-        });
-
-        return isValid;
-      }
-
-      // Show message function
-      function showMessage(message, type = 'success') {
-        const messageEl = document.createElement('div');
-        messageEl.className = `message ${type}`;
-        messageEl.innerHTML = `
-          <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-          ${message}
-        `;
-        document.body.appendChild(messageEl);
-        
-        setTimeout(() => messageEl.classList.add('show'), 100);
-        setTimeout(() => {
-          messageEl.classList.remove('show');
-          setTimeout(() => messageEl.remove(), 300);
-        }, 3000);
-      }
-
-      // ✅ ENHANCED FORM SUBMISSION WITH SAFE USER DATA
-      form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        if (!validateForm()) {
-          showMessage('Please fill in all required fields', 'error');
-          return;
-        }
-
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-          <div class="loading"></div>
-          Uploading Product...
-        `;
-
+      function savePost(postData) {
         try {
-          // ✅ Create FormData for file upload support
-          const formData = new FormData();
+          console.log('Saving post:', postData);
           
-          // Add form fields
-          formData.append('title', document.getElementById('cropTitle').value);
-          formData.append('description', document.getElementById('cropDescription').value);
-          formData.append('quantity', document.getElementById('quantity').value);
-          formData.append('price', document.getElementById('price').value);
-          formData.append('category', document.getElementById('category').value);
-          formData.append('location', document.getElementById('pickupLocation').value);
+          // Get existing posts from localStorage
+          const existingPosts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+          console.log('Existing posts:', existingPosts.length);
           
-          // ✅ Add user info safely from userData object
-          if (userData.name) {
-            formData.append('seller_name', userData.name);
-          }
-          if (userData.email) {
-            formData.append('seller_email', userData.email);
-          }
-          if (userData.role) {
-            formData.append('seller_role', userData.role);
-          }
+          // Add new post to beginning of array
+          existingPosts.unshift(postData);
           
-          // Add images
-          selectedFiles.forEach((file, index) => {
-            formData.append(`image_${index}`, file);
-          });
-
-          console.log('Uploading product to Flask backend...');
-
-          // ✅ POST to Flask backend
-          const response = await fetch('{{ url_for("upload_product") }}', {
-            method: 'POST',
-            body: formData
-          });
-
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || 'Upload failed');
-          }
-
-          const result = await response.json();
-          console.log('Upload successful:', result);
+          // Save back to localStorage
+          localStorage.setItem('cropPosts', JSON.stringify(existingPosts));
+          console.log('Post saved successfully');
 
           // Reset form
           form.reset();
           selectedFiles = [];
           imagePreviewList.innerHTML = '';
-          document.querySelectorAll('.form-group').forEach(group => {
-            group.classList.remove('error', 'success');
-          });
-
-          // Show success message
-          showMessage('🎉 Product uploaded successfully!', 'success');
+          form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error', 'success'));
+          charCount.textContent = '0/500 characters';
           
-          // Redirect to seller feed after delay
+          showMessage('🎉 Product uploaded successfully!', 'success');
+
+          // Redirect after a short delay
           setTimeout(() => {
-            window.location.href = '{{ url_for("seller_feed") }}';
+            console.log('Redirecting to feed...');
+            // You can redirect to your seller feed page here
+            // window.location.href = 'seller_feed.html';
+            alert('Product uploaded successfully! Check the seller or buyer feed to see your post.');
           }, 2000);
 
         } catch (error) {
-          console.error('Upload error:', error);
-          showMessage('❌ Upload failed: ' + error.message, 'error');
-        } finally {
-          // Reset button state
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = `
-            <i class="fas fa-upload"></i>
-            Upload Product
-          `;
+          console.error('Error saving post:', error);
+          showMessage('❌ Failed to save product: ' + error.message, 'error');
         }
-      });
+      }
 
-      // Real-time validation
-      form.querySelectorAll('input, textarea, select').forEach(field => {
-        field.addEventListener('blur', function() {
-          const group = this.closest('.form-group');
-          if (this.hasAttribute('required')) {
-            if (!this.value.trim()) {
-              group.classList.add('error');
-              group.classList.remove('success');
-            } else {
-              group.classList.remove('error');
-              group.classList.add('success');
-            }
-          }
-        });
-      });
-
-      // Add smooth animations
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-          }
-        });
-      }, { threshold: 0.1 });
-
-      // Observe form elements
-      document.querySelectorAll('.form-group, .photo-upload-area').forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(element);
-      });
+      // Re-enable submit button after processing
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i class="fas fa-upload"></i> Upload Product`;
+      }, 3000);
     });
+
+    console.log('JavaScript initialization complete');
+  });
 </script>
 </body>
 </html>
