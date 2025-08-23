@@ -957,10 +957,10 @@
             </a>
 
             <ul class="nav-links">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About Us</a></li>
-                <li><a href="#services" class="nav-link">Services</a></li>
-                <li><a href="#contact" class="nav-link">Contact Us</a></li>
+                <li><a href="{{ url_for('home') }}" class="nav-link">Home</a></li>
+                <li><a href="{{ url_for('about') }}" class="nav-link">About Us</a></li>
+                <li><a href="{{ url_for('services') }}" class="nav-link">Services</a></li>
+                <li><a href="{{ url_for('contact') }}" class="nav-link">Contact Us</a></li>
             </ul>
 
             <div class="search-container">
@@ -979,13 +979,13 @@
         </nav>
 
         <div class="mobile-menu" id="mobileMenu">
-            <a href="#home" class="nav-link">Home</a>
-            <a href="#about" class="nav-link">About Us</a>
-            <a href="#services" class="nav-link">Services</a>
-            <a href="#contact" class="nav-link">Contact Us</a>
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('about') }}" class="nav-link">About Us</a>
+            <a href="{{ url_for('about') }}" class="nav-link">Services</a>
+            <a href="{{ url_for('contact') }}" class="nav-link">Contact Us</a>
             <div class="auth-buttons">
-                <a href="#" class="btn-login">Login</a>
-                <a href="#" class="btn-signup">Sign Up</a>
+                <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn-signup">Sign Up</a>
             </div>
         </div>
     </header>
@@ -998,11 +998,11 @@
                     <h1 class="fade-in-up">Connect Directly with Farmers</h1>
                     <p class="fade-in-up" style="animation-delay: 0.2s;">Our platform offers a seamless open market for both farmers and buyers to create a transparent and efficient ecosystem, connecting you directly with the source.</p>
                     <div class="hero-buttons fade-in-up" style="animation-delay: 0.4s;">
-                        <a href="#" class="btn-primary">
+                        <a href="{{ url_for('signup') }}" class="btn-primary">
                             <i class="fas fa-rocket"></i>
                             Get Started
                         </a>
-                        <a href="#about" class="btn-secondary">
+                        <a href="{{ url_for('about') }}" class="btn-secondary">
                             <i class="fas fa-info-circle"></i>
                             Learn More
                         </a>
@@ -1024,7 +1024,7 @@
                         </div>
                         <h3>Direct Farmer Contact</h3>
                         <p>Forward your products with easy and seamless listing. Buyers can browse and connect directly with you.</p>
-                        <a href="#services" class="feature-link">
+                        <a href="{{ url_for('signup') }}" class="feature-link">
                             Learn More <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -1035,7 +1035,7 @@
                         </div>
                         <h3>Smart Crop Predictor</h3>
                         <p>AI-powered tool that helps farmers decide what to grow next for maximum profitability and sustainability.</p>
-                        <a href="#services" class="feature-link">
+                        <a href="{{ url_for('signup') }}" class="feature-link">
                             Learn More <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -1046,7 +1046,7 @@
                         </div>
                         <h3>Government Schemes</h3>
                         <p>Stay updated with the latest agricultural policies and schemes from the government to help you grow your business.</p>
-                        <a href="#services" class="feature-link">
+                        <a href="{{ url_for('signup') }}" class="feature-link">
                             Learn More <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -1322,7 +1322,7 @@
                             <i class="fas fa-rocket"></i>
                             Get Started
                         </a>
-                        <a href="#about" class="btn-secondary">
+                        <a href="{{ url_for('about') }}" class="btn-secondary">
                             <i class="fas fa-info-circle"></i>
                             Learn More
                         </a>
@@ -1353,10 +1353,10 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="{{ url_for('about') }}">Services</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
                     </ul>
                 </div>
 

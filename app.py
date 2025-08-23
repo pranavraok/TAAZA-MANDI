@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 import jwt
 import os
 from functools import wraps
+from supabase import create_client, Client 
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'taaza-mandi-super-secret-key-change-in-production-2025')
@@ -10,6 +11,8 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'taaza-mandi-super-secret-ke
 SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://wesrjuxmbudivggitawl.supabase.co')
 SUPABASE_JWT_SECRET = os.environ.get('SUPABASE_JWT_SECRET', '/1l7yuaS34mIaYd7Qa0863vr2uHzT559zGDIYSX/mIAjop+t2PhbfEOYq6IORyxS3T03W+WbVsmJ1cZElPFaKA==')
 SUPABASE_ANON_KEY = os.environ.get('SUPABASE_ANON_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3JqdXhtYnVkaXZnZ2l0YXdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NDA3OTYsImV4cCI6MjA3MTQxNjc5Nn0.KTHwj3jAGWC-9d5gIL6Znr2u22ycdpo1VXq8JHJq3Jg')
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 # Make config available to templates
 @app.context_processor
@@ -145,39 +148,30 @@ def user_select():
 
 # ==================== DASHBOARD ROUTES ====================
 
-@app.route('/buyer-feed')
-@require_auth
-def buyer_feed():
-    if session.get('user_role') != 'buyer':
-        return redirect(url_for('user_select'))
-    try:
-        return render_template('buyer_feed.html')
-    except Exception:
-        return '''
-        <div style="text-align:center; padding:50px; font-family:Arial;">
-            <h1>Buyer Dashboard</h1>
-            <p>Welcome to the buyer dashboard! This page will show fresh produce from farmers.</p>
-            <p><strong>Template: buyer_feed.html not found</strong></p>
-            <a href="/buyer-profile">My Profile</a> | <a href="/logout">Logout</a>
-        </div>
-        '''
-
 @app.route('/seller-feed')
 @require_auth
 def seller_feed():
     if session.get('user_role') != 'seller':
         return redirect(url_for('user_select'))
-    try:
-        return render_template('seller_feed.html')
-    except Exception:
-        return '''
-        <div style="text-align:center; padding:50px; font-family:Arial;">
-            <h1>Seller Dashboard</h1>
-            <p>Welcome to the seller dashboard! Here you can post your produce for sale.</p>
-            <p><strong>Template: seller_feed.html not found</strong></p>
-            <a href="/seller-profile">My Profile</a> | <a href="/post-upload">Post New Product</a> | <a href="/logout">Logout</a>
-        </div>
-        '''
+
+    # Only seller’s products
+    products = supabase.table("products") \
+        .select("*") \
+        .eq("seller_email", session['user']['email']) \
+        .execute()
+    return render_template('seller_feed.html', products=products.data)
+
+
+@app.route('/buyer-feed')
+@require_auth
+def buyer_feed():
+    if session.get('user_role') != 'buyer':
+        return redirect(url_for('user_select'))
+
+    # Show all products
+    products = supabase.table("products").select("*").execute()
+    return render_template('buyer_feed.html', products=products.data)
+
 
 # ==================== PROFILE ROUTES ====================
 
@@ -238,7 +232,6 @@ def seller_profile():
 
 # ==================== PRODUCT UPLOAD (MISSING ENDPOINT FIX) ====================
 
-# This matches your frontend JS: fetch('{{ url_for("upload_product") }}', { method: 'POST', body: formData })
 @app.route('/upload-product', methods=['POST'])
 @require_auth
 def upload_product():
@@ -246,7 +239,7 @@ def upload_product():
     if session.get('user_role') != 'seller':
         return jsonify({'status': 'error', 'message': 'Only sellers can upload products'}), 403
 
-    # Expect multipart/form-data with files
+    # Get form data
     title = request.form.get('title', '').strip()
     description = request.form.get('description', '').strip()
     quantity = request.form.get('quantity', '').strip()
@@ -254,35 +247,59 @@ def upload_product():
     category = request.form.get('category', '').strip()
     location = request.form.get('location', '').strip()
 
-    # Basic validation
+    # Validate required fields
     missing = [k for k, v in {
-        'title': title, 'description': description, 'quantity': quantity,
-        'price': price, 'category': category, 'location': location
-    }.items() if not v]
-    if missing:
-        return jsonify({'status': 'error', 'message': f'Missing fields: {", ".join(missing)}'}), 400
-
-    # Gather up to 5 images
-    images = []
-    for i in range(5):
-        f = request.files.get(f'image_{i}')
-        if f:
-            images.append(f.filename)
-
-    # TODO: persist product + upload images to storage (Supabase Storage / S3)
-    # For now, simulate success
-    product = {
         'title': title,
         'description': description,
         'quantity': quantity,
         'price': price,
         'category': category,
-        'location': location,
-        'images': images,
-        'seller_email': session.get('user', {}).get('email')
-    }
+        'location': location
+    }.items() if not v]
+    if missing:
+        return jsonify({'status': 'error', 'message': f'Missing fields: {", ".join(missing)}'}), 400
 
-    return jsonify({'status': 'success', 'message': 'Product uploaded', 'product': product})
+    # Handle single image
+    image_file = request.files.get('image')
+    image_url = ''
+    bucket = 'products'  # make sure this bucket exists in Supabase
+
+    try:
+        if image_file:
+            file_bytes = image_file.read()  # read file bytes
+            file_name = f"{session['user']['id']}/{image_file.filename}"  # unique path
+            # upload file
+            upload_res = supabase.storage.from_(bucket).upload(file_name, file_bytes)
+            if upload_res.get('error'):
+                raise Exception(upload_res['error']['message'])
+            # get public URL
+            public_url = supabase.storage.from_(bucket).get_public_url(file_name)
+            image_url = public_url.get('public_url', '')
+
+        else:
+            # fallback placeholder if no image uploaded
+            image_url = f"https://via.placeholder.com/400x240?text={category}"
+
+        # Prepare product data
+        product_data = {
+            'title': title,
+            'description': description,
+            'quantity': quantity,
+            'price': price,
+            'category': category,
+            'location': location,
+            'images': [image_url],
+            'seller_email': session['user']['email'],
+            'seller_name': session['user'].get('name', 'Farmer')
+        }
+
+        # Save product to Supabase table
+        supabase.table('products').insert(product_data).execute()
+
+        return jsonify({'status': 'success', 'message': 'Product uploaded successfully', 'product': product_data})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'Upload failed: {str(e)}'}), 500
 
 # ==================== ADDITIONAL ROUTES ====================
 
@@ -324,6 +341,35 @@ def logout():
     session.clear()
     flash('You have been logged out successfully.', 'info')
     return redirect(url_for('index'))
+
+@app.route('/market')
+def market():
+    try:
+        return render_template('market.html')
+    except Exception:
+        return '<h1>Market</h1><p>Explore the market for various products.</p>'
+
+@app.route('/equipment')
+def equipment():
+    try:
+        return render_template('equipment.html')
+    except Exception as e:
+        return f'<h1>Equipment</h1><p>Error: {e}</p>'
+    
+@app.route('/predictor')
+def predictor():
+    try:
+        return render_template('predictor.html')
+    except Exception:
+        return '<h1>Smart Crop Predictor</h1><p>Explore the smart crop predictor tool.</p>'
+
+@app.route('/schemes')
+def schemes():
+    try:
+        return render_template('schemes.html')
+    except Exception:
+        return '<h1>Government Schemes</h1><p>Explore various government schemes for farmers.</p>'
+
 
 # ==================== API ROUTES ====================
 

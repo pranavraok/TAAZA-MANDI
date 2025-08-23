@@ -825,17 +825,46 @@
         grid-template-columns: 1fr;
         grid-template-areas:
           "nav"
+          "sidebar"
           "main"
           "footer";
       }
       aside {
-        display: none;
+        display: block;
+        position: fixed;
+        left: 0;
+        top: 72px;
+        width: 260px;
+        height: calc(100vh - 72px);
+        z-index: 1001;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-lg);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      aside.active {
+        transform: translateX(0);
       }
       main {
         padding: 1rem 0 0 0;
       }
       .navbar ul {
         display: none;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1100;
       }
     }
 
@@ -928,58 +957,101 @@
   <!-- Enhanced Navbar -->
   <header>
     <nav class="navbar">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
       <div class="logo">
         <i class="fas fa-seedling"></i>
         TAAZA MANDI
       </div>
       <input type="text" placeholder="🔍 Search for equipment, tools, machinery...">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="market.html">Market</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="{{ url_for('seller_feed') }}">Home</a></li>
+        <li><a href="{{ url_for('market') }}">Market</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
-      <div class="auth-buttons">
-        <button>Login</button>
-        <button>Sign Up</button>
-      </div>
     </nav>
   </header>
 
   <!-- Enhanced Sidebar -->
   <aside>
     <div class="sidebar-profile">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" alt="Profile">
-      <div class="name">Farmer John</div>
-      <div class="role">
-        <i class="fas fa-user-tie"></i>
-        Seller Account
+      <!-- Dynamic Avatar -->
+      <div class="profile-avatar" id="sidebarAvatar">
+        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
+          {{ session.user.user_metadata.first_name[0]|upper }}
+        {% else %}
+          <i class="fas fa-user"></i>
+        {% endif %}
       </div>
-      <a href="profile.html" class="profile-link">
-        <i class="fas fa-user"></i>
-        View Profile
-      </a>
+      
+      <!-- Dynamic Name -->
+      <div class="name" id="sidebarName">
+        {% if session.user and session.user.user_metadata %}
+          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
+        {% elif session.user %}
+          {{ session.user.email.split('@')[0]|title }}
+        {% else %}
+          Loading...
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Role -->
+      <div class="role" id="sidebarRole">
+        <i class="fas fa-seedling"></i>
+        {% if session.user_role == 'seller' %}
+          Seller Account
+        {% elif session.user_role == 'buyer' %}
+          Buyer Account
+        {% else %}
+          Loading...
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Profile Link -->
+      {% if session.user_role == 'seller' %}
+        <a href="{{ url_for('seller_profile') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% elif session.user_role == 'buyer' %}
+        <a href="{{ url_for('buyer_profile') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% else %}
+        <a href="{{ url_for('user_select') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          Complete Setup
+        </a>
+      {% endif %}
     </div>
     
-    <div class="sidebar-section-title">📊 Dashboard</div>
+    <div class="sidebar-section-title">Dashboard</div>
     <ul class="sidebar-menu">
-      <li><a href="index.html"><i class="fas fa-home"></i> Feed</a></li>
-      <li><a href="post-upload.html"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+      <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+      <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
     </ul>
     
-    <div class="sidebar-section-title">🛠️ Resources</div>
-    <ul class="sidebar-resources">
-      <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="schemes.html"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="equipment.html"><i class="fas fa-tools"></i> Vehicle/Tools Buy-Rent</a></li>
+    <div class="sidebar-section-title">Resources</div>
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+      <li><a href="{{ url_for('schemes') }}" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
+      <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
+      <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
     </ul>
     
-    <div class="sidebar-section-title">⚙️ Settings</div>
-    <ul class="sidebar-settings">
-      <li><a href="#"><i class="fas fa-cog"></i> Account Settings</a></li>
-      <li><a href="#"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+    <div class="sidebar-section-title">Settings</div>
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('seller_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
+      <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+      {% if session.user %}
+        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      {% endif %}
     </ul>
   </aside>
+
 
   <!-- Enhanced Main Content -->
   <main>
@@ -1045,17 +1117,17 @@
       <div>
         <div class="footer-section-title">Quick Links</div>
         <ul class="footer-links">
-          <li><a href="market.html"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-          <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+          <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact Us</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-section-title">Farmer Resources</div>
         <ul class="footer-resources">
-          <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-          <li><a href="schemes.html"><i class="fas fa-university"></i> Government Schemes</a></li>
-          <li><a href="equipment.html"><i class="fas fa-tools"></i> Vehicle/Tools Buy-Rent</a></li>
+          <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+          <li><a href="{{ url_for('schemes') }}"><i class="fas fa-university"></i> Government Schemes</a></li>
+          <li><a href="{{ url_for('equipment') }}"><i class="fas fa-tools"></i> Vehicle/Tools Buy-Rent</a></li>
         </ul>
       </div>
       <div>
@@ -1121,6 +1193,12 @@
   </div>
 
   <script>
+    // Sidebar toggle for mobile/tablet
+    function toggleSidebar() {
+      const aside = document.querySelector('aside');
+      aside.classList.toggle('active');
+    }
+
     // Enhanced Equipment data with more products in tools, irrigation, fertilizers (manure), and seeds
     const equipmentData = [
       // Vehicles

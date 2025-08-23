@@ -853,9 +853,10 @@
     
     <div class="sidebar-section-title">Resources</div>
     <ul class="sidebar-menu">
-      <li><a href="#"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="https://agriwelfare.gov.in/en/Major" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="#"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+      <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+      <li><a href="{{ url_for('schemes') }}" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
+      <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
+      <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
     </ul>
     
     <div class="sidebar-section-title">Settings</div>
@@ -871,194 +872,22 @@
   <!-- Feed Content -->
   <main>
     <div class="feed-header">
-      <h1 class="section-title">
-        <i class="fas fa-seedling"></i>
-        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
-          {{ session.user.user_metadata.first_name }}'s Feed
-        {% else %}
-          Seller Feed
-        {% endif %}
-      </h1>
-      <div class="feed-actions">
-        <button class="btn-outline">
-          <i class="fas fa-filter"></i>
-          Filter
-        </button>
-        <a href="{{ url_for('post_upload') }}" class="btn-green">
-          <i class="fas fa-plus"></i>
-          New Post
-        </a>
-      </div>
-    </div>
-    
-    <div class="feed-container" id="feedContainer">
-      <!-- Sample Crop Cards -->
-      <div class="crop-card">
-        <div class="crop-card-header">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%236bb77b'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3ERK%3C/text%3E%3C/svg%3E" alt="Farmer">
-          <div class="user-info">
-            <div class="name">Rajesh Kumar</div>
-            <div class="time">2 hours ago</div>
-          </div>
-        </div>
-        <div class="crop-description">
-          Fresh organic tomatoes ready for harvest! These are premium quality Roma tomatoes grown without any pesticides. Perfect for restaurants and local markets.
-        </div>
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🍅 Fresh Tomatoes%3C/text%3E%3C/svg%3E" alt="Tomatoes" class="crop-image">
-        <div class="crop-tags">
-          <span class="crop-tag">Organic</span>
-          <span class="crop-tag">Fresh</span>
-          <span class="crop-tag">Pesticide-free</span>
-        </div>
-        <div class="crop-details-row">
-          <div class="detail">
-            <i class="fas fa-weight-hanging icon"></i>
-            <span>500 kg available</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-rupee-sign icon"></i>
-            <span>₹40/kg</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-map-marker-alt icon"></i>
-            <span>Punjab</span>
-          </div>
-        </div>
-        <div class="crop-actions-row">
-          <div class="action">
-            <i class="fas fa-heart"></i>
-            <span>24 likes</span>
-          </div>
-          <div class="action">
-            <i class="fas fa-comment"></i>
-            <span>5 comments</span>
-          </div>
-          <div class="action">
-            <i class="fas fa-share"></i>
-            <span>Share</span>
-          </div>
-        </div>
-        <div class="contact-seller-section">
-          <button class="btn-contact">
-            <i class="fas fa-phone icon"></i>
-            Contact Seller
-          </button>
-        </div>
-      </div>
+  <h1 class="section-title">
+    <i class="fas fa-seedling"></i>
+    {% if session.get('user') and session['user'].get('user_metadata') and session['user']['user_metadata'].get('first_name') %}
+      {{ session['user']['user_metadata']['first_name'] }}'s Feed
+    {% else %}
+      {{ 'Seller Feed' if session.get('user_role') == 'seller' else 'Buyer Feed' }}
+    {% endif %}
+  </h1>
 
-      <div class="crop-card">
-        <div class="crop-card-header">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%232d5f3f'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3EAS%3C/text%3E%3C/svg%3E" alt="Farmer">
-          <div class="user-info">
-            <div class="name">Amit Singh</div>
-            <div class="time">5 hours ago</div>
-          </div>
-        </div>
-        <div class="crop-description">
-          Premium basmati rice from the fields of Haryana. Grade A quality with excellent aroma and long grains. Bulk orders welcome!
-        </div>
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23f4fbf4'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🌾 Basmati Rice%3C/text%3E%3C/svg%3E" alt="Rice" class="crop-image">
-        <div class="crop-tags">
-          <span class="crop-tag">Premium</span>
-          <span class="crop-tag">Basmati</span>
-          <span class="crop-tag">Grade A</span>
-        </div>
-        <div class="crop-details-row">
-          <div class="detail">
-            <i class="fas fa-weight-hanging icon"></i>
-            <span>2000 kg available</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-rupee-sign icon"></i>
-            <span>₹80/kg</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-map-marker-alt icon"></i>
-            <span>Haryana</span>
-          </div>
-        </div>
-        <div class="crop-actions-row">
-          <div class="action">
-            <i class="fas fa-heart"></i>
-            <span>45 likes</span>
-          </div>
-          <div class="action">
-            <i class="fas fa-comment"></i>
-            <span>12 comments</span>
-          </div>
-          <div class="action">
-            <i class="fas fa-share"></i>
-            <span>Share</span>
-          </div>
-        </div>
-        <div class="contact-seller-section">
-          <button class="btn-contact">
-            <i class="fas fa-phone icon"></i>
-            Contact Seller
-          </button>
-        </div>
-      </div>
-
-      <div class="crop-card">
-        <div class="crop-card-header">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%236bb77b'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='14' font-weight='bold'%3EMP%3C/text%3E%3C/svg%3E" alt="Farmer">
-          <div class="user-info">
-            <div class="name">Maya Patel</div>
-            <div class="time">1 day ago</div>
-          </div>
-        </div>
-        <div class="crop-description">
-          Sweet and juicy mangoes from Gujarat! These Alphonso mangoes are perfectly ripe and ready for immediate sale. Limited quantity available.
-        </div>
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23e8f5e8'/%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%234a8f5f' font-size='24'%3E🥭 Alphonso Mango%3C/text%3E%3C/svg%3E" alt="Mangoes" class="crop-image">
-        <div class="crop-tags">
-          <span class="crop-tag">Alphonso</span>
-          <span class="crop-tag">Sweet</span>
-          <span class="crop-tag">Limited</span>
-        </div>
-        <div class="crop-details-row">
-          <div class="detail">
-            <i class="fas fa-weight-hanging icon"></i>
-            <span>200 kg available</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-rupee-sign icon"></i>
-            <span>₹250/kg</span>
-          </div>
-          <div class="detail">
-            <i class="fas fa-map-marker-alt icon"></i>
-            <span>Gujarat</span>
-          </div>
-        </div>
-        <div class="crop-actions-row">
-          <div class="action">
-            <i class="fas fa-heart"></i>
-            <span>67 likes</span>
-          </div>
-          <div class="action">
-            <i class="fas fa-comment"></i>
-            <span>18 comments</span>
-          </div>
-          <div class="action">
-            <i class="fas fa-share"></i>
-            <span>Share</span>
-          </div>
-        </div>
-        <div class="contact-seller-section">
-          <button class="btn-contact">
-            <i class="fas fa-phone icon"></i>
-            Contact Seller
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="load-more-row">
-      <button class="btn-green">
-        <i class="fas fa-chevron-down"></i>
-        Load More Posts
-      </button>
-    </div>
+  <div class="feed-actions">
+    <!-- Filter Button -->
+    <button class="btn-outline">
+      <i class="fas fa-filter"></i>
+      Filter
+    </button>
+    </div>  
   </main>
 
   <!-- Footer -->
