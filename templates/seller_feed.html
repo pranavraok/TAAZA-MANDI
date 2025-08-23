@@ -777,7 +777,7 @@
   <!-- Top Navbar -->
   <header>
     <nav class="navbar">
-      <a href="{{ url_for('index') }}" class="logo">
+              <a href="{{ url_for('index') }}" class="logo">
         <i class="fas fa-seedling"></i>
         TAAZA MANDI
       </a>
@@ -847,48 +847,93 @@
     
     <div class="sidebar-section-title">Dashboard</div>
     <ul class="sidebar-menu">
-      <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
-      <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+                  <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+            <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
     </ul>
     
     <div class="sidebar-section-title">Resources</div>
     <ul class="sidebar-menu">
-      <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="{{ url_for('schemes') }}" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
-      <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+                  <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+            <li><a href="{{ url_for('schemes') }}" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
+            <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
+            <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
     </ul>
     
     <div class="sidebar-section-title">Settings</div>
     <ul class="sidebar-menu">
-      <li><a href="{{ url_for('seller_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
-      <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+                  <li><a href="{{ url_for('seller_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
+            <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
       {% if session.user %}
-        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                  <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
       {% endif %}
     </ul>
   </aside>
 
   <!-- Feed Content -->
-  <main>
+<main>
     <div class="feed-header">
-  <h1 class="section-title">
-    <i class="fas fa-seedling"></i>
-    {% if session.get('user') and session['user'].get('user_metadata') and session['user']['user_metadata'].get('first_name') %}
-      {{ session['user']['user_metadata']['first_name'] }}'s Feed
-    {% else %}
-      {{ 'Seller Feed' if session.get('user_role') == 'seller' else 'Buyer Feed' }}
-    {% endif %}
-  </h1>
+      <h1 class="section-title">
+        <i class="fas fa-seedling"></i>
+        {% if session.get('user') and session['user'].get('user_metadata') and session['user']['user_metadata'].get('first_name') %}
+          {{ session['user']['user_metadata']['first_name'] }}'s Feed
+        {% else %}
+          {{ 'Seller Feed' if session.get('user_role') == 'seller' else 'Buyer Feed' }}
+        {% endif %}
+      </h1>
+      <div class="feed-actions">
+        <button class="btn-outline"><i class="fas fa-filter"></i> Filter</button>
+      </div>
+    </div>
 
-  <div class="feed-actions">
-    <!-- Filter Button -->
-    <button class="btn-outline">
-      <i class="fas fa-filter"></i>
-      Filter
-    </button>
-    </div>  
+    <div class="feed-container">
+      {% if products and products|length > 0 %}
+        {% for product in products %}
+          <div class="crop-card">
+            <!-- Product Image -->
+            {% if product.images and product.images|length > 0 %}
+              <img src="{{ product.images[0] }}" class="crop-image" alt="{{ product.title }}">
+            {% else %}
+              <div class="crop-image" style="display:flex;align-items:center;justify-content:center;color:#4a8f5f;font-weight:bold;">
+                No Image
+              </div>
+            {% endif %}
+
+            <!-- Crop Card Header -->
+            <div class="crop-card-header">
+              <img src="{{ session.user.user_metadata.avatar_url if session.user.user_metadata.avatar_url else '' }}" alt="Seller Avatar">
+              <div class="user-info">
+                <div class="name">{{ session.user.user_metadata.first_name if session.user else 'Seller' }}</div>
+                <div class="time">{{ product.created_at }}</div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="crop-description">{{ product.description }}</div>
+
+            <!-- Details Row -->
+            <div class="crop-details-row">
+              <div class="detail"><i class="fas fa-tag icon"></i> ₹{{ product.price }}</div>
+              <div class="detail"><i class="fas fa-box icon"></i> {{ product.quantity }}</div>
+              <div class="detail"><i class="fas fa-map-marker-alt icon"></i> {{ product.location }}</div>
+            </div>
+
+            <!-- Contact Seller Button -->
+            <div class="contact-seller-section">
+              <button class="btn-contact"><i class="fas fa-envelope icon"></i> Contact Seller</button>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-icon"><i class="fas fa-seedling"></i></div>
+          <h3>No products found</h3>
+          <p>You haven't uploaded any products yet.</p>
+          <a href="{{ url_for('post_upload') }}" class="upload-link">Post Your First Product</a>
+        </div>
+      {% endif %}
+    </div>
   </main>
+
 
   <!-- Footer -->
   <footer>
@@ -903,8 +948,8 @@
       <div>
         <div class="footer-section-title">Quick Links</div>
         <ul class="footer-links">
-          <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
+                      <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
           <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
         </ul>
       </div>

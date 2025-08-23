@@ -527,10 +527,10 @@
       </div>
       <input type="text" placeholder="🔍 Search fresh produce, farmers...">
       <ul>
-        <li><a href="/buyer-feed">Home</a></li>
-        <li><a href="/market">Market</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="{{ url_for('buyer_feed') }}">Home</a></li>
+        <li><a href="{{ url_for('market') }}">Market</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -558,10 +558,10 @@
       
       <div class="sidebar-section-title">Quick Links</div>
       <ul class="sidebar-menu">
-        <li><a href="/buyer-feed"><i class="fas fa-home"></i> Feed</a></li>
-        <li><a href="/market"><i class="fas fa-shopping-bag"></i> Market</a></li>
-        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="{{ url_for('buyer_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+            <li><a href="{{ url_for('market') }}"><i class="fas fa-shopping-bag"></i> Market</a></li>
+            <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
       </ul>
     </aside>
 

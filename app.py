@@ -3,6 +3,8 @@ import jwt
 import os
 from functools import wraps
 from supabase import create_client, Client 
+import joblib
+import numpy as np
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'taaza-mandi-super-secret-key-change-in-production-2025')
@@ -14,17 +16,12 @@ SUPABASE_ANON_KEY = os.environ.get('SUPABASE_ANON_KEY', 'eyJhbGciOiJIUzI1NiIsInR
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-# Make config available to templates
-@app.context_processor
-def inject_config():
-    return {
-        'config': {
-            'SUPABASE_URL': SUPABASE_URL,
-            'SUPABASE_ANON_KEY': SUPABASE_ANON_KEY
-        }
-    }
+# Load ML model
+model = joblib.load('final_model.pkl')
 
-# ---------- Auth helpers ----------
+
+# ==================== AUTH HELPERS ====================
+
 def verify_supabase_token(token):
     try:
         payload = jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=['HS256'], audience='authenticated')
@@ -51,6 +48,17 @@ def require_auth(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Make config available in templates
+@app.context_processor
+def inject_config():
+    return {
+        'config': {
+            'SUPABASE_URL': SUPABASE_URL,
+            'SUPABASE_ANON_KEY': SUPABASE_ANON_KEY
+        }
+    }
+
+
 # ==================== MAIN ROUTES ====================
 
 @app.route('/')
@@ -59,13 +67,14 @@ def index():
         return redirect(url_for('user_select'))
     return render_template('index.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         if session.get('user'):
             return redirect(url_for('user_select'))
         return render_template('login.html')
-    # POST
+
     try:
         data = request.get_json(force=True, silent=True) or {}
         token = data.get('token')
@@ -78,6 +87,7 @@ def login():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'GET':
@@ -85,7 +95,6 @@ def signup():
             return redirect(url_for('user_select'))
         return render_template('signup.html')
 
-    # POST
     try:
         data = request.get_json(force=True, silent=False)
         if not data:
@@ -97,13 +106,13 @@ def signup():
         if not email:
             return jsonify({'status': 'error', 'message': 'Email is required'}), 400
 
-        # store session
         session['access_token'] = token
         session['user'] = user_data
 
         return jsonify({'status': 'success', 'message': 'Registration successful', 'redirect_url': url_for('user_select')})
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
+
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
@@ -112,7 +121,6 @@ def forgot_password():
             return redirect(url_for('user_select'))
         return render_template('forgot_password.html')
 
-    # POST
     try:
         data = request.get_json(force=True, silent=True) or {}
         email = data.get('email')
@@ -122,6 +130,7 @@ def forgot_password():
         return jsonify({'status': 'success', 'message': 'Password reset link sent successfully'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 @app.route('/user-select', methods=['GET', 'POST'])
 @require_auth
@@ -134,7 +143,6 @@ def user_select():
             return redirect(url_for('seller_feed'))
         return render_template('user_select.html')
 
-    # POST
     try:
         data = request.get_json(force=True, silent=True) or {}
         role = data.get('role')
@@ -146,7 +154,8 @@ def user_select():
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
 
-# ==================== DASHBOARD ROUTES ====================
+
+# ==================== DASHBOARD ====================
 
 @app.route('/seller-feed')
 @require_auth
@@ -154,12 +163,12 @@ def seller_feed():
     if session.get('user_role') != 'seller':
         return redirect(url_for('user_select'))
 
-    # Only seller’s products
-    products = supabase.table("products") \
+    response = supabase.table("products") \
         .select("*") \
         .eq("seller_email", session['user']['email']) \
         .execute()
-    return render_template('seller_feed.html', products=products.data)
+
+    return render_template('seller_feed.html', products=response.data)
 
 
 @app.route('/buyer-feed')
@@ -168,14 +177,12 @@ def buyer_feed():
     if session.get('user_role') != 'buyer':
         return redirect(url_for('user_select'))
 
-    # Show all products
     products = supabase.table("products").select("*").execute()
     return render_template('buyer_feed.html', products=products.data)
 
 
-# ==================== PROFILE ROUTES ====================
+# ==================== PROFILE ====================
 
-# Provide BOTH kebab and snake paths so your links never 404
 @app.route('/buyer_profile', methods=['GET', 'POST'])
 @app.route('/buyer-profile', methods=['GET', 'POST'])
 @require_auth
@@ -195,13 +202,12 @@ def buyer_profile():
             </div>
             '''
 
-    # POST
     try:
         data = request.get_json(force=True, silent=True) or {}
-        # TODO: persist to Supabase
         return jsonify({'status': 'success', 'message': 'Profile updated successfully'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 @app.route('/seller_profile', methods=['GET', 'POST'])
 @app.route('/seller-profile', methods=['GET', 'POST'])
@@ -222,24 +228,21 @@ def seller_profile():
             </div>
             '''
 
-    # POST
     try:
         data = request.get_json(force=True, silent=True) or {}
-        # TODO: persist to Supabase
         return jsonify({'status': 'success', 'message': 'Profile updated successfully'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-# ==================== PRODUCT UPLOAD (MISSING ENDPOINT FIX) ====================
+
+# ==================== PRODUCT UPLOAD ====================
 
 @app.route('/upload-product', methods=['POST'])
 @require_auth
 def upload_product():
-    # Only sellers can upload
     if session.get('user_role') != 'seller':
         return jsonify({'status': 'error', 'message': 'Only sellers can upload products'}), 403
 
-    # Get form data
     title = request.form.get('title', '').strip()
     description = request.form.get('description', '').strip()
     quantity = request.form.get('quantity', '').strip()
@@ -247,7 +250,6 @@ def upload_product():
     category = request.form.get('category', '').strip()
     location = request.form.get('location', '').strip()
 
-    # Validate required fields
     missing = [k for k, v in {
         'title': title,
         'description': description,
@@ -256,31 +258,26 @@ def upload_product():
         'category': category,
         'location': location
     }.items() if not v]
+
     if missing:
         return jsonify({'status': 'error', 'message': f'Missing fields: {", ".join(missing)}'}), 400
 
-    # Handle single image
     image_file = request.files.get('image')
     image_url = ''
-    bucket = 'products'  # make sure this bucket exists in Supabase
+    bucket = 'products'
 
     try:
         if image_file:
-            file_bytes = image_file.read()  # read file bytes
-            file_name = f"{session['user']['id']}/{image_file.filename}"  # unique path
-            # upload file
+            file_bytes = image_file.read()
+            file_name = f"{session['user']['id']}/{image_file.filename}"
             upload_res = supabase.storage.from_(bucket).upload(file_name, file_bytes)
             if upload_res.get('error'):
                 raise Exception(upload_res['error']['message'])
-            # get public URL
             public_url = supabase.storage.from_(bucket).get_public_url(file_name)
             image_url = public_url.get('public_url', '')
-
         else:
-            # fallback placeholder if no image uploaded
             image_url = f"https://via.placeholder.com/400x240?text={category}"
 
-        # Prepare product data
         product_data = {
             'title': title,
             'description': description,
@@ -289,19 +286,15 @@ def upload_product():
             'category': category,
             'location': location,
             'images': [image_url],
-            'seller_email': session['user']['email'],
-            'seller_name': session['user'].get('name', 'Farmer')
+            'seller_email': session['user']['email']
         }
 
-        # Save product to Supabase table
         supabase.table('products').insert(product_data).execute()
-
         return jsonify({'status': 'success', 'message': 'Product uploaded successfully', 'product': product_data})
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Upload failed: {str(e)}'}), 500
 
-# ==================== ADDITIONAL ROUTES ====================
 
 @app.route('/post-upload')
 @require_auth
@@ -310,7 +303,6 @@ def post_upload():
         return redirect(url_for('user_select'))
 
     try:
-        # templates/post_upload.html must exist
         return render_template('post_upload.html')
     except Exception:
         return '''
@@ -321,6 +313,31 @@ def post_upload():
             <a href="/seller-feed">Back to Dashboard</a>
         </div>
         '''
+
+
+# ==================== PREDICTOR ====================
+
+@app.route('/predictor', methods=['GET', 'POST'])
+def predictor():
+    crop = None
+    if request.method == 'POST':
+        try:
+            n = float(request.form['n'])
+            p = float(request.form['p'])
+            k = float(request.form['k'])
+            humidity = float(request.form['humidity'])
+            rainfall = float(request.form['rainfall'])
+
+            features = np.array([[n, p, k, humidity, rainfall]])
+            prediction = model.predict(features)[0]
+            crop = prediction.upper()
+        except Exception as e:
+            crop = f"❌ Error during prediction: {e}"
+
+    return render_template('predictor.html', crop=crop)
+
+
+# ==================== STATIC PAGES ====================
 
 @app.route('/about')
 def about():
@@ -355,13 +372,6 @@ def equipment():
         return render_template('equipment.html')
     except Exception as e:
         return f'<h1>Equipment</h1><p>Error: {e}</p>'
-    
-@app.route('/predictor')
-def predictor():
-    try:
-        return render_template('predictor.html')
-    except Exception:
-        return '<h1>Smart Crop Predictor</h1><p>Explore the smart crop predictor tool.</p>'
 
 @app.route('/schemes')
 def schemes():
@@ -391,10 +401,10 @@ def update_profile():
     try:
         data = request.get_json(force=True, silent=True) or {}
         user_role = session.get('user_role')
-        # TODO: persist profile changes
         return jsonify({'status': 'success', 'message': 'Profile updated successfully', 'data': data, 'role': user_role})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 # ==================== ERROR HANDLERS ====================
 
@@ -425,7 +435,8 @@ def internal_error(error):
         </div>
         ''', 500
 
-# ==================== DEV ENTRY ====================
+
+# ==================== RUN ====================
 
 if __name__ == '__main__':
     print("Starting TAAZA MANDI Flask App...")

@@ -53,7 +53,7 @@
       min-height: 100vh;
     }
 
-    /* Enhanced Navbar */
+    /* Navbar */
     header {
       grid-area: nav;
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
@@ -176,7 +176,15 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Enhanced Sidebar */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Sidebar */
     aside {
       grid-area: sidebar;
       background: var(--card-bg);
@@ -185,24 +193,38 @@
       display: flex;
       flex-direction: column;
       border-right: 1px solid var(--border-light);
+      transition: transform 0.3s ease;
     }
 
     .sidebar-profile {
       padding: 2rem;
       text-align: center;
-      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
       border-bottom: 1px solid var(--border-light);
     }
 
-    .sidebar-profile img {
+    .profile-avatar {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      object-fit: cover;
       border: 4px solid white;
       box-shadow: var(--shadow-md);
-      margin-bottom: 1rem;
+      margin: 0 auto 1rem auto;
       background: var(--secondary-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .sidebar-profile img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
     .sidebar-profile .name {
@@ -250,16 +272,16 @@
       letter-spacing: 0.5px;
     }
 
-    .sidebar-menu {
+    .sidebar-menu, .sidebar-resources, .sidebar-settings {
       list-style: none;
       padding: 0 1rem;
     }
 
-    .sidebar-menu li {
+    .sidebar-menu li, .sidebar-resources li, .sidebar-settings li {
       margin-bottom: 0.25rem;
     }
 
-    .sidebar-menu a {
+    .sidebar-link {
       display: flex;
       align-items: center;
       padding: 0.75rem 1rem;
@@ -271,7 +293,7 @@
       gap: 0.75rem;
     }
 
-    .sidebar-menu a:hover {
+    .sidebar-link:hover {
       background: var(--light-green);
       color: var(--primary-green);
       transform: translateX(4px);
@@ -316,7 +338,7 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Enhanced Main Content */
+    /* Main Content */
     main {
       grid-area: feed;
       padding: 2rem 0 0 0;
@@ -351,7 +373,7 @@
       font-weight: 500;
     }
 
-    /* Enhanced Filters */
+    /* Filters */
     .market-filters {
       display: flex;
       gap: 1rem;
@@ -408,7 +430,7 @@
       min-width: 180px;
     }
 
-    /* Enhanced Product Grid */
+    /* Product Grid */
     .market-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -418,7 +440,7 @@
       padding: 0 1rem;
     }
 
-    /* Enhanced Product Cards */
+    /* Product Cards */
     .product-card {
       background: var(--card-bg);
       border-radius: var(--radius-xl);
@@ -691,7 +713,7 @@
       transform: translateY(-2px);
     }
 
-    /* Enhanced Empty State */
+    /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -724,7 +746,7 @@
       margin: 0 auto;
     }
 
-    /* Enhanced Pagination */
+    /* Pagination */
     .pagination-row {
       display: flex;
       justify-content: center;
@@ -746,7 +768,7 @@
       gap: 0.5rem;
     }
 
-    /* Enhanced Footer */
+    /* Footer */
     footer {
       grid-area: footer;
       background: var(--card-bg);
@@ -822,12 +844,24 @@
           "footer";
       }
       aside {
-        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100%;
+        transform: translateX(-100%);
+        z-index: 200;
       }
-      main {
-        padding: 1rem 0 0 0;
+      aside.active {
+        transform: translateX(0);
+      }
+      .hamburger {
+        display: block;
       }
       .navbar ul {
+        display: none;
+      }
+      .auth-buttons {
         display: none;
       }
     }
@@ -837,28 +871,20 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-      
       .market-title {
         font-size: 2rem;
         text-align: center;
       }
-      
       .market-filters {
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
       }
-      
       .sort-label {
         margin-left: 0;
       }
-      
       .navbar input[type="text"] {
         margin: 0 1rem;
-      }
-      
-      .auth-buttons {
-        display: none;
       }
     }
 
@@ -868,16 +894,13 @@
         gap: 1rem;
         padding: 1rem 0.5rem;
       }
-      
       .navbar input[type="text"] {
         margin: 0;
         width: 100%;
       }
-      
       .market-title {
         font-size: 1.75rem;
       }
-      
       .product-card-header,
       .product-description,
       .product-tags,
@@ -888,6 +911,36 @@
         margin-left: 1rem;
         margin-right: 1rem;
       }
+    }
+
+    /* Accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
+    }
+
+    /* Badge for verified sellers */
+    .verified-badge {
+      background: var(--success);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-left: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     /* Loading Animation */
@@ -906,79 +959,107 @@
     html {
       scroll-behavior: smooth;
     }
-
-    /* Focus States */
-    *:focus {
-      outline: 2px solid var(--secondary-green);
-      outline-offset: 2px;
-    }
-
-    /* Badge for verified sellers */
-    .verified-badge {
-      background: var(--success);
-      color: white;
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius-sm);
-      margin-left: 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
   </style>
 </head>
 <body>
-  <!-- Enhanced Navbar -->
+  <!-- Navbar -->
   <header>
     <nav class="navbar">
       <div class="logo">
         <i class="fas fa-seedling"></i>
         TAAZA MANDI
       </div>
-      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
+      <label for="searchInput" class="sr-only">Search for crops, vegetables, fruits</label>
+      <input type="text" id="searchInput" placeholder="🔍 Search for crops, vegetables, fruits..." aria-label="Search for crops, vegetables, fruits">
       <ul>
-        <li><a href="{{url_for('index')}}">Home</a></li>
-        <li><a href="{{url_for('market')}}">Market</a></li>
-        <li><a href="{{url_for('about')}}">About Us</a></li>
-        <li><a href="{{url_for('contact')}}">Contact</a></li>
+        <li><a href="{{ url_for('buyer_feed') }}" aria-label="Home page">Home</a></li>
+        <li><a href="{{ url_for('market') }}" aria-label="Market page">Market</a></li>
+        <li><a href="{{ url_for('about') }}" aria-label="About us page">About Us</a></li>
+        <li><a href="{{ url_for('contact') }}" aria-label="Contact page">Contact</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Enhanced Sidebar -->
+  <!-- Sidebar -->
   <aside>
     <div class="sidebar-profile">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile" id="sidebar-profile-pic">
-      <div class="name" id="sidebar-name">Loading...</div>
-      <div class="role" id="sidebar-role">✨ Loading...</div>
-<a href="{{ url_for('seller_profile') }}" class="profile-link">
-  <i class="fas fa-user"></i>
-  View Profile
-</a>
+      <div class="profile-avatar" id="sidebarAvatar">
+        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
+          {{ session.user.user_metadata.first_name[0]|upper }}
+        {% else %}
+          <i class="fas fa-user"></i>
+        {% endif %}
+      </div>
+      <div class="name" id="sidebarName">
+        {% if session.user and session.user.user_metadata %}
+          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
+        {% elif session.user %}
+          {{ session.user.email.split('@')[0]|title }}
+        {% else %}
+          Guest
+        {% endif %}
+      </div>
+      <div class="role" id="sidebarRole">
+        <i class="fas fa-seedling"></i>
+        {% if session.user_role == 'seller' %}
+          Seller Account
+        {% elif session.user_role == 'buyer' %}
+          Buyer Account
+        {% else %}
+          Guest
+        {% endif %}
+      </div>
+      {% if session.user_role == 'seller' %}
+        <a href="{{ url_for('seller_profile') }}" class="profile-link" aria-label="View seller profile">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% elif session.user_role == 'buyer' %}
+        <a href="{{ url_for('buyer_profile') }}" class="profile-link" aria-label="View buyer profile">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% else %}
+        <a href="{{ url_for('user_select') }}" class="profile-link" aria-label="Complete account setup">
+          <i class="fas fa-user"></i>
+          Complete Setup
+        </a>
+      {% endif %}
     </div>
-    
-    <div class="sidebar-section-title">📍 Navigation</div>
+    <div class="sidebar-section-title">Dashboard</div>
     <ul class="sidebar-menu">
-      <li><a href="{{url_for('buyer_feed')}}"><i class="fas fa-store"></i> Marketplace</a></li>
-      <li><a href="{{url_for('about')}}"><i class="fas fa-info-circle"></i> About Us</a></li>
-      <li><a href="{{url_for('market_prices')}}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-      <li><a href="{{url_for('contact')}}"><i class="fas fa-envelope"></i> Contact Us</a></li>
+      <li><a href="{{ url_for('seller_feed') }}" class="sidebar-link" aria-label="View feed"><i class="fas fa-home"></i> Feed</a></li>
+      <li><a href="{{ url_for('post_upload') }}" class="sidebar-link" aria-label="Upload post"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+      <li><a href="{{ url_for('market') }}" class="sidebar-link" aria-label="Marketplace"><i class="fas fa-store"></i> Marketplace</a></li>
     </ul>
-    
+    <div class="sidebar-section-title">Resources</div>
+    <ul class="sidebar-resources">
+      <li><a href="{{ url_for('predictor') }}" class="sidebar-link" aria-label="Smart Crop Predictor"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+      <li><a href="{{ url_for('schemes') }}" class="sidebar-link" aria-label="Government Schemes"><i class="fas fa-university"></i> Government Schemes</a></li>
+      <li><a href="{{ url_for('equipment') }}" class="sidebar-link" aria-label="Equipment's Bazaar"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
+    </ul>
+    <div class="sidebar-section-title">Settings</div>
+    <ul class="sidebar-settings">
+      <li><a href="{{ url_for('seller_profile') }}" class="sidebar-link" aria-label="Account Settings"><i class="fas fa-cog"></i> Account Settings</a></li>
+      <li><a href="{{ url_for('contact') }}" class="sidebar-link" aria-label="Help and Support"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+      {% if session.user %}
+        <li><a href="{{ url_for('logout') }}" class="sidebar-link" aria-label="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      {% endif %}
+    </ul>
     <div class="sidebar-help">
       <strong>
         <i class="fas fa-question-circle"></i>
         Need Help?
       </strong>
       Check out our guides on how to connect with farmers and purchase fresh produce.
-      <a href="{{url_for('guides')}}" class="view-guides-btn">
+      <a href="{{ url_for('about') }}" class="view-guides-btn" aria-label="View guides">
         <i class="fas fa-book-open"></i>
         View Guides
       </a>
     </div>
   </aside>
 
-  <!-- Enhanced Main Content -->
+  <!-- Main Content -->
   <main>
     <div class="market-header">
       <div class="market-title">
@@ -992,55 +1073,56 @@
           <i class="fas fa-filter"></i>
           Filter by:
         </label>
-        <select id="category">
-          <option>All Categories</option>
-          <option>🥬 Vegetables</option>
-          <option>🍎 Fruits</option>
-          <option>🌾 Grains</option>
-          <option>🫘 Pulses</option>
-          <option>🌶️ Spices</option>
+        <select id="category" aria-label="Filter by category">
+          <option value="">All Categories</option>
+          <option value="Vegetables">🥬 Vegetables</option>
+          <option value="Fruits">🍎 Fruits</option>
+          <option value="Grains">🌾 Grains</option>
+          <option value="Pulses">🫘 Pulses</option>
+          <option value="Spices">🌶️ Spices</option>
         </select>
         
-        <select id="location">
-          <option>All India</option>
-          <option>Maharashtra</option>
-          <option>Punjab</option>
-          <option>Uttar Pradesh</option>
-          <option>Uttarakhand</option>
-          <option>Haryana</option>
-          <option>Gujarat</option>
+        <label for="location" class="sr-only">Filter by location</label>
+        <select id="location" aria-label="Filter by location">
+          <option value="">All India</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Uttarakhand">Uttarakhand</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Gujarat">Gujarat</option>
         </select>
         
         <span class="sort-label">
           <i class="fas fa-sort"></i>
           Sort by:
         </span>
-        <select class="sort-select">
-          <option>Latest First</option>
-          <option>Price: Low to High</option>
-          <option>Price: High to Low</option>
-          <option>Most Popular</option>
+        <select class="sort-select" aria-label="Sort products">
+          <option value="latest">Latest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="popular">Most Popular</option>
         </select>
       </div>
     </div>
     
-    <div class="market-grid" id="dynamicFeed">
+    <div class="market-grid" id="dynamicFeed" role="region" aria-live="polite">
       <!-- Dynamic content will be loaded here -->
     </div>
     
     <div class="pagination-row">
-      <button class="btn-outline">
+      <button class="btn-outline" id="prevPage" aria-label="Previous page">
         <i class="fas fa-chevron-left"></i>
         Previous
       </button>
-      <button class="btn-green">
+      <button class="btn-green" id="nextPage" aria-label="Next page">
         Next
         <i class="fas fa-chevron-right"></i>
       </button>
     </div>
   </main>
 
-  <!-- Enhanced Footer -->
+  <!-- Footer -->
   <footer>
     <div class="footer-main">
       <div>
@@ -1053,28 +1135,28 @@
       <div>
         <div class="footer-section-title">Quick Links</div>
         <ul class="footer-links">
-          <li><a href="{{url_for('market')}}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-          <li><a href="{{url_for('about')}}"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="{{url_for('contact')}}"><i class="fas fa-envelope"></i> Contact Us</a></li>
-          <li><a href="{{url_for('faq')}}"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          <li><a href="{{ url_for('market') }}" aria-label="Market Prices"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+          <li><a href="{{ url_for('about') }}" aria-label="About Us"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="{{ url_for('contact') }}" aria-label="Contact Us"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          <li><a href="{{ url_for('contact') }}" aria-label="FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-section-title">Farmer Resources</div>
         <ul class="footer-resources">
-          <li><a href="{{url_for('predictor')}}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-          <li><a href="https://agriwelfare.gov.in/en/Major"><i class="fas fa-university"></i> Government Schemes</a></li>
-          <li><a href="{{url_for('equipment')}}"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
-          <li><a href="{{url_for('deals')}}"><i class="fas fa-tags"></i> Best Deals</a></li>
+          <li><a href="{{ url_for('predictor') }}" aria-label="Smart Crop Predictor"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+          <li><a href="{{ url_for('schemes') }}" aria-label="Government Schemes"><i class="fas fa-university"></i> Government Schemes</a></li>
+          <li><a href="{{ url_for('equipment') }}" aria-label="Vehicle/Tools Buy-Rent"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+          <li><a href="{{ url_for('market') }}" aria-label="Best Deals"><i class="fas fa-tags"></i> Best Deals</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-section-title">Connect With Us</div>
         <ul class="footer-connect">
-          <li><a href="https://facebook.com/taazamandi"><i class="fab fa-facebook"></i> Facebook</a></li>
-          <li><a href="https://twitter.com/taazamandi"><i class="fab fa-twitter"></i> Twitter</a></li>
-          <li><a href="https://instagram.com/taazamandi"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="mailto:support@taazamandi.com"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
+          <li><a href="https://facebook.com/taazamandi" aria-label="Facebook"><i class="fab fa-facebook"></i> Facebook</a></li>
+          <li><a href="https://twitter.com/taazamandi" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a></li>
+          <li><a href="https://instagram.com/taazamandi" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="mailto:support@taazamandi.com" aria-label="Email support"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
         </ul>
       </div>
     </div>
@@ -1084,68 +1166,163 @@
   </footer>
 
   <script>
-    // Initialize Supabase client
-    const { createClient } = supabase;
-    const supabaseUrl = 'YOUR_SUPABASE_URL';
-    const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Mock data for posts (since no Supabase credentials are provided)
+    const mockPosts = [
+      {
+        id: 1,
+        title: "Fresh Tomatoes",
+        description: "Organic tomatoes grown with care in Maharashtra. Juicy and perfect for your kitchen.",
+        image: "https://via.placeholder.com/380x240?text=Tomatoes",
+        category: "Vegetables",
+        location: "Maharashtra",
+        price: "₹40/kg",
+        available: "100kg",
+        verified: true,
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        likes: 15,
+        comments: 3
+      },
+      {
+        id: 2,
+        title: "Basmati Rice",
+        description: "Premium quality basmati rice from Punjab. Aromatic and long-grained.",
+        image: "https://via.placeholder.com/380x240?text=Rice",
+        category: "Grains",
+        location: "Punjab",
+        price: "₹120/kg",
+        available: "500kg",
+        verified: false,
+        timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+        likes: 8,
+        comments: 1
+      },
+      {
+        id: 3,
+        title: "Alphonso Mangoes",
+        description: "Sweet and juicy Alphonso mangoes from Gujarat. Perfect for desserts and smoothies.",
+        image: "https://via.placeholder.com/380x240?text=Mangoes",
+        category: "Fruits",
+        location: "Gujarat",
+        price: "₹200/kg",
+        available: "50kg",
+        verified: true,
+        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+        likes: 20,
+        comments: 5
+      }
+    ];
 
-    // Enhanced JavaScript functionality
     document.addEventListener('DOMContentLoaded', async function() {
+      // Initialize mock data in localStorage if not present
+      if (!localStorage.getItem('cropPosts')) {
+        localStorage.setItem('cropPosts', JSON.stringify(mockPosts));
+      }
+
       await loadUserData();
       loadBuyerFeed();
       initializeFilters();
       initializeAnimations();
+      initializeHamburgerMenu();
     });
 
-    // Load user data from Supabase
+    function initializeHamburgerMenu() {
+      const hamburger = document.querySelector('.hamburger');
+      const sidebar = document.querySelector('aside');
+
+      hamburger.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+          sidebar.classList.remove('active');
+        }
+      });
+    }
+
     async function loadUserData() {
+      // Mock user data since Supabase is not configured
+      const mockUser = {
+        user_metadata: {
+          first_name: "John",
+          last_name: "Doe"
+        },
+        email: "john.doe@example.com"
+      };
+      const mockRole = "buyer";
+
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error || !user) throw error || new Error('No authenticated user');
-
-        const { data, error: profileError } = await supabase
-          .from('profiles')
-          .select('full_name, role')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) throw profileError;
-
-        document.getElementById('sidebar-name').textContent = profile.data.full_name;
-        document.getElementById('sidebar-role').textContent = `✨ ${profile.data.role.charAt(0).toUpperCase() + profile.data.role.slice(1)} Account`;
+        document.getElementById('sidebarAvatar').innerHTML = mockUser.user_metadata.first_name[0].toUpperCase();
+        document.getElementById('sidebarName').textContent = `${mockUser.user_metadata.first_name} ${mockUser.user_metadata.last_name}`;
+        document.getElementById('sidebarRole').innerHTML = `<i class="fas fa-seedling"></i> ${mockRole.charAt(0).toUpperCase() + mockRole.slice(1)} Account`;
       } catch (error) {
         console.error('Error loading user data:', error.message);
-        document.getElementById('sidebar-name').textContent = 'Guest User';
-        document.getElementById('sidebar-role').textContent = '✨ Guest Account';
+        document.getElementById('sidebarAvatar').innerHTML = '<i class="fas fa-user"></i>';
+        document.getElementById('sidebarName').textContent = 'Guest';
+        document.getElementById('sidebarRole').innerHTML = '<i class="fas fa-seedling"></i> Guest';
       }
     }
 
-    function loadBuyerFeed() {
+    function loadBuyerFeed(page = 1, itemsPerPage = 6) {
       const feedContainer = document.getElementById('dynamicFeed');
       if (!feedContainer) return;
 
-      // Get posts from localStorage or Supabase
-      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      if (posts.length === 0) {
+      let posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+      const categoryFilter = document.getElementById('category').value;
+      const locationFilter = document.getElementById('location').value;
+      const sortOption = document.querySelector('.sort-select').value;
+
+      // Apply filters
+      if (categoryFilter) {
+        posts = posts.filter(post => post.category === categoryFilter);
+      }
+      if (locationFilter) {
+        posts = posts.filter(post => post.location === locationFilter);
+      }
+
+      // Apply sorting
+      if (sortOption === 'price-low') {
+        posts.sort((a, b) => parseFloat(a.price.replace('₹', '')) - parseFloat(b.price.replace('₹', '')));
+      } else if (sortOption === 'price-high') {
+        posts.sort((a, b) => parseFloat(b.price.replace('₹', '')) - parseFloat(a.price.replace('₹', '')));
+      } else if (sortOption === 'popular') {
+        posts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+      } else {
+        posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      }
+
+      // Pagination
+      const totalPages = Math.ceil(posts.length / itemsPerPage);
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const paginatedPosts = posts.slice(start, end);
+
+      // Update pagination buttons
+      document.getElementById('prevPage').disabled = page === 1;
+      document.getElementById('nextPage').disabled = page === totalPages;
+
+      if (paginatedPosts.length === 0) {
         feedContainer.innerHTML = `
           <div class="empty-state">
             <div class="empty-icon">
               <i class="fas fa-seedling"></i>
             </div>
-            <h3>No products available yet</h3>
-            <p>Check back later for fresh produce from local farmers or encourage farmers to start posting their products!</p>
+            <h3>No products available</h3>
+            <p>Try adjusting your filters or check back later for fresh produce from local farmers!</p>
           </div>
         `;
         return;
       }
 
       feedContainer.innerHTML = '';
-      
-      posts.forEach(post => {
+      paginatedPosts.forEach(post => {
         const productCard = createProductCard(post);
         feedContainer.appendChild(productCard);
       });
+
+      // Re-initialize animations for new cards
+      initializeAnimations();
     }
 
     function createProductCard(post) {
@@ -1160,7 +1337,7 @@
 
       card.innerHTML = `
         <div class="product-card-header">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%236bb77b'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" alt="Farmer">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%236bb77b'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" alt="Farmer avatar">
           <div class="user-info">
             <span class="name">
               Verified Farmer
@@ -1194,7 +1371,7 @@
         <div class="product-details-row">
           <span class="detail">
             <i class="fas fa-rupee-sign icon"></i>
-            ${post.price.replace('₹', '').replace('/kg', '')}/kg
+            ${post.price.replace('₹', '')}
           </span>
           <span class="detail">
             <i class="fas fa-weight-hanging icon"></i>
@@ -1207,7 +1384,7 @@
         </div>
         
         <div class="product-actions-row">
-          <span class="action" onclick="likeProduct(${post.id})">
+          <span class="action" onclick="likeProduct(${post.id}, this)">
             <i class="fas fa-heart"></i>
             <span>${post.likes || 0} likes</span>
           </span>
@@ -1218,25 +1395,25 @@
         </div>
         
         <div class="product-card-footer">
-          <a href="#" class="share-link" onclick="shareProduct(${post.id})">
+          <a href="#" class="share-link" onclick="shareProduct(${post.id})" aria-label="Share ${post.title}">
             <i class="fas fa-share"></i>
             Share
           </a>
         </div>
         
         <div class="contact-seller-section">
-          <button class="btn-contact" onclick="contactSeller(${post.id})">
+          <button class="btn-contact" onclick="contactSeller(${post.id})" aria-label="Contact seller for ${post.title}">
             <i class="fas fa-phone"></i>
             Contact Seller
           </button>
         </div>
         
         <div class="product-actions">
-          <button class="btn-outline" onclick="addToCart(${post.id})">
+          <button class="btn-outline" onclick="addToCart(${post.id})" aria-label="Add ${post.title} to cart">
             <i class="fas fa-shopping-cart"></i>
             Add to Cart
           </button>
-          <button class="btn-green" onclick="buyNow(${post.id})">
+          <button class="btn-green" onclick="buyNow(${post.id})" aria-label="Buy ${post.title} now">
             <i class="fas fa-bolt"></i>
             Buy Now
           </button>
@@ -1252,9 +1429,8 @@
       const sortSelect = document.querySelector('.sort-select');
 
       [categoryFilter, locationFilter, sortSelect].forEach(filter => {
-        filter.addEventListener('change', function() {
-          // Add filter logic here
-          console.log('Filter changed:', this.value);
+        filter.addEventListener('change', () => {
+          loadBuyerFeed(1); // Reset to first page on filter change
         });
       });
     }
@@ -1282,13 +1458,11 @@
       });
     }
 
-    // Enhanced interaction functions
     function contactSeller(postId) {
       const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
       const post = posts.find(p => p.id === postId);
       
       if (post) {
-        // Create modal or redirect to contact page
         alert(`📞 Contacting seller for: ${post.title}\n📍 Location: ${post.location}\n💰 Price: ${post.price}\n\nPhone: +91 98765-43210\nWhatsApp available 24/7`);
       }
     }
@@ -1311,16 +1485,23 @@
       }
     }
 
-    function likeProduct(postId) {
-      const heartIcon = event.target.closest('.action').querySelector('i');
-      const likeCount = event.target.closest('.action').querySelector('span');
+    function likeProduct(postId, element) {
+      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
+      const post = posts.find(p => p.id === postId);
       
-      heartIcon.style.color = heartIcon.style.color === 'red' ? '' : 'red';
-      heartIcon.style.transform = 'scale(1.2)';
-      
-      setTimeout(() => {
-        heartIcon.style.transform = 'scale(1)';
-      }, 200);
+      if (post) {
+        post.likes = (post.likes || 0) + 1;
+        localStorage.setItem('cropPosts', JSON.stringify(posts));
+        const heartIcon = element.querySelector('i');
+        const likeCount = element.querySelector('span');
+        heartIcon.style.color = 'red';
+        heartIcon.style.transform = 'scale(1.2)';
+        likeCount.textContent = `${post.likes} likes`;
+        
+        setTimeout(() => {
+          heartIcon.style.transform = 'scale(1)';
+        }, 200);
+      }
     }
 
     function shareProduct(postId) {
@@ -1332,11 +1513,27 @@
           title: post.title,
           text: post.description,
           url: window.location.href
+        }).catch(() => {
+          alert('📤 Share link copied to clipboard!');
         });
       } else {
         alert('📤 Share link copied to clipboard!');
       }
     }
+
+    // Pagination controls
+    let currentPage = 1;
+    document.getElementById('prevPage').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        loadBuyerFeed(currentPage);
+      }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', () => {
+      currentPage++;
+      loadBuyerFeed(currentPage);
+    });
   </script>
 </body>
 </html>

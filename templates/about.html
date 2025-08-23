@@ -402,10 +402,10 @@ aside {
       </div>
       <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="market.html">Market</a></li>
-        <li><a href="about.html" class="active">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('market') }}">Market</a></li>
+        <li><a href="{{ url_for('about') }}" class="active">About Us</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
       <div class="auth-buttons">
         <button>Login</button>
@@ -419,7 +419,7 @@ aside {
       <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile">
       <div class="name">John Farmer</div>
       <div class="role">✨ Seller Account</div>
-      <a href="profile.html" class="view-profile">
+                  <a href="{{ url_for('seller_profile') }}" class="view-profile">
         <i class="fas fa-user"></i>
         View Profile
       </a>
@@ -427,15 +427,15 @@ aside {
     
     <div class="sidebar-section-title">Dashboard</div>
     <ul class="sidebar-menu">
-      <li><a href="index.html"><i class="fas fa-home"></i> Feed</a></li>
-      <li><a href="/templates/post-upload.html"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+                  <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+            <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
     </ul>
     
     <div class="sidebar-section-title">Resources</div>
     <ul class="sidebar-resources">
-      <li><a href="predictor.html"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="government-schemes.html"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="/templates/post-upload.html"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
+                  <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+            <li><a href="{{ url_for('schemes') }}"><i class="fas fa-university"></i> Government Schemes</a></li>
+            <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
     </ul>
     
     <div class="sidebar-section-title">Settings</div>

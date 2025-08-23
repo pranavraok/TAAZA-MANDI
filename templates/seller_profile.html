@@ -672,10 +672,10 @@
       </div>
       <input type="text" placeholder="🔍 Search products, farmers...">
       <ul>
-        <li><a href="/seller-feed">Home</a></li>
-        <li><a href="/post-upload">Post</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="{{ url_for('seller_feed') }}">Home</a></li>
+        <li><a href="{{ url_for('post_upload') }}">Post</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -699,8 +699,8 @@
       
       <div class="sidebar-section-title">Dashboard</div>
       <ul class="sidebar-menu">
-        <li><a href="/seller-feed"><i class="fas fa-home"></i> Feed</a></li>
-        <li><a href="/post-upload"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+                    <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+            <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
         <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
         <li><a href="#"><i class="fas fa-messages"></i> Messages</a></li>
       </ul>
