@@ -48,7 +48,6 @@
             flex-direction: column;
         }
 
-
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -59,19 +58,31 @@
         .page-header {
             text-align: center;
             margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 800;
             color: var(--primary-green);
-            margin-bottom: 1rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .page-header i {
+            font-size: 2rem;
+            color: var(--primary-green);
         }
 
         .page-header p {
             font-size: 1.1rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -229,32 +240,32 @@
             box-shadow: var(--shadow-md);
         }
 
-      .real-time-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--light-green);
-      color: var(--primary-green);
-      padding: 0.25rem 0.75rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.8rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-    }
+        .real-time-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--light-green);
+            color: var(--primary-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
 
-    .pulse {
-      width: 8px;
-      height: 8px;
-      background: var(--accent-green);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
 
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(107, 183, 123, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0); }
-    }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(107, 183, 123, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0); }
+        }
 
         .search-filter-section {
             background: var(--card-bg);
@@ -347,10 +358,67 @@
             font-size: 1rem;
             opacity: 0.9;
         }
-        
+
+        footer {
+            background: var(--primary-green);
+            padding: 3rem 0 2rem;
+            color: white;
+        }
+
+        .footer-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links,
+        .footer-resources,
+        .footer-connect {
+            list-style: none;
+        }
+
+        .footer-links li,
+        .footer-resources li,
+        .footer-connect li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a,
+        .footer-resources a,
+        .footer-connect a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover,
+        .footer-resources a:hover,
+        .footer-connect a:hover {
+            color: var(--accent-green);
+        }
 
         @media (max-width: 768px) {
-
             .main-container {
                 padding: 1rem;
             }
@@ -380,6 +448,11 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
 
             aside {
@@ -442,47 +515,169 @@
                 grid-area: main;
             }
         }
+            footer {
+      background: var(--primary-green);
+      padding: 3rem 0 2rem;
+      color: white;
+    }
+
+    .footer-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links,
+    .footer-resources,
+    .footer-connect {
+      list-style: none;
+    }
+
+    .footer-links li,
+    .footer-resources li,
+    .footer-connect li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a,
+    .footer-resources a,
+    .footer-connect a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover,
+    .footer-resources a:hover,
+    .footer-connect a:hover {
+      color: var(--accent-green);
+    }
+
+    @media (max-width: 768px) {
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+      }
+
+      .navbar input[type="text"] {
+        margin: 0 0 1rem 0;
+        max-width: 100%;
+      }
+
+      .navbar ul {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      aside {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .e-nam-updates {
+        margin-top: 2rem;
+      }
+
+      .filters-section {
+        flex-direction: column;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (min-width: 769px) {
+      body {
+        display: grid;
+        grid-template-areas:
+          "nav nav"
+          "sidebar main"
+          "footer footer";
+        grid-template-columns: 320px 1fr;
+        grid-template-rows: 72px 1fr auto;
+      }
+
+      header { grid-area: nav; }
+      aside { grid-area: sidebar; }
+      .main-container { grid-area: main; }
+      footer { grid-area: footer; }
+    }
     </style>
 </head>
+<body>
+    <!-- Include Navbar -->
+    {% include 'constants/seller/navbar.html' %}
 
-  <!-- Include Navbar -->
-  {% include 'constants/seller/navbar.html' %}
-
-  <!-- Include Sidebar -->
-  {% include 'constants/seller/sidebar.html' %}
+    <!-- Include Sidebar -->
+    {% include 'constants/seller/sidebar.html' %}
 
     <!-- Main Content -->
-<main class="main-container">
-    <!-- Page Header -->
-    <div class="page-header">
-        <h1>Government Schemes</h1>
-        <p>Discover government initiatives and support programs designed to empower farmers and agricultural businesses</p>
-    </div>
+    <main class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-university"></i> Government Schemes</h1>
+            <p>Discover government initiatives and support programs designed to empower farmers and agricultural businesses</p>
+        </div>
 
-    <!-- Real-time Indicator (moved above stats) -->
-    <div class="real-time-indicator">
-        <div class="pulse"></div>
-        <span>Last updated: <span id="lastUpdated">Just now</span></span>
-    </div>
+        <!-- Real-time Indicator -->
+        <div class="real-time-indicator">
+            <div class="pulse"></div>
+            <span>Last updated: <span id="lastUpdated">Just now</span></span>
+        </div>
 
-    <!-- Statistics Section -->
-    <div class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div class="stat-number" id="totalSchemes">8</div>
-                <div class="stat-label">Active Schemes</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="totalBudget">₹1.6L Cr</div>
-                <div class="stat-label">Total Budget</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="totalBeneficiaries">50M+</div>
-                <div class="stat-label">Beneficiaries</div>
+        <!-- Statistics Section -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalSchemes">8</div>
+                    <div class="stat-label">Active Schemes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalBudget">₹1.6L Cr</div>
+                    <div class="stat-label">Total Budget</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalBeneficiaries">50M+</div>
+                    <div class="stat-label">Beneficiaries</div>
+                </div>
             </div>
         </div>
-    </div>
-
 
         <!-- Search and Filter Section -->
         <div class="search-filter-section">
@@ -526,15 +721,13 @@
         </div>
     </main>
 
-      <!-- Include Navbar -->
-  {% include 'constants/seller/footer.html' %}
+    {% include 'constants/seller/footer.html' %}
+
 
     <script>
-        // Fixed government schemes data
         let allSchemes = [];
         let filteredSchemes = [];
 
-        // DOM Elements
         const searchInput = document.getElementById('search');
         const categorySelect = document.getElementById('category');
         const stateSelect = document.getElementById('state');
@@ -691,7 +884,6 @@
             }
         ];
 
-        // Utility Functions
         function showError(message) {
             schemesGrid.innerHTML = `
                 <div class="error-message">
@@ -813,7 +1005,6 @@
             renderSchemes(filteredSchemes);
         }
 
-        // Calculate statistics
         function calculateStats(schemes) {
             const totalSchemes = schemes.length;
             const totalBudget = schemes.reduce((sum, scheme) => {
@@ -833,12 +1024,10 @@
             };
         }
 
-        // Load filter options
         function loadFilterOptions() {
             const categories = [...new Set(baseSchemesData.map(scheme => scheme.category))];
             const states = [...new Set(baseSchemesData.map(scheme => scheme.location))];
 
-            // Populate category options
             categorySelect.innerHTML = '<option value="">All Categories</option>';
             categories.forEach(category => {
                 const option = document.createElement('option');
@@ -847,7 +1036,6 @@
                 categorySelect.appendChild(option);
             });
 
-            // Populate state options
             stateSelect.innerHTML = '<option value="">All States</option>';
             states.forEach(state => {
                 const option = document.createElement('option');
@@ -857,29 +1045,22 @@
             });
         }
 
-        // Main data loading function
         function loadData() {
             showLoading();
             
             setTimeout(() => {
                 try {
-                    // Use base schemes data
                     allSchemes = [...baseSchemesData];
                     filteredSchemes = [...allSchemes];
 
-                    // Calculate statistics
                     const stats = calculateStats(allSchemes);
 
-                    // Update stats display
                     totalSchemesEl.textContent = stats.totalSchemes;
                     totalBudgetEl.textContent = stats.totalBudget;
                     totalBeneficiariesEl.textContent = stats.totalBeneficiaries;
                     lastUpdatedEl.textContent = formatDate(stats.lastUpdated);
 
-                    // Render schemes
                     renderSchemes(allSchemes);
-
-                    // Load filter options
                     loadFilterOptions();
                 } catch (error) {
                     console.error('Error loading data:', error);
@@ -888,18 +1069,13 @@
             }, 1000);
         }
 
-        // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Load initial data
             loadData();
-
-            // Add filter event listeners
             searchInput.addEventListener('input', filterSchemes);
             categorySelect.addEventListener('change', filterSchemes);
             stateSelect.addEventListener('change', filterSchemes);
         });
 
-        // Make loadData available globally for retry button
         window.loadData = loadData;
     </script>
 </body>

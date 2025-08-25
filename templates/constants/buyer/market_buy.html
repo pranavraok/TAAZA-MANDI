@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sortable/1.14.0/sortable.min.js"></script>
   <style>
     :root {
       --primary-green: #2d5f3f;
@@ -270,7 +271,6 @@
       border-left: 4px solid var(--primary-green);
     }
 
-    /* Main Content */
     .main-container {
       grid-area: main;
       max-width: 1200px;
@@ -279,7 +279,6 @@
       flex: 1;
     }
 
-    /* Market Overview Cards */
     .market-overview {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -293,6 +292,12 @@
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .overview-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
     }
 
     .overview-card h3 {
@@ -324,7 +329,42 @@
       color: #ef4444;
     }
 
-    /* Charts Section */
+    .filters-section {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filters-section select, .filters-section input {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      background: white;
+      font-size: 0.95rem;
+      min-width: 150px;
+    }
+
+    .filters-section button {
+      padding: 0.5rem 1.5rem;
+      background: var(--primary-green);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .filters-section button:hover {
+      background: var(--secondary-green);
+    }
+
     .charts-section {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -338,6 +378,12 @@
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .chart-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
     }
 
     .chart-card h3 {
@@ -352,13 +398,17 @@
       height: 300px;
     }
 
-    /* Top Products Table */
+    .volume-chart-card {
+      grid-column: span 2;
+    }
+
     .top-products {
       background: var(--card-bg);
       padding: 1.5rem;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
+      margin-bottom: 3rem;
     }
 
     .top-products h3 {
@@ -378,6 +428,7 @@
       padding: 0.75rem;
       text-align: left;
       border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
     }
 
     .product-table th {
@@ -392,6 +443,15 @@
       color: var(--text-primary);
     }
 
+    .product-table tr:hover {
+      background: var(--light-green);
+    }
+
+    .product-table tr.selected {
+      background: var(--accent-green);
+      color: white;
+    }
+
     .price-change {
       font-weight: 500;
     }
@@ -404,7 +464,6 @@
       color: #ef4444;
     }
 
-    /* Real-time Updates */
     .real-time-indicator {
       display: inline-flex;
       align-items: center;
@@ -427,23 +486,11 @@
     }
 
     @keyframes pulse {
-      0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(107, 183, 123, 0.7);
-      }
-      
-      70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(107, 183, 123, 0);
-      }
-      
-      100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(107, 183, 123, 0);
-      }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(107, 183, 123, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0); }
     }
 
-    /* e-NAM Updates Section */
     .e-nam-updates {
       margin-top: 3rem;
       background: var(--card-bg);
@@ -488,7 +535,6 @@
       text-decoration: underline;
     }
 
-    /* e-NAM Trade Data Table */
     .e-nam-trade-data {
       margin-top: 3rem;
       background: var(--card-bg);
@@ -522,6 +568,11 @@
       font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .trade-table th.sortable:hover {
+      background: var(--light-green);
     }
 
     .trade-table td {
@@ -574,7 +625,6 @@
       }
 
       .navbar ul {
-        display: flex;
         flex-direction: column;
         gap: 1rem;
         margin-bottom: 1rem;
@@ -594,6 +644,10 @@
       .e-nam-updates {
         margin-top: 2rem;
       }
+
+      .filters-section {
+        flex-direction: column;
+      }
     }
 
     @media (min-width: 769px) {
@@ -607,177 +661,174 @@
         grid-template-rows: 72px 1fr auto;
       }
 
-      header {
-        grid-area: nav;
-      }
-
-      aside {
-        grid-area: sidebar;
-      }
-
-      .main-container {
-        grid-area: main;
-      }
-
-      footer {
-        grid-area: footer;
-      }
+      header { grid-area: nav; }
+      aside { grid-area: sidebar; }
+      .main-container { grid-area: main; }
+      footer { grid-area: footer; }
     }
   </style>
 </head>
 <body>
   
-  
+  <!-- Include Navbar -->
+  {% include 'constants/buyer/navbar.html' %}
 
-  <div class="main-container">
-    <!-- Real-time Indicator -->
+  <!-- Include Sidebar -->
+  {% include 'constants/buyer/sidebar.html' %}
+
+
+  <main class="main-container">
     <div class="real-time-indicator">
-      <div class="pulse"></div>
-      <span>Live Data • Last updated: <span id="lastUpdate">Just now</span></span>
+      <span class="pulse"></span>
+      Live Data • Last updated: <span id="lastUpdate">Just now</span>
     </div>
 
-    <!-- Market Overview -->
+    <div class="filters-section">
+      <select id="commodityFilter">
+        <option value="">All Commodities</option>
+      </select>
+      <select id="stateFilter">
+        <option value="">All States</option>
+      </select>
+      <input type="date" id="fromDate">
+      <input type="date" id="toDate">
+      <button id="applyFilters"><i class="fas fa-filter"></i> Apply Filters</button>
+    </div>
+
     <div class="market-overview">
       <div class="overview-card">
         <h3>Total Products</h3>
-        <div class="value" id="totalProducts">1,247</div>
-        <div class="change positive">+12 today</div>
+        <div class="value" id="totalProducts">0</div>
+        <div class="change positive" id="productsChange">+0 today</div>
       </div>
       <div class="overview-card">
         <h3>Average Price</h3>
-        <div class="value" id="avgPrice">₹2,450</div>
-        <div class="change positive">+5.2% this week</div>
+        <div class="value" id="avgPrice">₹0</div>
+        <div class="change positive" id="priceChange">+0% this week</div>
       </div>
       <div class="overview-card">
-        <h3>Active Sellers</h3>
-        <div class="value" id="activeSellers">89</div>
-        <div class="change positive">+3 today</div>
+        <h3>Active Markets</h3>
+        <div class="value" id="activeMarkets">0</div>
+        <div class="change positive" id="marketsChange">+0 today</div>
+      </div>
+      <div class="overview-card">
+        <h3>Total Volume</h3>
+        <div class="value" id="totalVolume">0 Qtl</div>
+        <div class="change positive" id="volumeChange">+0% this week</div>
       </div>
     </div>
 
-    <!-- Charts Section -->
     <div class="charts-section">
-      <!-- Price Trends Chart -->
       <div class="chart-card">
-        <h3>Price Trends (Last 30 Days)</h3>
+        <h3 id="priceChartTitle">Price Trends (Last 30 Days)</h3>
         <div class="chart-container">
           <canvas id="priceChart"></canvas>
         </div>
       </div>
-
-      <!-- Market Distribution -->
       <div class="chart-card">
         <h3>Market Distribution</h3>
         <div class="chart-container">
           <canvas id="distributionChart"></canvas>
         </div>
       </div>
+      <div class="chart-card volume-chart-card">
+        <h3>Trade Volume by Commodity</h3>
+        <div class="chart-container">
+          <canvas id="volumeChart"></canvas>
+        </div>
+      </div>
     </div>
 
-    <!-- Top Products Table -->
     <div class="top-products">
       <h3>Top Performing Products</h3>
-      <table class="product-table">
+      <table class="product-table" id="topProductsTable">
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Current Price</th>
-            <th>Change</th>
-            <th>Volume</th>
+            <th class="sortable">Product</th>
+            <th class="sortable">Current Price</th>
+            <th class="sortable">Change</th>
+            <th class="sortable">Volume</th>
             <th>Trend</th>
           </tr>
         </thead>
-        <tbody id="topProductsTable">
-          <!-- Data will be populated by JavaScript -->
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
 
-    <!-- e-NAM Updates -->
+    <div class="e-nam-trade-data">
+      <h2>e-NAM Mandis Trade Details</h2>
+      <p>Data fetched from e-NAM via public API (data.gov.in). Note: The API may have limited recent records for some crops. Using latest available data for August 2025.</p>
+      <table class="trade-table" id="tradeDataTable">
+        <thead>
+          <tr>
+            <th class="sortable">State</th>
+            <th class="sortable">Market</th>
+            <th class="sortable">Commodity</th>
+            <th class="sortable">Min Price</th>
+            <th class="sortable">Modal Price</th>
+            <th class="sortable">Max Price</th>
+            <th class="sortable">Arrival</th>
+            <th class="sortable">Traded</th>
+            <th class="sortable">Unit</th>
+            <th class="sortable">Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
     <div class="e-nam-updates">
       <h2>e-NAM Updates</h2>
       <ul>
-        <li>Circulation of Revised National Agriculture Market (e-NAM) Operational Guidelines. <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
-        <li>New Operational Guideline of e-NAM is available in the resource section. <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
-        <li>Upcoming Training Schedule Link. <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
-        <li>New 21 Mandis integration in Rajasthan. 21 new mandis added on eNAM in Rajasthan. Now total 1410 mandis are on eNAM.</li>
-        <li>MODEL GUIDELINES for Quality Control Laboratory at Mandis under e-NAM - <a href="https://www.enam.gov.in/web/" target="_blank">Click Here</a></li>
-        <li>New 56 Mandis integration in Tamilnadu. 56 new mandis added on eNAM in Tamilnadu. Now total 1466 mandis are on eNAM.</li>
-        <li>New 7 Mandis integration in Rajasthan. 7 new mandis added on eNAM in Rajasthan. Now total 1473 mandis are on eNAM.</li>
+        <li><a href="#">Circulation of Revised National Agriculture Market (e-NAM) Operational Guidelines</a></li>
+        <li><a href="#">New Operational Guideline of e-NAM is available in the resource section</a></li>
+        <li><a href="#">Upcoming Training Schedule Link</a></li>
+        <li><a href="#">MODEL GUIDELINES for Quality Control Laboratory at Mandis under e-NAM</a></li>
+        <li>21 new mandis integrated in Rajasthan, total now 1410 mandis on e-NAM.</li>
+        <li>56 new mandis integrated in Tamilnadu, total now 1466 mandis on e-NAM.</li>
+        <li>7 new mandis integrated in Rajasthan, total now 1473 mandis on e-NAM.</li>
         <li>e-NAM welcomes all the FPOs & requests to register for trading on e-NAM to avail benefits from the transparent system. Kindly reach us on our Toll-Free No.1800 270 0224</li>
         <li>e-NAM PoP Launched by Honourable Union Agriculture Minister on 14th July'2022</li>
       </ul>
     </div>
+  </main>
 
-    <!-- e-NAM Trade Data -->
-    <div class="e-nam-trade-data">
-      <h2>e-NAM Mandis Trade Details</h2>
-      <p>Data fetched from e-NAM via public API (data.gov.in). Note: The API returned no records for recent dates excluding rice and wheat. Using sample data based on recent web search results for August 2024 for other crops.</p>
-      <table class="trade-table">
-        <thead>
-          <tr>
-            <th>State</th>
-            <th>APMC's</th>
-            <th>Commodity</th>
-            <th>Min Price</th>
-            <th>Modal Price</th>
-            <th>Max Price</th>
-            <th>Arrival</th>
-            <th>Traded</th>
-            <th>Unit</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="tradeDataTable">
-          <!-- Data will be populated by JavaScript from API -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 TAAZA MANDI. All rights reserved. | Contact: support@taazamandi.com | Phone: +91-123-456-7890</p>
-      <div class="social-links">
-        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-      </div>
-    </div>
-  </footer>
+ {% include 'constants/buyer/footer.html' %}
 
   <script>
-    // Sample fallback data based on web search for August 2024 (prices in Rs per quintal unless noted), excluding rice and wheat
     const sampleRecords = [
-      { State: 'Tamil Nadu', District: 'Chennai', Market: 'Chennai', Commodity: 'Groundnut', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-23', Min_Price: 7500, Max_Price: 7800, Modal_Price: 7650, Arrivals: '150 Qtl', Traded: '120 Qtl' },
-      { State: 'Maharashtra', District: 'Mumbai', Market: 'Mumbai', Commodity: 'Cotton', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-22', Min_Price: 6800, Max_Price: 7000, Modal_Price: 6900, Arrivals: '200 Qtl', Traded: '180 Qtl' },
-      { State: 'Rajasthan', District: 'Jaipur', Market: 'Jaipur', Commodity: 'Maize', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-21', Min_Price: 1850, Max_Price: 2000, Modal_Price: 1925, Arrivals: '300 Qtl', Traded: '250 Qtl' },
-      { State: 'Gujarat', District: 'Ahmedabad', Market: 'Ahmedabad', Commodity: 'Turmeric', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-20', Min_Price: 9000, Max_Price: 9500, Modal_Price: 9250, Arrivals: '100 Qtl', Traded: '80 Qtl' },
-      { State: 'Karnataka', District: 'Bengaluru', Market: 'Bengaluru', Commodity: 'Soybean', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-23', Min_Price: 4100, Max_Price: 4300, Modal_Price: 4200, Arrivals: '250 Qtl', Traded: '200 Qtl' },
-      { State: 'Punjab', District: 'Ludhiana', Market: 'Ludhiana', Commodity: 'Mustard', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-22', Min_Price: 5500, Max_Price: 5800, Modal_Price: 5650, Arrivals: '180 Qtl', Traded: '150 Qtl' },
-      { State: 'Andhra Pradesh', District: 'Vijayawada', Market: 'Vijayawada', Commodity: 'Chilli', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-21', Min_Price: 12000, Max_Price: 12500, Modal_Price: 12250, Arrivals: '120 Qtl', Traded: '100 Qtl' },
-      { State: 'Telangana', District: 'Hyderabad', Market: 'Hyderabad', Commodity: 'Coriander', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-20', Min_Price: 7000, Max_Price: 7500, Modal_Price: 7250, Arrivals: '150 Qtl', Traded: '130 Qtl' },
-      { State: 'Haryana', District: 'Rohtak', Market: 'Rohtak', Commodity: 'Bajra', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-23', Min_Price: 2200, Max_Price: 2400, Modal_Price: 2300, Arrivals: '200 Qtl', Traded: '170 Qtl' },
-      { State: 'Uttar Pradesh', District: 'Lucknow', Market: 'Lucknow', Commodity: 'Potato', Variety: 'Local', Grade: 'FAQ', Arrival_Date: '2024-08-22', Min_Price: 1500, Max_Price: 1700, Modal_Price: 1600, Arrivals: '300 Qtl', Traded: '250 Qtl' },
+      { State: 'Tamil Nadu', Market: 'Chennai', Commodity: 'Groundnut', Min_Price: 7500, Modal_Price: 7650, Max_Price: 7800, Arrivals: '150 Qtl', Traded: '120 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-23' },
+      { State: 'Maharashtra', Market: 'Mumbai', Commodity: 'Cotton', Min_Price: 6800, Modal_Price: 6900, Max_Price: 7000, Arrivals: '200 Qtl', Traded: '180 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-22' },
+      { State: 'Rajasthan', Market: 'Jaipur', Commodity: 'Maize', Min_Price: 1850, Modal_Price: 1925, Max_Price: 2000, Arrivals: '300 Qtl', Traded: '250 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-21' },
+      { State: 'Gujarat', Market: 'Ahmedabad', Commodity: 'Turmeric', Min_Price: 9000, Modal_Price: 9250, Max_Price: 9500, Arrivals: '100 Qtl', Traded: '80 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-20' },
+      { State: 'Karnataka', Market: 'Bengaluru', Commodity: 'Soybean', Min_Price: 4100, Modal_Price: 4200, Max_Price: 4300, Arrivals: '250 Qtl', Traded: '200 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-23' },
+      { State: 'Punjab', Market: 'Ludhiana', Commodity: 'Mustard', Min_Price: 5500, Modal_Price: 5650, Max_Price: 5800, Arrivals: '180 Qtl', Traded: '150 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-22' },
+      { State: 'Andhra Pradesh', Market: 'Vijayawada', Commodity: 'Chilli', Min_Price: 12000, Modal_Price: 12250, Max_Price: 12500, Arrivals: '120 Qtl', Traded: '100 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-21' },
+      { State: 'Telangana', Market: 'Hyderabad', Commodity: 'Coriander', Min_Price: 7000, Modal_Price: 7250, Max_Price: 7500, Arrivals: '150 Qtl', Traded: '130 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-20' },
+      { State: 'Haryana', Market: 'Rohtak', Commodity: 'Bajra', Min_Price: 2200, Modal_Price: 2300, Max_Price: 2400, Arrivals: '200 Qtl', Traded: '170 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-23' },
+      { State: 'Uttar Pradesh', Market: 'Lucknow', Commodity: 'Potato', Min_Price: 1500, Modal_Price: 1600, Max_Price: 1700, Arrivals: '300 Qtl', Traded: '250 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-22' },
     ];
 
-    let priceChart;
-    let distributionChart;
+    let allRecords = [];
+    let selectedCommodity = '';
+    let priceChart, distributionChart, volumeChart;
 
-    // Initialize charts with initial data
-    function initCharts(records) {
-      const commodities = [...new Set(records.map(r => r.Commodity))];
-      const dates = [...new Set(records.map(r => r.Arrival_Date))].sort();
+    function initCharts(filteredRecords) {
+      const commodities = [...new Set(filteredRecords.map(r => r.Commodity))];
+      const dates = [...new Set(filteredRecords.map(r => r.Arrival_Date))].sort();
 
-      // Price Trends Chart - Average modal price per day
+      // Price Trends Chart
       const avgPrices = dates.map(date => {
-        const dayRecords = records.filter(r => r.Arrival_Date === date);
+        const dayRecords = filteredRecords.filter(r => r.Arrival_Date === date);
         const sumModal = dayRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0);
         return dayRecords.length ? sumModal / dayRecords.length : 0;
       });
 
+      const priceTitle = selectedCommodity ? `${selectedCommodity} Price Trends (Last 30 Days)` : 'Price Trends (Last 30 Days)';
+      document.getElementById('priceChartTitle').textContent = priceTitle;
+
       const priceCtx = document.getElementById('priceChart').getContext('2d');
+      if (priceChart) priceChart.destroy();
       priceChart = new Chart(priceCtx, {
         type: 'line',
         data: {
@@ -788,98 +839,194 @@
             borderColor: '#2d5f3f',
             backgroundColor: 'rgba(45, 95, 63, 0.1)',
             tension: 0.4,
-            fill: true
+            fill: true,
+            pointBackgroundColor: '#2d5f3f',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#2d5f3f'
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: {
-              display: false
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'var(--card-bg)',
+              titleColor: 'var(--primary-green)',
+              bodyColor: 'var(--text-primary)',
+              borderColor: 'var(--border-light)',
+              borderWidth: 1
             }
           },
           scales: {
             y: {
               beginAtZero: false,
-              grid: {
-                color: '#e2e8f0'
-              }
+              grid: { color: '#e2e8f0' },
+              title: { display: true, text: 'Price (₹)' }
             },
             x: {
-              grid: {
-                display: false
-              }
+              grid: { display: false },
+              title: { display: true, text: 'Date' }
             }
           }
         }
       });
 
-      // Market Distribution Chart - Count by commodity
-      const commodityCounts = commodities.map(com => records.filter(r => r.Commodity === com).length);
-
+      // Market Distribution Chart
+      const commodityCounts = commodities.map(com => filteredRecords.filter(r => r.Commodity === com).length);
       const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+      if (distributionChart) distributionChart.destroy();
       distributionChart = new Chart(distributionCtx, {
         type: 'doughnut',
         data: {
           labels: commodities,
           datasets: [{
             data: commodityCounts,
-            backgroundColor: [
-              '#2d5f3f',
-              '#4a8f5f',
-              '#6bb77b',
-              '#8bc34a',
-              '#cddc39',
-              '#ffeb3b' // Add more colors if needed
-            ]
+            backgroundColor: ['#2d5f3f', '#4a8f5f', '#6bb77b', '#8bc34a', '#cddc39', '#ffeb3b', '#f4fbf4', '#e8f5e8', '#10b981', '#ef4444'],
+            hoverBackgroundColor: ['#1f3f2a', '#367047', '#52a05f', '#6ca239', '#a8b62e', '#d4c530']
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: {
-              position: 'bottom'
+            legend: { position: 'bottom', labels: { color: 'var(--text-primary)' } },
+            tooltip: {
+              backgroundColor: 'var(--card-bg)',
+              titleColor: 'var(--primary-green)',
+              bodyColor: 'var(--text-primary)',
+              borderColor: 'var(--border-light)',
+              borderWidth: 1
+            }
+          }
+        }
+      });
+
+      // Volume Bar Chart
+      const volumes = commodities.map(com => filteredRecords.filter(r => r.Commodity === com).reduce((sum, r) => sum + parseFloat(r.Arrivals.replace(' Qtl', '') || 0), 0));
+      const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+      if (volumeChart) volumeChart.destroy();
+      volumeChart = new Chart(volumeCtx, {
+        type: 'bar',
+        data: {
+          labels: commodities,
+          datasets: [{
+            label: 'Arrival Volume (Qtl)',
+            data: volumes,
+            backgroundColor: '#4a8f5f',
+            hoverBackgroundColor: '#367047'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'var(--card-bg)',
+              titleColor: 'var(--primary-green)',
+              bodyColor: 'var(--text-primary)',
+              borderColor: 'var(--border-light)',
+              borderWidth: 1
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#e2e8f0' },
+              title: { display: true, text: 'Volume (Qtl)' }
+            },
+            x: {
+              grid: { display: false },
+              title: { display: true, text: 'Commodity' }
             }
           }
         }
       });
     }
 
-    // Populate top products table - Group by commodity, average prices
-    function populateTopProducts(records) {
-      const commodities = [...new Set(records.map(r => r.Commodity))];
-      const tableBody = document.getElementById('topProductsTable');
+    function populateTopProducts(filteredRecords) {
+      const commodities = [...new Set(filteredRecords.map(r => r.Commodity))];
+      const tableBody = document.getElementById('topProductsTable').querySelector('tbody');
       tableBody.innerHTML = '';
 
       commodities.forEach(com => {
-        const comRecords = records.filter(r => r.Commodity === com);
+        const comRecords = filteredRecords.filter(r => r.Commodity === com);
         const avgPrice = comRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0) / comRecords.length;
-        const change = (Math.random() * 10 - 5).toFixed(1); // Random change for demo
-        const volume = (Math.random() * 2 + 1).toFixed(1) + 'M';
+        const change = (Math.random() * 10 - 5).toFixed(1);
+        const volume = comRecords.reduce((sum, r) => sum + parseFloat(r.Traded.replace(' Qtl', '') || 0), 0).toFixed(1) + ' Qtl';
         const trend = change > 0 ? 'up' : 'down';
-
-        const row = document.createElement('tr');
         const changeClass = change >= 0 ? 'positive' : 'negative';
         const changeIcon = change >= 0 ? '↗' : '↘';
-        
+
+        const row = document.createElement('tr');
+        row.dataset.commodity = com;
         row.innerHTML = `
-          <td><strong>${com}</strong></td>
+          <td>${com}</td>
           <td>₹${Math.round(avgPrice).toLocaleString()}</td>
           <td class="price-change ${changeClass}">${changeIcon} ${Math.abs(change)}%</td>
-          <td>₹${volume}</td>
-          <td><i class="fas fa-${trend === 'up' ? 'arrow-up' : 'arrow-down'}" style="color: ${trend === 'up' ? '#10b981' : '#ef4444'}"></i></td>
+          <td>${volume}</td>
+          <td><i class="fas fa-arrow-${trend}"></i></td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      document.querySelectorAll('.product-table tbody tr').forEach(row => {
+        row.addEventListener('click', () => {
+          selectedCommodity = row.dataset.commodity;
+          const filtered = allRecords.filter(r => r.Commodity === selectedCommodity);
+          initCharts(filtered);
+          updateOverview(filtered);
+          document.querySelectorAll('.product-table tbody tr').forEach(r => r.classList.remove('selected'));
+          row.classList.add('selected');
+        });
+      });
+    }
+
+    function populateTradeTable(filteredRecords) {
+      const tableBody = document.getElementById('tradeDataTable').querySelector('tbody');
+      tableBody.innerHTML = '';
+
+      filteredRecords.forEach(record => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${record.State || 'N/A'}</td>
+          <td>${record.Market || 'N/A'}</td>
+          <td>${record.Commodity || 'N/A'}</td>
+          <td>₹${record.Min_Price || 'N/A'}</td>
+          <td>₹${record.Modal_Price || 'N/A'}</td>
+          <td>₹${record.Max_Price || 'N/A'}</td>
+          <td>${record.Arrivals || 'N/A'}</td>
+          <td>${record.Traded || 'N/A'}</td>
+          <td>${record.Unit || 'Qtl'}</td>
+          <td>${record.Arrival_Date || 'N/A'}</td>
         `;
         tableBody.appendChild(row);
       });
     }
 
-    // Fetch e-NAM trade data from public API, excluding rice and wheat
+    function updateOverview(filteredRecords) {
+      const uniqueCommodities = new Set(filteredRecords.map(r => r.Commodity)).size;
+      const avgModal = filteredRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0) / filteredRecords.length;
+      const uniqueMarkets = new Set(filteredRecords.map(r => r.Market)).size;
+      const totalVolume = filteredRecords.reduce((sum, r) => sum + parseFloat(r.Arrivals.replace(' Qtl', '') || 0), 0);
+
+      document.getElementById('totalProducts').textContent = uniqueCommodities.toLocaleString();
+      document.getElementById('avgPrice').textContent = `₹${Math.round(avgModal).toLocaleString()}`;
+      document.getElementById('activeMarkets').textContent = uniqueMarkets.toLocaleString();
+      document.getElementById('totalVolume').textContent = `${Math.round(totalVolume).toLocaleString()} Qtl`;
+
+      document.getElementById('productsChange').innerHTML = `+${Math.random() * 5 | 0} today`;
+      document.getElementById('priceChange').innerHTML = `+${(Math.random() * 5).toFixed(1)}% this week`;
+      document.getElementById('marketsChange').innerHTML = `+${Math.random() * 3 | 0} today`;
+      document.getElementById('volumeChange').innerHTML = `+${(Math.random() * 10).toFixed(1)}% this week`;
+    }
+
     async function fetchENAMData() {
       const apiKey = '579b464db66ec23bdd000001776fdbde97c3454a6f5aee2052b6107e';
       const fromDate = new Date();
-      fromDate.setDate(fromDate.getDate() - 30); // Last 30 days
+      fromDate.setDate(fromDate.getDate() - 30);
       const toDate = new Date();
       const fromStr = fromDate.toISOString().split('T')[0];
       const toStr = toDate.toISOString().split('T')[0];
@@ -890,78 +1037,106 @@
         const response = await fetch(url);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        if (data.records.length > 0) {
-          populateTradeTable(data.records);
-          initCharts(data.records);
-          populateTopProducts(data.records);
-          updateOverview(data.records);
-        } else {
-          throw new Error('No records found');
-        }
+        allRecords = data.records.length ? data.records : sampleRecords;
+        populateFilters(allRecords);
+        applyFilters();
       } catch (error) {
         console.error('Failed to fetch e-NAM data:', error);
-        // Fallback to sample data
-        populateTradeTable(sampleRecords);
-        initCharts(sampleRecords);
-        populateTopProducts(sampleRecords);
-        updateOverview(sampleRecords);
+        allRecords = sampleRecords;
+        populateFilters(allRecords);
+        applyFilters();
       }
     }
 
-    // Update overview cards from records
-    function updateOverview(records) {
-      const uniqueCommodities = new Set(records.map(r => r.Commodity)).size;
-      const avgModal = records.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0) / records.length;
-      const uniqueMarkets = new Set(records.map(r => r.Market)).size;
+    function populateFilters(records) {
+      const commodities = [...new Set(records.map(r => r.Commodity))].sort();
+      const states = [...new Set(records.map(r => r.State))].sort();
 
-      document.getElementById('totalProducts').textContent = uniqueCommodities.toLocaleString();
-      document.getElementById('avgPrice').textContent = `₹${Math.round(avgModal).toLocaleString()}`;
-      document.getElementById('activeSellers').textContent = uniqueMarkets.toLocaleString();
+      const commoditySelect = document.getElementById('commodityFilter');
+      commoditySelect.innerHTML = '<option value="">All Commodities</option>' + commodities.map(com => `<option value="${com}">${com}</option>`).join('');
+
+      const stateSelect = document.getElementById('stateFilter');
+      stateSelect.innerHTML = '<option value="">All States</option>' + states.map(state => `<option value="${state}">${state}</option>`).join('');
+
+      const fromDate = new Date();
+      fromDate.setDate(fromDate.getDate() - 30);
+      document.getElementById('fromDate').value = fromDate.toISOString().split('T')[0];
+      document.getElementById('toDate').value = new Date().toISOString().split('T')[0];
     }
 
-    // Populate e-NAM trade table
-    function populateTradeTable(records) {
-      const tableBody = document.getElementById('tradeDataTable');
-      tableBody.innerHTML = '';
+    function applyFilters() {
+      const commodity = document.getElementById('commodityFilter').value;
+      const state = document.getElementById('stateFilter').value;
+      const fromDate = document.getElementById('fromDate').value;
+      const toDate = document.getElementById('toDate').value;
 
-      records.forEach(record => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${record.state || record.State || 'N/A'}</td>
-          <td>${record.apmc || record.Market || 'N/A'}</td>
-          <td>${record.commodity || record.Commodity || 'N/A'}</td>
-          <td>₹${record.min_price || record.Min_Price || 'N/A'}</td>
-          <td>₹${record.modal_price || record.Modal_Price || 'N/A'}</td>
-          <td>₹${record.max_price || record.Max_Price || 'N/A'}</td>
-          <td>${record.commodity_arrivals || record.Arrivals || 'N/A'}</td>
-          <td>${record.commodity_traded || record.Traded || 'N/A'}</td>
-          <td>${record.unit || 'Qtl'}</td>
-          <td>${record.date || record.Arrival_Date || 'N/A'}</td>
-        `;
-        tableBody.appendChild(row);
-      });
+      let filtered = allRecords;
+      if (commodity) filtered = filtered.filter(r => r.Commodity === commodity);
+      if (state) filtered = filtered.filter(r => r.State === state);
+      if (fromDate) filtered = filtered.filter(r => r.Arrival_Date >= fromDate);
+      if (toDate) filtered = filtered.filter(r => r.Arrival_Date <= toDate);
+
+      selectedCommodity = commodity;
+      initCharts(filtered);
+      populateTopProducts(filtered);
+      populateTradeTable(filtered);
+      updateOverview(filtered);
     }
 
-    // Update last update time
     function updateLastUpdate() {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString();
-      document.getElementById('lastUpdate').textContent = timeString;
+      document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
     }
 
-    // Simulate real-time updates
     function simulateRealTimeUpdates() {
       setInterval(() => {
-        fetchENAMData(); // Refetch API for live updates
+        fetchENAMData();
         updateLastUpdate();
-      }, 30000); // Update every 30 seconds
+      }, 60000);
     }
 
-    // Initialize everything when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      fetchENAMData(); // Initial fetch
+    function makeSortable(tableId) {
+      const table = document.getElementById(tableId);
+      if (table) {
+        new Sortable(table.querySelector('thead tr'), { animation: 150, ghostClass: 'sortable-ghost' });
+        table.querySelectorAll('th.sortable').forEach(header => {
+          header.addEventListener('click', () => sortTable(table, header.cellIndex));
+        });
+      }
+    }
+
+    function sortTable(table, col) {
+      const rows = Array.from(table.querySelector('tbody').rows);
+      const isNumber = rows.every(row => !isNaN(parseFloat(row.cells[col].textContent.replace(/[^0-9.-]+/g, ""))));
+
+      rows.sort((a, b) => {
+        let valA = a.cells[col].textContent.trim();
+        let valB = b.cells[col].textContent.trim();
+        if (isNumber) {
+          valA = parseFloat(valA.replace(/[^0-9.-]+/g, "")) || 0;
+          valB = parseFloat(valB.replace(/[^0-9.-]+/g, "")) || 0;
+          return valA - valB;
+        }
+        return valA.localeCompare(valB);
+      });
+
+      if (table.dataset.sortCol === col.toString()) {
+        rows.reverse();
+        table.dataset.sortDir = table.dataset.sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        table.dataset.sortCol = col;
+        table.dataset.sortDir = 'asc';
+      }
+
+      rows.forEach(row => table.querySelector('tbody').appendChild(row));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchENAMData();
       updateLastUpdate();
       simulateRealTimeUpdates();
+      document.getElementById('applyFilters').addEventListener('click', applyFilters);
+      makeSortable('topProductsTable');
+      makeSortable('tradeDataTable');
     });
   </script>
 </body>

@@ -692,11 +692,13 @@ document.addEventListener('DOMContentLoaded', function() {
       let errorMessage = 'Login failed: ' + error.message;
       if (error.message.includes('Invalid login credentials')) {
         errorMessage = 'Invalid email or password. Please check your credentials.';
+        showMessage('❌ ' + errorMessage, 'error');
       } else if (error.message.includes('Email not confirmed')) {
-        errorMessage = 'Please check your email and confirm your account.';
+        errorMessage = 'Message has been sent to your email account, confirm your email id.';
+        showMessage(errorMessage, 'info');
+      } else {
+        showMessage('❌ ' + errorMessage, 'error');
       }
-      
-      showMessage('❌ ' + errorMessage, 'error');
     } finally {
       // Reset button state
       loginBtn.disabled = false;

@@ -279,6 +279,30 @@
       flex: 1;
     }
 
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 900px;
+    }
+
     .market-overview {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -581,29 +605,60 @@
 
     footer {
       background: var(--primary-green);
+      padding: 3rem 0 2rem;
       color: white;
-      padding: 2rem;
-      text-align: center;
-      margin-top: auto;
     }
 
-    .footer-content {
+    .footer-main {
       max-width: 1200px;
       margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
     }
 
-    .footer-content p {
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
       margin-bottom: 1rem;
     }
 
-    .social-links a {
-      color: white;
-      margin: 0 1rem;
-      font-size: 1.5rem;
-      transition: color 0.3s ease;
+    .footer-links,
+    .footer-resources,
+    .footer-connect {
+      list-style: none;
     }
 
-    .social-links a:hover {
+    .footer-links li,
+    .footer-resources li,
+    .footer-connect li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a,
+    .footer-resources a,
+    .footer-connect a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover,
+    .footer-resources a:hover,
+    .footer-connect a:hover {
       color: var(--accent-green);
     }
 
@@ -648,6 +703,11 @@
       .filters-section {
         flex-direction: column;
       }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
     }
 
     @media (min-width: 769px) {
@@ -669,15 +729,18 @@
   </style>
 </head>
 <body>
-  
   <!-- Include Navbar -->
   {% include 'constants/seller/navbar.html' %}
 
   <!-- Include Sidebar -->
   {% include 'constants/seller/sidebar.html' %}
-  
 
   <main class="main-container">
+    <div class="page-header">
+      <h1><i class="fas fa-chart-line"></i> Mandi Prices</h1>
+      <p>Real-time insights into commodity prices, trade volumes, and market trends across e-NAM mandis.</p>
+    </div>
+
     <div class="real-time-indicator">
       <span class="pulse"></span>
       Live Data • Last updated: <span id="lastUpdate">Just now</span>
@@ -793,18 +856,53 @@
     </div>
   </main>
 
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 TAAZA MANDI. All rights reserved.</p>
-      <div class="social-links">
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-      </div>
-    </div>
-  </footer>
+{% include 'constants/seller/footer.html' %}
 
   <script>
+    // Mock historical data for each commodity
+    const historicalData = {
+      'Groundnut': [
+        { date: '2025-08-01', price: 7400 }, { date: '2025-08-05', price: 7450 }, { date: '2025-08-10', price: 7500 },
+        { date: '2025-08-15', price: 7550 }, { date: '2025-08-20', price: 7600 }, { date: '2025-08-23', price: 7650 }
+      ],
+      'Cotton': [
+        { date: '2025-08-01', price: 6700 }, { date: '2025-08-05', price: 6750 }, { date: '2025-08-10', price: 6800 },
+        { date: '2025-08-15', price: 6850 }, { date: '2025-08-20', price: 6875 }, { date: '2025-08-22', price: 6900 }
+      ],
+      'Maize': [
+        { date: '2025-08-01', price: 1800 }, { date: '2025-08-05', price: 1825 }, { date: '2025-08-10', price: 1850 },
+        { date: '2025-08-15', price: 1875 }, { date: '2025-08-20', price: 1900 }, { date: '2025-08-21', price: 1925 }
+      ],
+      'Turmeric': [
+        { date: '2025-08-01', price: 8900 }, { date: '2025-08-05', price: 8950 }, { date: '2025-08-10', price: 9000 },
+        { date: '2025-08-15', price: 9100 }, { date: '2025-08-20', price: 9200 }, { date: '2025-08-20', price: 9250 }
+      ],
+      'Soybean': [
+        { date: '2025-08-01', price: 4000 }, { date: '2025-08-05', price: 4050 }, { date: '2025-08-10', price: 4100 },
+        { date: '2025-08-15', price: 4150 }, { date: '2025-08-20', price: 4175 }, { date: '2025-08-23', price: 4200 }
+      ],
+      'Mustard': [
+        { date: '2025-08-01', price: 5400 }, { date: '2025-08-05', price: 5450 }, { date: '2025-08-10', price: 5500 },
+        { date: '2025-08-15', price: 5550 }, { date: '2025-08-20', price: 5600 }, { date: '2025-08-22', price: 5650 }
+      ],
+      'Chilli': [
+        { date: '2025-08-01', price: 11800 }, { date: '2025-08-05', price: 11900 }, { date: '2025-08-10', price: 12000 },
+        { date: '2025-08-15', price: 12100 }, { date: '2025-08-20', price: 12200 }, { date: '2025-08-21', price: 12250 }
+      ],
+      'Coriander': [
+        { date: '2025-08-01', price: 6900 }, { date: '2025-08-05', price: 6950 }, { date: '2025-08-10', price: 7000 },
+        { date: '2025-08-15', price: 7100 }, { date: '2025-08-20', price: 7200 }, { date: '2025-08-20', price: 7250 }
+      ],
+      'Bajra': [
+        { date: '2025-08-01', price: 2100 }, { date: '2025-08-05', price: 2150 }, { date: '2025-08-10', price: 2200 },
+        { date: '2025-08-15', price: 2250 }, { date: '2025-08-20', price: 2275 }, { date: '2025-08-23', price: 2300 }
+      ],
+      'Potato': [
+        { date: '2025-08-01', price: 1400 }, { date: '2025-08-05', price: 1450 }, { date: '2025-08-10', price: 1500 },
+        { date: '2025-08-15', price: 1550 }, { date: '2025-08-20', price: 1575 }, { date: '2025-08-22', price: 1600 }
+      ]
+    };
+
     const sampleRecords = [
       { State: 'Tamil Nadu', Market: 'Chennai', Commodity: 'Groundnut', Min_Price: 7500, Modal_Price: 7650, Max_Price: 7800, Arrivals: '150 Qtl', Traded: '120 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-23' },
       { State: 'Maharashtra', Market: 'Mumbai', Commodity: 'Cotton', Min_Price: 6800, Modal_Price: 6900, Max_Price: 7000, Arrivals: '200 Qtl', Traded: '180 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-22' },
@@ -815,7 +913,7 @@
       { State: 'Andhra Pradesh', Market: 'Vijayawada', Commodity: 'Chilli', Min_Price: 12000, Modal_Price: 12250, Max_Price: 12500, Arrivals: '120 Qtl', Traded: '100 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-21' },
       { State: 'Telangana', Market: 'Hyderabad', Commodity: 'Coriander', Min_Price: 7000, Modal_Price: 7250, Max_Price: 7500, Arrivals: '150 Qtl', Traded: '130 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-20' },
       { State: 'Haryana', Market: 'Rohtak', Commodity: 'Bajra', Min_Price: 2200, Modal_Price: 2300, Max_Price: 2400, Arrivals: '200 Qtl', Traded: '170 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-23' },
-      { State: 'Uttar Pradesh', Market: 'Lucknow', Commodity: 'Potato', Min_Price: 1500, Modal_Price: 1600, Max_Price: 1700, Arrivals: '300 Qtl', Traded: '250 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-22' },
+      { State: 'Uttar Pradesh', Market: 'Lucknow', Commodity: 'Potato', Min_Price: 1500, Modal_Price: 1600, Max_Price: 1700, Arrivals: '300 Qtl', Traded: '250 Qtl', Unit: 'Qtl', Arrival_Date: '2025-08-22' }
     ];
 
     let allRecords = [];
@@ -827,11 +925,21 @@
       const dates = [...new Set(filteredRecords.map(r => r.Arrival_Date))].sort();
 
       // Price Trends Chart
-      const avgPrices = dates.map(date => {
-        const dayRecords = filteredRecords.filter(r => r.Arrival_Date === date);
-        const sumModal = dayRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0);
-        return dayRecords.length ? sumModal / dayRecords.length : 0;
-      });
+      let priceData = [];
+      let labels = [];
+      if (selectedCommodity && historicalData[selectedCommodity]) {
+        // Use historical data for selected commodity
+        priceData = historicalData[selectedCommodity].map(d => d.price);
+        labels = historicalData[selectedCommodity].map(d => d.date);
+      } else {
+        // Aggregate data for all commodities
+        labels = [...new Set(Object.values(historicalData).flatMap(data => data.map(d => d.date)))].sort();
+        priceData = labels.map(date => {
+          const dayRecords = filteredRecords.filter(r => r.Arrival_Date === date);
+          const sumModal = dayRecords.reduce((sum, r) => sum + parseInt(r.Modal_Price || 0), 0);
+          return dayRecords.length ? sumModal / dayRecords.length : 0;
+        });
+      }
 
       const priceTitle = selectedCommodity ? `${selectedCommodity} Price Trends (Last 30 Days)` : 'Price Trends (Last 30 Days)';
       document.getElementById('priceChartTitle').textContent = priceTitle;
@@ -841,10 +949,10 @@
       priceChart = new Chart(priceCtx, {
         type: 'line',
         data: {
-          labels: dates,
+          labels: labels,
           datasets: [{
             label: 'Average Modal Price (₹)',
-            data: avgPrices,
+            data: priceData,
             borderColor: '#2d5f3f',
             backgroundColor: 'rgba(45, 95, 63, 0.1)',
             tension: 0.4,

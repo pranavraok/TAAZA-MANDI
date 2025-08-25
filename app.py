@@ -378,19 +378,72 @@ def predictor():
 # ==================== STATIC PAGES ====================
 
 @app.route('/about')
+@require_auth
 def about():
     try:
-        return render_template('info_pages/about.html')
-    except Exception:
-        return '<h1>About TAAZA MANDI</h1><p>Connecting farmers directly to buyers.</p>'
+        # Get user role from session
+        user_role = session.get('user_role')
+        
+        # Check if user has selected a role
+        if not user_role:
+            flash('Please select whether you are a buyer or seller.', 'info')
+            return redirect(url_for('user_select'))
+        
+        # Route based on user role
+        if user_role == 'buyer':
+            return render_template('constants/buyer/about_buy.html')
+        elif user_role == 'seller':
+            return render_template('constants/seller/about_sell.html')
+        else:
+            # Handle invalid role
+            flash('Invalid user role. Please select your role again.', 'error')
+            session.pop('user_role', None)  # Clear invalid role
+            return redirect(url_for('user_select'))
+            
+    except Exception as e:
+        print(f"Error in market route: {e}")
+        return f'''
+        <div style="text-align:center; padding:50px; font-family:Arial;">
+            <h1>Market - {session.get('user_role', 'User').title()}</h1>
+            <p>Explore the market for various products.</p>
+            <p><strong>Template error:</strong> {e}</p>
+            <a href="/{session.get('user_role', 'buyer')}-feed">Back to Dashboard</a>
+        </div>
+        '''
 
 @app.route('/contact')
+@require_auth
 def contact():
     try:
-        return render_template('info_pages/contact.html')
-    except Exception:
-        return '<h1>Contact Us</h1><p>Get in touch with TAAZA MANDI team.</p>'
-
+        # Get user role from session
+        user_role = session.get('user_role')
+        
+        # Check if user has selected a role
+        if not user_role:
+            flash('Please select whether you are a buyer or seller.', 'info')
+            return redirect(url_for('user_select'))
+        
+        # Route based on user role
+        if user_role == 'buyer':
+            return render_template('constants/buyer/contact_buy.html')
+        elif user_role == 'seller':
+            return render_template('constants/seller/contact_sell.html')
+        else:
+            # Handle invalid role
+            flash('Invalid user role. Please select your role again.', 'error')
+            session.pop('user_role', None)  # Clear invalid role
+            return redirect(url_for('user_select'))
+            
+    except Exception as e:
+        print(f"Error in market route: {e}")
+        return f'''
+        <div style="text-align:center; padding:50px; font-family:Arial;">
+            <h1>Market - {session.get('user_role', 'User').title()}</h1>
+            <p>Explore the market for various products.</p>
+            <p><strong>Template error:</strong> {e}</p>
+            <a href="/{session.get('user_role', 'buyer')}-feed">Back to Dashboard</a>
+        </div>
+        '''
 @app.route('/logout')
 def logout():
     session.clear()
@@ -398,12 +451,38 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/market')
+@require_auth
 def market():
     try:
-        return render_template('constants/market.html')
-    except Exception:
-        return '<h1>Market</h1><p>Explore the market for various products.</p>'
-
+        # Get user role from session
+        user_role = session.get('user_role')
+        
+        # Check if user has selected a role
+        if not user_role:
+            flash('Please select whether you are a buyer or seller.', 'info')
+            return redirect(url_for('user_select'))
+        
+        # Route based on user role
+        if user_role == 'buyer':
+            return render_template('constants/buyer/market_buy.html')
+        elif user_role == 'seller':
+            return render_template('constants/seller/market_sell.html')
+        else:
+            # Handle invalid role
+            flash('Invalid user role. Please select your role again.', 'error')
+            session.pop('user_role', None)  # Clear invalid role
+            return redirect(url_for('user_select'))
+            
+    except Exception as e:
+        print(f"Error in market route: {e}")
+        return f'''
+        <div style="text-align:center; padding:50px; font-family:Arial;">
+            <h1>Market - {session.get('user_role', 'User').title()}</h1>
+            <p>Explore the market for various products.</p>
+            <p><strong>Template error:</strong> {e}</p>
+            <a href="/{session.get('user_role', 'buyer')}-feed">Back to Dashboard</a>
+        </div>
+        '''
 @app.route('/equipment')
 def equipment():
     try:

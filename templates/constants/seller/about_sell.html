@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAAZA MANDI - About Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --background: #f6faef;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--background);
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 72px;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar input[type="text"] {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 2rem;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .navbar input[type="text"]::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .navbar input[type="text"]:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .navbar ul li a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .navbar ul li a:hover {
+      color: white;
+    }
+
+    .navbar ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .navbar ul li a:hover::after {
+      width: 100%;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .auth-buttons button {
+      padding: 0.6rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .auth-buttons button:first-child {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-buttons button:last-child {
+      background: white;
+      color: var(--primary-green);
+      border-color: white;
+    }
+
+    .auth-buttons button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    aside {
+      grid-area: sidebar;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-md);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1rem;
+      background: var(--secondary-green);
+    }
+
+    .sidebar-profile .name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-profile .role {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-link {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: white;
+      color: var(--primary-green);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-link:hover {
+      background: var(--primary-green);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-section-title {
+      padding: 1.5rem 2rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-menu, .sidebar-resources, .sidebar-settings {
+      list-style: none;
+      padding: 0 1rem;
+    }
+
+    .sidebar-menu li, .sidebar-resources li, .sidebar-settings li {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-menu a, .sidebar-resources a, .sidebar-settings a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .sidebar-menu a:hover, .sidebar-resources a:hover, .sidebar-settings a:hover {
+      background: var(--light-green);
+      color: var(--primary-green);
+      transform: translateX(4px);
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      flex: 1;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 1rem;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .content-section {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+    }
+
+    .content-section h2 {
+      color: var(--primary-green);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .content-section p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background: var(--ultra-light-green);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--accent-green);
+    }
+
+    .feature-card h3 {
+      color: var(--primary-green);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+      }
+
+      .navbar input[type="text"] {
+        margin: 0 0 1rem 0;
+        max-width: 100%;
+      }
+
+      .navbar ul {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #d1e7dd;
+      }
+    }
+
+    @media (min-width: 769px) {
+      body {
+        display: grid;
+        grid-template-areas:
+          "nav nav"
+          "sidebar main";
+        grid-template-columns: 320px 1fr;
+        grid-template-rows: 72px 1fr;
+      }
+
+      header {
+        grid-area: nav;
+      }
+
+      aside {
+        grid-area: sidebar;
+      }
+
+      .main-container {
+        grid-area: main;
+      }
+    }
+        footer {
+      background: var(--primary-green);
+      padding: 3rem 0 2rem;
+      color: white;
+    }
+
+    .footer-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links,
+    .footer-resources,
+    .footer-connect {
+      list-style: none;
+    }
+
+    .footer-links li,
+    .footer-resources li,
+    .footer-connect li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a,
+    .footer-resources a,
+    .footer-connect a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover,
+    .footer-resources a:hover,
+    .footer-connect a:hover {
+      color: var(--accent-green);
+    }
+
+    @media (max-width: 768px) {
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+      }
+
+      .navbar input[type="text"] {
+        margin: 0 0 1rem 0;
+        max-width: 100%;
+      }
+
+      .navbar ul {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .main-container {
+        padding: 1rem;
+      }
+
+      aside {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .e-nam-updates {
+        margin-top: 2rem;
+      }
+
+      .filters-section {
+        flex-direction: column;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (min-width: 769px) {
+      body {
+        display: grid;
+        grid-template-areas:
+          "nav nav"
+          "sidebar main"
+          "footer footer";
+        grid-template-columns: 320px 1fr;
+        grid-template-rows: 72px 1fr auto;
+      }
+
+      header { grid-area: nav; }
+      aside { grid-area: sidebar; }
+      .main-container { grid-area: main; }
+      footer { grid-area: footer; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Include Navbar -->
+  {% include 'constants/seller/navbar.html' %}
+
+  <!-- Include Sidebar -->
+  {% include 'constants/seller/sidebar.html' %}
+
+  <div class="main-container">
+    <div class="header">
+      <h1><i class="fas fa-seedling"></i> About TAAZA MANDI</h1>
+      <p>Empowering farmers and connecting communities through digital innovation</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Our Mission</h2>
+      <p>At Taaza Mandi, our mission is to empower farmers by providing a transparent, digital marketplace where they can showcase their crops, access real-time market prices, discover smart crop suggestions, explore government schemes, and conveniently rent or buy agricultural equipment. We strive to bridge the gap between farmers and buyers, ensuring fair trade, informed decisions, and enhanced productivity.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Direct Connection</h3>
+          <p>Connect farmers directly with buyers, eliminating intermediaries and ensuring better prices for both parties.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Market Insights</h3>
+          <p>Access real-time market prices and trends to make informed decisions about when and where to sell.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Crop SpotLight</h3>
+          <p>Digital marketplace where farmers showcase their crops with images, quality info, and real-time prices. Buyers can compare, bid, or buy instantly, ensuring transparent and fair trade</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>Our Vision</h2>
+      <p>Our vision is to revolutionize agriculture through technology, creating a future where farmers have complete visibility, smarter choices, and seamless access to resources, enabling them to maximize profits, reduce waste, and thrive sustainably in a modern agricultural ecosystem.</p>
+    </div>
+    <div class="content-section">
+      <h2>Why Choose TAAZA MANDI?</h2>
+      <ul style="color: var(--text-secondary); margin-left: 2rem;">
+        <li>Transparent pricing and fair market rates</li>
+        <li>Real-time market analysis and insights</li>
+        <li>Smart crop suggestions and government schemes</li>
+        <li>Smart Assistant bot</li>
+        <li>Convenient equipment rental</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Include Footer -->
+  {% include 'constants/seller/footer.html' %}
+
+  <script>
+    // Placeholder for navigation.js (remove if not needed or replace with actual script)
+    console.log("Navigation script loaded");
+  </script>
+</body>
+</html>

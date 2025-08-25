@@ -48,95 +48,6 @@
       min-height: 100vh;
     }
 
-    /* Enhanced Navbar */
-    header {
-      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-      box-shadow: var(--shadow-md);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-      height: 72px;
-    }
-
-    .logo {
-      color: white;
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .navbar input[type="text"] {
-      flex: 1;
-      max-width: 400px;
-      margin: 0 2rem;
-      padding: 0.75rem 1rem 0.75rem 2.5rem;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: var(--radius-lg);
-      font-size: 0.95rem;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-    }
-
-    .navbar input[type="text"]::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-
-    .navbar input[type="text"]:focus {
-      outline: none;
-      border-color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.15);
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
-    }
-
-    .navbar ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
-
-    .navbar ul li a {
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      position: relative;
-      padding: 0.5rem 0;
-    }
-
-    .navbar ul li a:hover {
-      color: white;
-    }
-
-    .navbar ul li a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: white;
-      transition: width 0.3s ease;
-    }
-
-    .navbar ul li a:hover::after {
-      width: 100%;
-    }
-
     /* Main Container */
     .main-wrapper {
       display: flex;
@@ -146,7 +57,7 @@
       padding: 0 2rem;
     }
 
-    /* Enhanced Sidebar */
+    /* Sidebar */
     aside {
       width: 320px;
       background: var(--card-bg);
@@ -166,6 +77,7 @@
       background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
       border-bottom: 1px solid var(--border-light);
+      position: relative;
     }
 
     .sidebar-profile::before {
@@ -211,6 +123,25 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+    }
+
+    .sidebar-stats {
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .sidebar-stats div {
+      flex: 1;
+    }
+
+    .sidebar-stats strong {
+      display: block;
+      color: var(--primary-green);
+      font-weight: 600;
     }
 
     .profile-link {
@@ -276,23 +207,94 @@
       gap: 2rem;
     }
 
+    /* Enhanced Profile Section */
+    .profile-section {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .profile-cover {
+      height: 200px;
+      background: url('https://images.unsplash.com/photo-1505843513577-22bb7d21e455?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
     .profile-header {
       text-align: center;
-      margin-bottom: 2rem;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .profile-header .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border: 5px solid white;
+      margin: -80px auto 1rem;
+      box-shadow: var(--shadow-lg);
     }
 
     .profile-header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--primary-green);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--success);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    .profile-rating {
+      color: #f6c23e;
+      font-size: 1rem;
       margin-bottom: 1rem;
     }
 
-    .profile-header p {
-      font-size: 1.1rem;
+    .profile-rating i {
+      margin-right: 0.25rem;
+    }
+
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      padding: 0 2rem 2rem;
+      text-align: center;
+    }
+
+    .profile-details div {
+      font-size: 0.95rem;
       color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
+    }
+
+    .profile-details strong {
+      display: block;
+      color: var(--primary-green);
+      font-weight: 600;
     }
 
     /* Account Settings */
@@ -549,7 +551,46 @@
       color: var(--secondary-green);
     }
 
-    /* Logout Button - Positioned below main container */
+    /* No Posts Section */
+    .no-posts {
+      text-align: center;
+      padding: 3rem;
+      background: var(--ultra-light-green);
+      border-radius: var(--radius-lg);
+      border: 2px dashed var(--border-light);
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .no-posts:hover {
+      border-color: var(--secondary-green);
+      background: var(--light-green);
+    }
+
+    .no-posts i {
+      font-size: 2.5rem;
+      color: var(--secondary-green);
+      margin-bottom: 1rem;
+    }
+
+    .no-posts h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .no-posts p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .no-posts .add-btn {
+      font-size: 1rem;
+      padding: 0.75rem 2rem;
+    }
+
+    /* Logout Button */
     .logout-section {
       max-width: 1400px;
       margin: 3rem auto 4rem auto;
@@ -649,75 +690,65 @@
         grid-template-columns: 1fr;
       }
 
-      .navbar {
-        padding: 1rem;
-        flex-direction: column;
-        gap: 1rem;
-        height: auto;
+      .profile-cover {
+        height: 150px;
       }
 
-      .navbar input[type="text"] {
-        margin: 0;
-        max-width: 100%;
+      .profile-header .profile-avatar {
+        width: 100px;
+        height: 100px;
+        margin: -60px auto 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <i class="fas fa-seedling"></i>
-        TAAZA MANDI
-      </div>
-      <input type="text" placeholder="🔍 Search products, farmers...">
-      <ul>
-        <li><a href="{{ url_for('seller_feed') }}">Home</a></li>
-        <li><a href="{{ url_for('post_upload') }}">Post</a></li>
-        <li><a href="{{ url_for('about') }}">About</a></li>
-        <li><a href="{{ url_for('contact') }}">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  {% include 'constants/seller/navbar.html' %}
 
   <div class="main-wrapper">
-    <aside>
-      <div class="sidebar-profile">
-        <div class="profile-avatar" id="sidebarAvatar">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="name" id="sidebarName">Loading...</div>
-        <div class="role" id="sidebarRole">
-          <i class="fas fa-seedling"></i>
-          Loading...
-        </div>
-        <a href="#" class="profile-link">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      </div>
-      
-      <div class="sidebar-section-title">Dashboard</div>
-      <ul class="sidebar-menu">
-                    <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
-            <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
-        <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
-        <li><a href="#"><i class="fas fa-messages"></i> Messages</a></li>
-      </ul>
-      
-      <div class="sidebar-section-title">Resources</div>
-      <ul class="sidebar-menu">
-        <li><a href="#"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-        <li><a href="#"><i class="fas fa-university"></i> Government Schemes</a></li>
-        <li><a href="#"><i class="fas fa-truck"></i> Equipment Rent</a></li>
-      </ul>
-    </aside>
+    {% include 'constants/seller/sidebar.html' %}
 
     <div class="main-container">
-      <div class="profile-header">
-        <h1>Seller Dashboard</h1>
-        <p>Manage your account settings and product listings</p>
-      </div>
+      <!-- Enhanced Profile Section -->
+      <section class="profile-section">
+        <div class="profile-cover"></div>
+        <div class="profile-header">
+          <div class="profile-avatar" id="mainAvatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h1 id="mainName">Loading...</h1>
+          <div class="verified-badge">
+            <i class="fas fa-check-circle"></i>
+            Verified Seller
+          </div>
+          <div class="profile-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span id="profileRating">4.5 (50 reviews)</span>
+          </div>
+          <div class="profile-details">
+            <div>
+              <strong id="profileLocation">Punjab</strong>
+              Location
+            </div>
+            <div>
+              <strong id="profileFarmSize">50 Acres</strong>
+              Farm Size
+            </div>
+            <div>
+              <strong id="profileExperience">10 Years</strong>
+              Experience
+            </div>
+            <div>
+              <strong id="profilePosts">0</strong>
+              Active Listings
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- Message Display -->
       <div id="message" class="message hidden">
@@ -773,6 +804,22 @@
             <input type="text" id="userType" readonly>
           </div>
 
+          <div class="form-group">
+            <label>
+              <i class="fas fa-tractor"></i>
+              Farm Size (Acres)
+            </label>
+            <input type="text" id="farmSize" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-calendar-alt"></i>
+              Years of Experience
+            </label>
+            <input type="text" id="experience" readonly>
+          </div>
+
           <div class="form-group full-width">
             <label>
               <i class="fas fa-info-circle"></i>
@@ -787,7 +834,7 @@
           Edit Profile
         </button>
 
-        <button type="submit" class="save-btn" id="saveBtn" form="accountForm" style="display: none;">
+        <button type="submit" class="save-btn" id="saveBtn" form="accountForm">
           <i class="fas fa-save"></i>
           Save Changes
         </button>
@@ -806,14 +853,21 @@
           </button>
         </div>
         
-        <div class="listing-grid" id="listingGrid">
-          <!-- Listings will be populated dynamically -->
+        <div class="listing-grid" id="listingGrid"></div>
+        <div class="no-posts hidden" id="noPosts">
+          <i class="fas fa-box-open"></i>
+          <h3>No Posts Available</h3>
+          <p>Start selling by adding your first product listing!</p>
+          <button class="add-btn" onclick="addNewListing()">
+            <i class="fas fa-plus"></i>
+            Post Now
+          </button>
         </div>
       </section>
     </div>
   </div>
 
-  <!-- Logout Button - Positioned below main container -->
+  <!-- Logout Button -->
   <div class="logout-section">
     <button class="logout-btn" id="logoutBtn" onclick="logout()">
       <i class="fas fa-sign-out-alt"></i>
@@ -821,8 +875,10 @@
     </button>
   </div>
 
+  {% include 'constants/seller/footer.html' %}
+
   <script>
-    // Initialize Supabase client - Replace with your actual credentials
+    // Initialize Supabase client
     const supabaseUrl = '{{ config.SUPABASE_URL if config else "YOUR_SUPABASE_URL" }}';
     const supabaseKey = '{{ config.SUPABASE_ANON_KEY if config else "YOUR_SUPABASE_ANON_KEY" }}';
     const { createClient } = supabase;
@@ -849,14 +905,17 @@
     // Load user data from Supabase and Flask session
     async function loadUserData() {
       try {
-        // For Flask integration, data will be injected via templates
         const userData = {
           fullName: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata else 'John' }} {{ session.user.user_metadata.last_name if session.user and session.user.user_metadata else 'Doe' }}",
           email: "{{ session.user.email if session.user else 'john.doe@example.com' }}",
           phone: "{{ session.user.user_metadata.phone if session.user and session.user.user_metadata else '+91 9876543210' }}",
           location: "{{ session.user.user_metadata.state if session.user and session.user.user_metadata else 'Punjab' }}",
           userType: "{{ session.user.user_metadata.user_type if session.user and session.user.user_metadata else 'Seller' }}",
-          about: "Experienced organic farmer specializing in wheat and rice cultivation."
+          farmSize: "{{ session.user.user_metadata.farm_size if session.user and session.user.user_metadata else '50 Acres' }}",
+          experience: "{{ session.user.user_metadata.experience if session.user and session.user.user_metadata else '10 Years' }}",
+          about: "{{ session.user.user_metadata.about if session.user and session.user.user_metadata else 'Experienced organic farmer specializing in wheat and rice cultivation.' }}",
+          rating: "{{ session.user.user_metadata.rating if session.user and session.user.user_metadata else '4.5' }}",
+          reviews: "{{ session.user.user_metadata.reviews if session.user and session.user.user_metadata else '50' }}"
         };
 
         // Populate form fields
@@ -865,11 +924,16 @@
         document.getElementById('phone').value = userData.phone;
         document.getElementById('location').value = userData.location;
         document.getElementById('userType').value = userData.userType.charAt(0).toUpperCase() + userData.userType.slice(1);
+        document.getElementById('farmSize').value = userData.farmSize;
+        document.getElementById('experience').value = userData.experience;
         document.getElementById('about').value = userData.about;
 
-        // Update sidebar
-        document.getElementById('sidebarName').textContent = userData.fullName;
-        document.getElementById('sidebarRole').innerHTML = `<i class="fas fa-seedling"></i> ${userData.userType} Account`;
+        // Update profile section
+        document.getElementById('mainName').textContent = userData.fullName;
+        document.getElementById('profileLocation').textContent = userData.location;
+        document.getElementById('profileFarmSize').textContent = userData.farmSize;
+        document.getElementById('profileExperience').textContent = userData.experience;
+        document.getElementById('profileRating').textContent = `${userData.rating} (${userData.reviews} reviews)`;
 
         // Load listings from Supabase
         await loadListings();
@@ -882,35 +946,47 @@
     // Load listings from Supabase
     async function loadListings() {
       try {
-        // For demo purposes, using sample data
-        const sampleListings = [
-          { id: 1, title: 'Premium Organic Wheat', price: '₹1,200/quintal', icon: 'seedling' },
-          { id: 2, title: 'Basmati Rice', price: '₹1,500/quintal', icon: 'leaf' },
-          { id: 3, title: 'Red Onions', price: '₹40/kg', icon: 'apple-alt' },
-          { id: 4, title: 'Fresh Tomatoes', price: '₹30/kg', icon: 'carrot' },
-          { id: 5, title: 'Green Chilies', price: '₹80/kg', icon: 'spa' }
-        ];
+        const userId = "{{ session.user.id if session.user else 'demo-user-id' }}";
+        const { data: listings, error } = await supabaseClient
+          .from('listings')
+          .select('*')
+          .eq('user_id', userId);
+
+        if (error) throw error;
 
         const listingGrid = document.getElementById('listingGrid');
+        const noPostsDiv = document.getElementById('noPosts');
         listingGrid.innerHTML = '';
 
-        sampleListings.forEach(listing => {
-          const listingDiv = document.createElement('div');
-          listingDiv.className = 'listing';
-          listingDiv.innerHTML = `
-            <div class="listing-icon">
-              <i class="fas fa-${listing.icon}"></i>
-            </div>
-            <h4>${listing.title}</h4>
-            <p class="listing-price">${listing.price}</p>
-          `;
-          listingGrid.appendChild(listingDiv);
-        });
+        if (listings && listings.length > 0) {
+          listings.forEach(listing => {
+            const listingDiv = document.createElement('div');
+            listingDiv.className = 'listing';
+            listingDiv.innerHTML = `
+              <div class="listing-icon">
+                <i class="fas fa-${listing.icon || 'seedling'}"></i>
+              </div>
+              <h4>${listing.title}</h4>
+              <p class="listing-price">${listing.price}</p>
+            `;
+            listingGrid.appendChild(listingDiv);
+          });
+          noPostsDiv.classList.add('hidden');
+          document.getElementById('profilePosts').textContent = listings.length;
+        } else {
+          listingGrid.classList.add('hidden');
+          noPostsDiv.classList.remove('hidden');
+          document.getElementById('profilePosts').textContent = '0';
+        }
 
         console.log('Listings loaded successfully');
       } catch (error) {
         console.error('Error loading listings:', error);
         showMessage('Failed to load listings', 'error');
+        const listingGrid = document.getElementById('listingGrid');
+        const noPostsDiv = document.getElementById('noPosts');
+        listingGrid.classList.add('hidden');
+        noPostsDiv.classList.remove('hidden');
       }
     }
 
@@ -950,21 +1026,38 @@
       const saveBtn = document.getElementById('saveBtn');
       const originalContent = saveBtn.innerHTML;
       
-      // Show loading
       saveBtn.disabled = true;
       saveBtn.innerHTML = '<div class="loading"></div> Saving...';
 
       try {
-        // Here you would send data to Flask backend or Supabase
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+        const userId = "{{ session.user.id if session.user else 'demo-user-id' }}";
+        const updates = {
+          first_name: document.getElementById('fullName').value.split(' ')[0],
+          last_name: document.getElementById('fullName').value.split(' ').slice(1).join(' '),
+          phone: document.getElementById('phone').value,
+          state: document.getElementById('location').value,
+          farm_size: document.getElementById('farmSize').value,
+          experience: document.getElementById('experience').value,
+          about: document.getElementById('about').value
+        };
+
+        const { error } = await supabaseClient
+          .from('profiles')
+          .update(updates)
+          .eq('user_id', userId);
+
+        if (error) throw error;
 
         showMessage("Profile updated successfully!", 'success');
         
-        // Update sidebar with new data
+        // Update profile section
         const fullName = document.getElementById('fullName').value;
-        document.getElementById('sidebarName').textContent = fullName;
+        document.getElementById('mainName').textContent = fullName;
+        document.getElementById('profileLocation').textContent = document.getElementById('location').value;
+        document.getElementById('profileFarmSize').textContent = document.getElementById('farmSize').value;
+        document.getElementById('profileExperience').textContent = document.getElementById('experience').value;
 
-        toggleEditMode(); // Exit edit mode
+        toggleEditMode();
       } catch (error) {
         console.error('Save error:', error);
         showMessage("Failed to update profile. Please try again.", 'error');
