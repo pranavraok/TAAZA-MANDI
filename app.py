@@ -1,24 +1,36 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 import jwt
 import os
+from dotenv import load_dotenv
 from functools import wraps
-from supabase import create_client, Client 
+from supabase import create_client, Client
 import joblib
 import numpy as np
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'taaza-mandi-super-secret-key-change-in-production-2025')
 
-# ---------- Supabase configuration ----------
-SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://wesrjuxmbudivggitawl.supabase.co')
-SUPABASE_JWT_SECRET = os.environ.get('SUPABASE_JWT_SECRET', '/1l7yuaS34mIaYd7Qa0863vr2uHzT559zGDIYSX/mIAjop+t2PhbfEOYq6IORyxS3T03W+WbVsmJ1cZElPFaKA==')
-SUPABASE_ANON_KEY = os.environ.get('SUPABASE_ANON_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3JqdXhtYnVkaXZnZ2l0YXdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NDA3OTYsImV4cCI6MjA3MTQxNjc5Nn0.KTHwj3jAGWC-9d5gIL6Znr2u22ycdpo1VXq8JHJq3Jg')
+# ==================== SUPABASE CONFIGURATION ====================
+
+load_dotenv()
+
+SUPABASE_URL = os.environ.get('SUPABASE_URL')
+SUPABASE_JWT_SECRET = os.environ.get('SUPABASE_JWT_SECRET')
+SUPABASE_ANON_KEY = os.environ.get('SUPABASE_ANON_KEY')
+
+if not SUPABASE_URL:
+    raise ValueError("SUPABASE_URL is not set in the .env file")
+if not SUPABASE_JWT_SECRET:
+    raise ValueError("SUPABASE_JWT_SECRET is not set in the .env file")
+if not SUPABASE_ANON_KEY:
+    raise ValueError("SUPABASE_ANON_KEY is not set in the .env file")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-# Load ML model
-model = joblib.load('final_model.pkl')
+# ==================== LOAD ML MODEL ====================
 
+model = joblib.load('model/final_model.pkl')
 
 # ==================== AUTH HELPERS ====================
 
@@ -58,7 +70,6 @@ def inject_config():
         }
     }
 
-
 # ==================== MAIN ROUTES ====================
 
 @app.route('/')
@@ -67,13 +78,12 @@ def index():
         return redirect(url_for('user_select'))
     return render_template('index.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         if session.get('user'):
             return redirect(url_for('user_select'))
-        return render_template('login.html')
+        return render_template('auth/login.html')
 
     try:
         data = request.get_json(force=True, silent=True) or {}
@@ -87,13 +97,12 @@ def login():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'GET':
         if session.get('user'):
             return redirect(url_for('user_select'))
-        return render_template('signup.html')
+        return render_template('auth/signup.html')
 
     try:
         data = request.get_json(force=True, silent=False)
@@ -113,13 +122,12 @@ def signup():
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
 
-
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'GET':
         if session.get('user'):
             return redirect(url_for('user_select'))
-        return render_template('forgot_password.html')
+        return render_template('auth/forgot_password.html')
 
     try:
         data = request.get_json(force=True, silent=True) or {}
@@ -131,7 +139,6 @@ def forgot_password():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-
 @app.route('/user-select', methods=['GET', 'POST'])
 @require_auth
 def user_select():
@@ -141,7 +148,7 @@ def user_select():
             return redirect(url_for('buyer_feed'))
         if role == 'seller':
             return redirect(url_for('seller_feed'))
-        return render_template('user_select.html')
+        return render_template('auth/user_select.html')
 
     try:
         data = request.get_json(force=True, silent=True) or {}
@@ -153,7 +160,6 @@ def user_select():
         return jsonify({'status': 'success', 'message': f'Role set as {role}', 'redirect_url': redirect_url})
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
-
 
 # ==================== DASHBOARD ====================
 
@@ -168,8 +174,7 @@ def seller_feed():
         .eq("seller_email", session['user']['email']) \
         .execute()
 
-    return render_template('seller_feed.html', products=response.data)
-
+    return render_template('feeds/seller_feed.html', products=response.data)
 
 @app.route('/buyer-feed')
 @require_auth
@@ -178,8 +183,7 @@ def buyer_feed():
         return redirect(url_for('user_select'))
 
     products = supabase.table("products").select("*").execute()
-    return render_template('buyer_feed.html', products=products.data)
-
+    return render_template('feeds/buyer_feed.html', products=products.data)
 
 # ==================== PROFILE ====================
 
@@ -192,7 +196,7 @@ def buyer_profile():
 
     if request.method == 'GET':
         try:
-            return render_template('buyer_profile.html')
+            return render_template('profiles/buyer_profile.html')
         except Exception:
             return '''
             <div style="text-align:center; padding:50px; font-family:Arial;">
@@ -208,7 +212,6 @@ def buyer_profile():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-
 @app.route('/seller_profile', methods=['GET', 'POST'])
 @app.route('/seller-profile', methods=['GET', 'POST'])
 @require_auth
@@ -218,7 +221,7 @@ def seller_profile():
 
     if request.method == 'GET':
         try:
-            return render_template('seller_profile.html')
+            return render_template('profiles/seller_profile.html')
         except Exception:
             return '''
             <div style="text-align:center; padding:50px; font-family:Arial;">
@@ -233,7 +236,6 @@ def seller_profile():
         return jsonify({'status': 'success', 'message': 'Profile updated successfully'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
 
 # ==================== PRODUCT UPLOAD ====================
 
@@ -295,7 +297,6 @@ def upload_product():
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Upload failed: {str(e)}'}), 500
 
-
 @app.route('/post-upload')
 @require_auth
 def post_upload():
@@ -303,53 +304,90 @@ def post_upload():
         return redirect(url_for('user_select'))
 
     try:
-        return render_template('post_upload.html')
+        return render_template('/constants/seller/post_upload.html')
     except Exception:
         return '''
         <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Post New Product</h1>
             <p>Upload your farm produce here!</p>
             <p><strong>Template: post_upload.html not found</strong></p>
-            <a href="/seller-feed">Back to Dashboard</a>
+            <a href="feeds/seller-feed">Back to Dashboard</a>
         </div>
         '''
-
 
 # ==================== PREDICTOR ====================
 
 @app.route('/predictor', methods=['GET', 'POST'])
+@require_auth
 def predictor():
-    crop = None
+    if session.get('user_role') != 'seller':
+        return redirect(url_for('user_select'))
+
     if request.method == 'POST':
         try:
-            n = float(request.form['n'])
-            p = float(request.form['p'])
-            k = float(request.form['k'])
-            humidity = float(request.form['humidity'])
-            rainfall = float(request.form['rainfall'])
+            n = float(request.form.get('n', 0))
+            p = float(request.form.get('p', 0))
+            k = float(request.form.get('k', 0))
+            humidity = float(request.form.get('humidity', 0))
+            rainfall = float(request.form.get('rainfall', 0))
 
+            # Validate inputs
+            inputs = [
+                ('n', n, 0, 200),
+                ('p', p, 0, 150),
+                ('k', k, 0, 200),
+                ('humidity', humidity, 0, 100),
+                ('rainfall', rainfall, 0, 3000)
+            ]
+            for name, value, min_val, max_val in inputs:
+                if value < min_val or value > max_val:
+                    return jsonify({'status': 'error', 'message': f'{name} must be between {min_val} and {max_val}'}), 400
+
+            # Use model to predict base crop
             features = np.array([[n, p, k, humidity, rainfall]])
             prediction = model.predict(features)[0]
             crop = prediction.upper()
+            current_time = datetime.now().strftime('%I:%M %p IST on %B %d, %Y')  # 04:36 PM IST on August 25, 2025
+
+            return jsonify({
+                'status': 'success',
+                'crop_name': crop,
+                'n': n, 'p': p, 'k': k,
+                'humidity': humidity,
+                'rainfall': rainfall,
+                'timestamp': current_time
+            })
+
         except Exception as e:
-            crop = f"❌ Error during prediction: {e}"
+            print(f"Prediction error: {str(e)}")  # Debug prediction error
+            return jsonify({'status': 'error', 'message': f'Error occurred during prediction: {str(e)}'}), 500
 
-    return render_template('predictor.html', crop=crop)
-
+    try:
+        return render_template('constants/seller/predictor.html')
+    except Exception as e:
+        print(f"Template rendering error: {str(e)}")  # Debug template error
+        return '''
+        <div style="text-align:center; padding:50px; font-family:Arial;">
+            <h1>Smart Crop Predictor</h1>
+            <p>Predict the best crop for your conditions!</p>
+            <p><strong>Template: constants/seller/predictor.html not found</strong></p>
+            <a href="{{ url_for('seller_feed') }}">Back to Seller Feed</a>
+        </div>
+        '''
 
 # ==================== STATIC PAGES ====================
 
 @app.route('/about')
 def about():
     try:
-        return render_template('about.html')
+        return render_template('info_pages/about.html')
     except Exception:
         return '<h1>About TAAZA MANDI</h1><p>Connecting farmers directly to buyers.</p>'
 
 @app.route('/contact')
 def contact():
     try:
-        return render_template('contact.html')
+        return render_template('info_pages/contact.html')
     except Exception:
         return '<h1>Contact Us</h1><p>Get in touch with TAAZA MANDI team.</p>'
 
@@ -362,24 +400,23 @@ def logout():
 @app.route('/market')
 def market():
     try:
-        return render_template('market.html')
+        return render_template('constants/market.html')
     except Exception:
         return '<h1>Market</h1><p>Explore the market for various products.</p>'
 
 @app.route('/equipment')
 def equipment():
     try:
-        return render_template('equipment.html')
+        return render_template('constants/seller/equipment.html')
     except Exception as e:
         return f'<h1>Equipment</h1><p>Error: {e}</p>'
 
 @app.route('/schemes')
 def schemes():
     try:
-        return render_template('schemes.html')
+        return render_template('constants/seller/schemes.html')
     except Exception:
         return '<h1>Government Schemes</h1><p>Explore various government schemes for farmers.</p>'
-
 
 # ==================== API ROUTES ====================
 
@@ -405,13 +442,12 @@ def update_profile():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-
 # ==================== ERROR HANDLERS ====================
 
 @app.errorhandler(404)
 def not_found(error):
     try:
-        return render_template('404.html'), 404
+        return render_template('errors/404.html'), 404
     except Exception:
         return f'''
         <div style="text-align:center; padding:50px; font-family:Arial;">
@@ -425,7 +461,7 @@ def not_found(error):
 @app.errorhandler(500)
 def internal_error(error):
     try:
-        return render_template('500.html'), 500
+        return render_template('errors/500.html'), 500
     except Exception:
         return '''
         <div style="text-align:center; padding:50px; font-family:Arial;">
@@ -434,7 +470,6 @@ def internal_error(error):
             <a href="/">Back to Home</a>
         </div>
         ''', 500
-
 
 # ==================== RUN ====================
 

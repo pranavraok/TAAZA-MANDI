@@ -626,56 +626,8 @@
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <i class="fas fa-seedling"></i>
-        TAAZA MANDI
-      </div>
-      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits...">
-      <ul>
-        <li><a href="{{ url_for('index') }}">Home</a></li>
-        <li><a href="{{ url_for('market') }}" class="active">Market</a></li>
-        <li><a href="{{ url_for('about') }}">About Us</a></li>
-        <li><a href="{{ url_for('contact') }}">Contact</a></li>
-      </ul>
-      <div class="auth-buttons">
-        <button>Login</button>
-        <button>Sign Up</button>
-      </div>
-    </nav>
-  </header>
-
-  <aside>
-    <div class="sidebar-profile">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%234a8f5f'/%3E%3Ctext x='40' y='45' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E" alt="Profile">
-      <div class="name">John Farmer</div>
-      <div class="role">✨ Seller Account</div>
-              <a href="{{ url_for('seller_profile') }}" class="profile-link">
-        <i class="fas fa-user"></i>
-        View Profile
-      </a>
-    </div>
-    
-    <div class="sidebar-section-title">Dashboard</div>
-    <ul class="sidebar-menu">
-                  <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
-            <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
-    </ul>
-    
-    <div class="sidebar-section-title">Resources</div>
-    <ul class="sidebar-resources">
-                  <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-            <li><a href="{{ url_for('schemes') }}"><i class="fas fa-university"></i> Government Schemes</a></li>
-            <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
-    </ul>
-    
-    <div class="sidebar-section-title">Settings</div>
-    <ul class="sidebar-settings">
-      <li><a href="#"><i class="fas fa-cog"></i> Account Settings</a></li>
-      <li><a href="#"><i class="fas fa-question-circle"></i> Help & Support</a></li>
-    </ul>
-  </aside>
+  
+  
 
   <div class="main-container">
     <!-- Real-time Indicator -->

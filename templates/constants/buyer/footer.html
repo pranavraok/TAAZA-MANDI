@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer - TAAZA MANDI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Enhanced Footer */
+    footer {
+      background: var(--card-bg);
+      padding: 3rem 0 1rem 0;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-light);
+      margin-top: 2rem;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links, .footer-resources, .footer-connect {
+      list-style: none;
+    }
+
+    .footer-links li, .footer-resources li, .footer-connect li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a, .footer-resources a, .footer-connect a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover, .footer-resources a:hover, .footer-connect a:hover {
+      color: var(--primary-green);
+    }
+
+    /* Focus States */
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-main">
+      <div>
+        <div class="footer-brand">
+          <i class="fas fa-seedling"></i>
+          TAAZA MANDI
+        </div>
+        <div>Connecting farmers directly to buyers through a simple and efficient marketplace platform that empowers rural communities.</div>
+      </div>
+      <div>
+        <div class="footer-section-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-section-title">Buyer Resources</div>
+        <ul class="footer-resources">
+          <li><a href="#"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+          <li><a href="{{ url_for('market') }}" target="_blank"><i class="fas fa-university"></i> Market Prices</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-section-title">Connect With Us</div>
+        <ul class="footer-connect">
+          <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+          <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+          <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+          <li><a href="mailto:support@taazamandi.com"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center;color:#718096;font-size:0.9rem;padding:2rem 0 1rem 0;border-top:1px solid var(--border-light);margin-top:2rem;">
+      © 2025 TAAZA MANDI. All Rights Reserved. | Made with ❤️ for farmers
+    </div>
+  </footer>
+</body>
+</html>

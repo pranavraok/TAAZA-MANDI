@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar - TAAZA MANDI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #2d5f3f;
+      --secondary-green: #4a8f5f;
+      --accent-green: #6bb77b;
+      --light-green: #e8f5e8;
+      --ultra-light-green: #f4fbf4;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a5568;
+      --text-light: #718096;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Enhanced Sidebar */
+    aside {
+      background: var(--card-bg);
+      box-shadow: var(--shadow-md);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-light);
+    }
+
+    .sidebar-profile {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .sidebar-profile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1rem;
+      background: var(--secondary-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sidebar-profile .name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-profile .role {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .profile-link {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: white;
+      color: var(--primary-green);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-link:hover {
+      background: var(--primary-green);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-section-title {
+      padding: 1.5rem 2rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 1rem;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      font-weight: 500;
+      gap: 0.75rem;
+    }
+
+    .sidebar-menu a:hover {
+      background: var(--light-green);
+      color: var(--primary-green);
+      transform: translateX(4px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      aside {
+        display: none;
+      }
+    }
+
+    /* Focus States */
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <div class="sidebar-profile">
+      <!-- Dynamic Avatar -->
+      <div class="profile-avatar" id="sidebarAvatar">
+        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
+          {{ session.user.user_metadata.first_name[0]|upper }}
+        {% else %}
+          <i class="fas fa-user"></i>
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Name -->
+      <div class="name" id="sidebarName">
+        {% if session.user and session.user.user_metadata %}
+          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
+        {% elif session.user %}
+          {{ session.user.email.split('@')[0]|title }}
+        {% else %}
+          Loading...
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Role -->
+      <div class="role" id="sidebarRole">
+        <i class="fas fa-seedling"></i>
+        {% if session.user_role == 'seller' %}
+          Seller Account
+        {% else %}
+          Loading...
+        {% endif %}
+      </div>
+      
+      <!-- Dynamic Profile Link -->
+      {% if session.user_role == 'seller' %}
+        <a href="{{ url_for('seller_profile') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% else %}
+        <a href="{{ url_for('user_select') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          Complete Setup
+        </a>
+      {% endif %}
+    </div>
+    
+    <div class="sidebar-section-title">Dashboard</div>
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+      <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
+    </ul>
+    
+    <div class="sidebar-section-title">Resources</div>
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
+      <li><a href="{{ url_for('schemes') }}" ><i class="fas fa-university"></i> Government Schemes</a></li>
+      <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
+      <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
+    </ul>
+    
+    <div class="sidebar-section-title">Settings</div>
+    <ul class="sidebar-menu">
+      <li><a href="{{ url_for('seller_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
+      <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+      {% if session.user %}
+      <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      {% endif %}
+    </ul>
+  </aside>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+    });
+
+    function loadUserData() {
+      // User data is now dynamically loaded from Flask session in the HTML template
+      const userData = {
+        name: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session.user else '') }}",
+        role: "{{ session.user_role if session.user_role else 'User' }}",
+        email: "{{ session.user.email if session.user else '' }}",
+        avatar: "{{ session.user.user_metadata.first_name[0]|upper if session.user and session.user.user_metadata and session.user.user_metadata.first_name else 'U' }}"
+      };
+      if (userData.email) {
+        console.log('Current user:', userData);
+      } else {
+        console.log('No user session found');
+      }
+    }
+  </script>
+</body>
+</html>

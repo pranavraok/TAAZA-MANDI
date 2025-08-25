@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAAZA MANDI - Government Schemes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d5f3f;
+            --secondary-green: #4a8f5f;
+            --accent-green: #6bb77b;
+            --light-green: #e8f5e8;
+            --ultra-light-green: #f4fbf4;
+            --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+            --card-bg: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-light: #718096;
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --error: #f56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .schemes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .scheme-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .scheme-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .scheme-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .scheme-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .scheme-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            transition: transform 0.3s ease;
+        }
+
+        .scheme-card:hover .scheme-icon {
+            transform: rotate(360deg);
+        }
+
+        .scheme-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .scheme-category {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            background: var(--light-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+
+        .scheme-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .scheme-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .detail-item i {
+            color: var(--primary-green);
+            width: 16px;
+        }
+
+        .scheme-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-green);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+      .real-time-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--light-green);
+      color: var(--primary-green);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(107, 183, 123, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 183, 123, 0); }
+    }
+
+        .search-filter-section {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .search-filter-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-filter-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .search-filter-form {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(45, 95, 63, 0.1);
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+
+        @media (max-width: 768px) {
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .schemes-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .search-filter-form {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .scheme-details {
+                grid-template-columns: 1fr;
+            }
+
+            .scheme-actions {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            aside {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #d1e7dd;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid #fed7d7;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .refresh-button {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        .refresh-button:hover {
+            background: var(--secondary-green);
+        }
+
+        @media (min-width: 769px) {
+            body {
+                display: grid;
+                grid-template-areas:
+                    "nav nav"
+                    "sidebar main";
+                grid-template-columns: 320px 1fr;
+                grid-template-rows: 72px 1fr;
+            }
+
+            header {
+                grid-area: nav;
+            }
+
+            aside {
+                grid-area: sidebar;
+            }
+
+            .main-container {
+                grid-area: main;
+            }
+        }
+    </style>
+</head>
+
+  <!-- Include Navbar -->
+  {% include 'constants/seller/navbar.html' %}
+
+  <!-- Include Sidebar -->
+  {% include 'constants/seller/sidebar.html' %}
+
+    <!-- Main Content -->
+<main class="main-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Government Schemes</h1>
+        <p>Discover government initiatives and support programs designed to empower farmers and agricultural businesses</p>
+    </div>
+
+    <!-- Real-time Indicator (moved above stats) -->
+    <div class="real-time-indicator">
+        <div class="pulse"></div>
+        <span>Last updated: <span id="lastUpdated">Just now</span></span>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" id="totalSchemes">8</div>
+                <div class="stat-label">Active Schemes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalBudget">₹1.6L Cr</div>
+                <div class="stat-label">Total Budget</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalBeneficiaries">50M+</div>
+                <div class="stat-label">Beneficiaries</div>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+            <div class="search-filter-header">
+                <i class="fas fa-search"></i>
+                <h3>Find Schemes</h3>
+            </div>
+            <div class="search-filter-form">
+                <div class="form-group">
+                    <label for="search">Search Schemes</label>
+                    <input type="text" id="search" placeholder="Search by name, category, or description...">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option value="">All Categories</option>
+                        <option value="financial">Financial Support</option>
+                        <option value="technology">Technology & Innovation</option>
+                        <option value="infrastructure">Infrastructure</option>
+                        <option value="training">Training & Education</option>
+                        <option value="insurance">Insurance & Risk Management</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select id="state">
+                        <option value="">All States</option>
+                        <option value="maharashtra">Maharashtra</option>
+                        <option value="karnataka">Karnataka</option>
+                        <option value="tamil-nadu">Tamil Nadu</option>
+                        <option value="gujarat">Gujarat</option>
+                        <option value="punjab">Punjab</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schemes Grid -->
+        <div class="schemes-grid" id="schemesGrid">
+            <!-- Schemes will be loaded here by JavaScript -->
+        </div>
+    </main>
+
+      <!-- Include Navbar -->
+  {% include 'constants/seller/footer.html' %}
+
+    <script>
+        // Fixed government schemes data
+        let allSchemes = [];
+        let filteredSchemes = [];
+
+        // DOM Elements
+        const searchInput = document.getElementById('search');
+        const categorySelect = document.getElementById('category');
+        const stateSelect = document.getElementById('state');
+        const schemesGrid = document.getElementById('schemesGrid');
+        const totalSchemesEl = document.getElementById('totalSchemes');
+        const totalBudgetEl = document.getElementById('totalBudget');
+        const totalBeneficiariesEl = document.getElementById('totalBeneficiaries');
+        const lastUpdatedEl = document.getElementById('lastUpdated');
+
+        const baseSchemesData = [
+            {
+                id: 1,
+                title: "PM-KISAN",
+                category: "Financial Support",
+                description: "Direct income support of ₹6,000 per year to eligible farmer families, payable in three equal installments of ₹2,000 each.",
+                launched: "2019",
+                beneficiaries: "11 Cr+",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹63,500 Cr",
+                icon: "fas fa-rupee-sign",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["All landholding farmers", "Excluding high income groups"],
+                documents: ["Aadhaar Card", "Land Records", "Bank Account Details"],
+                applyUrl: "https://pmkisan.gov.in",
+                learnMoreUrl: "https://pmkisan.gov.in"
+            },
+            {
+                id: 2,
+                title: "PM-FASAL BIMA YOJANA",
+                category: "Insurance & Risk Management",
+                description: "Comprehensive crop insurance scheme covering yield losses due to natural calamities, pests, and diseases.",
+                launched: "2016",
+                beneficiaries: "35M+ Farmers",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹12,242 Cr",
+                icon: "fas fa-shield-alt",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "2025-07-31",
+                eligibility: ["All farmers growing notified crops", "Loanee and non-loanee farmers"],
+                documents: ["Land Records", "Crop Details", "Bank Account"],
+                applyUrl: "https://pmfby.gov.in",
+                learnMoreUrl: "https://pmfby.gov.in"
+            },
+            {
+                id: 3,
+                title: "KISAN CREDIT CARD",
+                category: "Financial Support",
+                description: "Credit card facility for farmers to purchase agricultural inputs and draw cash for their production needs.",
+                launched: "1998",
+                beneficiaries: "7 Cr+ Cards",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹20 L Cr Credit Target",
+                icon: "fas fa-credit-card",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["Individual farmers", "Joint borrowers", "Tenant farmers"],
+                documents: ["Aadhaar Card", "Land Records", "Income Certificate"],
+                applyUrl: "https://mygovscheme.com/kisan-credit-card-scheme-2025-guide/",
+                learnMoreUrl: "https://mygovscheme.com/kisan-credit-card-scheme-2025-guide/"
+            },
+            {
+                id: 4,
+                title: "PMKSY",
+                category: "Infrastructure",
+                description: "Pradhan Mantri Krishi Sinchayee Yojana aims to provide end-to-end solutions in irrigation supply chain.",
+                launched: "2015",
+                beneficiaries: "3M+ Hectares",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹50,000 Cr",
+                icon: "fas fa-tint",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["Farmers with irrigation facilities", "Water user associations"],
+                documents: ["Land Records", "Water Source Details", "Project Proposal"],
+                applyUrl: "https://pmksy.gov.in/?prvcaeprm=1741677668556",
+                learnMoreUrl: "https://pmksy.gov.in/?prvcaeprm=1741677668556"
+            },
+            {
+                id: 5,
+                title: "Digital Agriculture Mission",
+                category: "Technology & Innovation",
+                description: "Promoting digital technologies in agriculture including IoT, AI, and blockchain for precision farming.",
+                launched: "2021",
+                beneficiaries: "1M+ Farmers",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹2,500 Cr",
+                icon: "fas fa-mobile-alt",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["Progressive farmers", "FPOs", "Agri-tech startups"],
+                documents: ["Business Plan", "Technology Proposal", "Financial Statements"],
+                applyUrl: "https://agriwelfare.gov.in/en/DigiAgriDiv",
+                learnMoreUrl: "https://agriwelfare.gov.in/en/DigiAgriDiv"
+            },
+            {
+                id: 6,
+                title: "Farmer Training Programs",
+                category: "Training & Education",
+                description: "Skill development and training programs for farmers on modern agricultural practices and technologies.",
+                launched: "2014",
+                beneficiaries: "2M+ Trained",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹1,200 Cr",
+                icon: "fas fa-graduation-cap",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["All farmers", "Rural youth", "Women farmers"],
+                documents: ["Aadhaar Card", "Educational Certificates", "Residence Certificate"],
+                applyUrl: "https://www.uasbangalore.edu.in/en/farmers-training-institute/",
+                learnMoreUrl: "https://www.uasbangalore.edu.in/en/farmers-training-institute/"
+            },
+            {
+                id: 7,
+                title: "Soil Health Card Scheme",
+                category: "Technology & Innovation",
+                description: "Provides soil health cards to farmers with recommendations for appropriate dosage of nutrients.",
+                launched: "2015",
+                beneficiaries: "25M+ Cards",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹3,200 Cr",
+                icon: "fas fa-flask",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["All farmers", "Land owners"],
+                documents: ["Aadhaar Card", "Land Records"],
+                applyUrl: "https://soilhealth.dac.gov.in/aboutus",
+                learnMoreUrl: "https://soilhealth.dac.gov.in/aboutus"
+            },
+            {
+                id: 8,
+                title: "National Agriculture Market (eNAM)",
+                category: "Infrastructure",
+                description: "Electronic National Agriculture Market for transparent price discovery and online trading.",
+                launched: "2016",
+                beneficiaries: "2M+ Farmers",
+                location: "All India",
+                status: "Ongoing",
+                budget: "₹2,000 Cr",
+                icon: "fas fa-exchange-alt",
+                lastUpdated: new Date().toISOString(),
+                applicationDeadline: "Ongoing",
+                eligibility: ["All farmers", "Traders", "Commission agents"],
+                documents: ["Aadhaar Card", "Bank Account", "Mobile Number"],
+                applyUrl: "https://www.enam.gov.in/web/",
+                learnMoreUrl: "https://www.enam.gov.in/web/"
+            }
+        ];
+
+        // Utility Functions
+        function showError(message) {
+            schemesGrid.innerHTML = `
+                <div class="error-message">
+                    ${message}
+                    <button class="refresh-button" onclick="loadData()">
+                        <i class="fas fa-sync-alt"></i> Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        function showLoading() {
+            schemesGrid.innerHTML = `
+                <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; animation: spin 1s linear infinite;">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    Loading schemes...
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function createSchemeCard(scheme, index) {
+            return `
+                <div class="scheme-card" style="animation-delay: ${index * 0.1}s;">
+                    <div class="scheme-header">
+                        <div class="scheme-icon">
+                            <i class="${scheme.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="scheme-title">${scheme.title}</div>
+                            <div class="scheme-category">${scheme.category}</div>
+                        </div>
+                    </div>
+                    <div class="scheme-description">${scheme.description}</div>
+                    <div class="scheme-details">
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Launched: ${scheme.launched}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>${scheme.beneficiaries}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${scheme.location}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-info-circle"></i>
+                            <span>${scheme.status}</span>
+                        </div>
+                    </div>
+                    <div class="scheme-actions">
+                        <a href="${scheme.learnMoreUrl}" class="btn-secondary">
+                            <i class="fas fa-info"></i> Learn More
+                        </a>
+                        <a href="${scheme.applyUrl}" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Apply Now
+                        </a>
+                    </div>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-light);">
+                        Last updated: ${formatDate(scheme.lastUpdated)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSchemes(schemes) {
+            if (schemes.length === 0) {
+                schemesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-secondary);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>No schemes found</h3>
+                        <p>Try adjusting your search criteria or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            schemesGrid.innerHTML = schemes.map((scheme, index) => createSchemeCard(scheme, index)).join('');
+        }
+
+        function filterSchemes() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategory = categorySelect.value.toLowerCase();
+            const selectedState = stateSelect.value.toLowerCase();
+
+            filteredSchemes = allSchemes.filter(scheme => {
+                const title = scheme.title.toLowerCase();
+                const description = scheme.description.toLowerCase();
+                const category = scheme.category.toLowerCase();
+                const location = scheme.location.toLowerCase();
+
+                const matchesSearch = !searchTerm || 
+                    title.includes(searchTerm) || 
+                    description.includes(searchTerm) || 
+                    category.includes(searchTerm);
+
+                const matchesCategory = !selectedCategory || category.includes(selectedCategory);
+                const matchesState = !selectedState || location.includes(selectedState);
+
+                return matchesSearch && matchesCategory && matchesState;
+            });
+
+            renderSchemes(filteredSchemes);
+        }
+
+        // Calculate statistics
+        function calculateStats(schemes) {
+            const totalSchemes = schemes.length;
+            const totalBudget = schemes.reduce((sum, scheme) => {
+                const budget = scheme.budget.replace(/[^\d]/g, '');
+                return sum + parseInt(budget || 0);
+            }, 0);
+            const totalBeneficiaries = schemes.reduce((sum, scheme) => {
+                const beneficiaries = scheme.beneficiaries.replace(/[^\d]/g, '');
+                return sum + parseInt(beneficiaries || 0);
+            }, 0);
+
+            return {
+                totalSchemes,
+                totalBudget: `₹${(totalBudget / 100).toFixed(1)}L Cr`,
+                totalBeneficiaries: `${totalBeneficiaries}M+`,
+                lastUpdated: new Date().toISOString()
+            };
+        }
+
+        // Load filter options
+        function loadFilterOptions() {
+            const categories = [...new Set(baseSchemesData.map(scheme => scheme.category))];
+            const states = [...new Set(baseSchemesData.map(scheme => scheme.location))];
+
+            // Populate category options
+            categorySelect.innerHTML = '<option value="">All Categories</option>';
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.toLowerCase();
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+
+            // Populate state options
+            stateSelect.innerHTML = '<option value="">All States</option>';
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state.toLowerCase();
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+
+        // Main data loading function
+        function loadData() {
+            showLoading();
+            
+            setTimeout(() => {
+                try {
+                    // Use base schemes data
+                    allSchemes = [...baseSchemesData];
+                    filteredSchemes = [...allSchemes];
+
+                    // Calculate statistics
+                    const stats = calculateStats(allSchemes);
+
+                    // Update stats display
+                    totalSchemesEl.textContent = stats.totalSchemes;
+                    totalBudgetEl.textContent = stats.totalBudget;
+                    totalBeneficiariesEl.textContent = stats.totalBeneficiaries;
+                    lastUpdatedEl.textContent = formatDate(stats.lastUpdated);
+
+                    // Render schemes
+                    renderSchemes(allSchemes);
+
+                    // Load filter options
+                    loadFilterOptions();
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    showError(`Failed to load schemes data: ${error.message}`);
+                }
+            }, 1000);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial data
+            loadData();
+
+            // Add filter event listeners
+            searchInput.addEventListener('input', filterSchemes);
+            categorySelect.addEventListener('change', filterSchemes);
+            stateSelect.addEventListener('change', filterSchemes);
+        });
+
+        // Make loadData available globally for retry button
+        window.loadData = loadData;
+    </script>
+</body>
+</html>

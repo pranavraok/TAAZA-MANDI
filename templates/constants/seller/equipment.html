@@ -13,20 +13,18 @@
       --accent-green: #6bb77b;
       --light-green: #e8f5e8;
       --ultra-light-green: #f4fbf4;
-      --background: linear-gradient(135deg, #f8fbf8 0%, #f0f8f0 100%);
+      --background: #f6faef;
       --card-bg: #ffffff;
       --text-primary: #1a1a1a;
       --text-secondary: #4a5568;
       --text-light: #718096;
       --border-light: #e2e8f0;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 6px 16px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 28px rgba(0,0,0,0.15);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --radius-xl: 20px;
       --success: #48bb78;
       --warning: #ed8936;
       --error: #f56565;
@@ -40,7 +38,7 @@
 
     body {
       background: var(--background);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       color: var(--text-primary);
       line-height: 1.6;
       display: grid;
@@ -48,12 +46,11 @@
         "nav nav"
         "sidebar main"
         "footer footer";
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 300px 1fr;
       grid-template-rows: auto 1fr auto;
       min-height: 100vh;
     }
 
-    /* Enhanced Navbar */
     header {
       grid-area: nav;
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
@@ -91,7 +88,7 @@
       border: 2px solid rgba(255,255,255,0.2);
       border-radius: var(--radius-lg);
       font-size: 0.95rem;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.1) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>') no-repeat 10px center;
       color: white;
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
@@ -104,7 +101,7 @@
     .navbar input[type="text"]:focus {
       outline: none;
       border-color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.15);
+      background-color: rgba(255,255,255,0.15);
       box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
     }
 
@@ -176,7 +173,6 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Enhanced Sidebar */
     aside {
       grid-area: sidebar;
       background: var(--card-bg);
@@ -190,7 +186,7 @@
     .sidebar-profile {
       padding: 2rem;
       text-align: center;
-      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
       border-bottom: 1px solid var(--border-light);
     }
 
@@ -277,18 +273,17 @@
       transform: translateX(4px);
     }
 
-    /* Enhanced Main Content */
     main {
       grid-area: main;
-      padding: 2rem 0 0 0;
+      padding: 2rem 0;
       background: transparent;
       min-height: 100vh;
     }
 
     .equipment-header {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto 2rem auto;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
     }
 
     .section-title {
@@ -310,10 +305,15 @@
       font-size: 1.1rem;
       margin-bottom: 2rem;
       font-weight: 500;
+      max-width: 600px;
     }
 
     .category-section {
       margin-bottom: 3rem;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 1.5rem;
     }
 
     .category-title {
@@ -321,10 +321,21 @@
       font-weight: 700;
       color: var(--primary-green);
       margin-bottom: 1.5rem;
-      padding: 0 1rem;
+      padding: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    /* Enhanced Filters */
+    .category-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, var(--accent-green), transparent);
+      margin-left: 1rem;
+    }
+
     .equipment-filters {
       display: flex;
       gap: 1rem;
@@ -353,18 +364,17 @@
       border-radius: var(--radius-md);
       border: 2px solid var(--border-light);
       font-size: 0.95rem;
-      background: var(--ultra-light-green);
+      background: white;
       color: var(--text-primary);
       transition: all 0.3s ease;
       font-family: inherit;
-      min-width: 150px;
+      min-width: 180px;
     }
 
     .equipment-filters select:focus,
     .equipment-filters input[type="text"]:focus {
       outline: none;
       border-color: var(--secondary-green);
-      background: white;
       box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
     }
 
@@ -378,33 +388,31 @@
     }
 
     .sort-select {
-      min-width: 180px;
+      min-width: 200px;
     }
 
-    /* Enhanced Equipment Grid */
     .equipment-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
     }
 
-    /* Enhanced Equipment Cards */
     .equipment-card {
       background: var(--card-bg);
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-lg);
       padding: 0;
       box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       position: relative;
       cursor: pointer;
-      min-height: 500px;
+      min-height: 480px;
     }
 
     .equipment-card::before {
@@ -414,15 +422,15 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
       opacity: 0;
       transition: opacity 0.3s ease;
     }
 
     .equipment-card:hover {
       transform: translateY(-8px);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--secondary-green);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-green);
     }
 
     .equipment-card:hover::before {
@@ -431,14 +439,13 @@
 
     .equipment-image {
       width: 100%;
-      height: 220px;
+      height: 200px;
       background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
+      font-size: 2.5rem;
       color: var(--secondary-green);
-      transition: transform 0.3s ease;
       position: relative;
       overflow: hidden;
     }
@@ -447,34 +454,28 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: all 0.3s ease;
+      transition: transform 0.5s ease;
     }
 
-    .equipment-image i {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-    }
-
-    .equipment-card:hover .equipment-image {
-      transform: scale(1.05);
+    .equipment-card:hover .equipment-image img {
+      transform: scale(1.1);
     }
 
     .certified-label {
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 12px;
+      left: 12px;
       background: var(--success);
       color: white;
-      padding: 0.25rem 0.75rem;
+      padding: 0.3rem 0.8rem;
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.3rem;
+      box-shadow: var(--shadow-sm);
+      z-index: 1;
     }
 
     .equipment-content {
@@ -486,10 +487,13 @@
 
     .equipment-title {
       color: var(--text-primary);
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 700;
       margin: 0 0 0.75rem 0;
       line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .equipment-category {
@@ -498,10 +502,10 @@
       font-size: 0.85rem;
       font-weight: 600;
       border-radius: var(--radius-sm);
-      padding: 0.375rem 0.75rem;
+      padding: 0.4rem 0.8rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.375rem;
+      gap: 0.4rem;
       border: 1px solid var(--border-light);
       margin-bottom: 1rem;
       align-self: flex-start;
@@ -513,6 +517,11 @@
       line-height: 1.6;
       margin-bottom: 1.5rem;
       flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .equipment-details {
@@ -529,10 +538,10 @@
     .equipment-price {
       color: var(--primary-green);
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.3rem;
     }
 
     .equipment-location {
@@ -540,7 +549,7 @@
       font-size: 0.9rem;
       display: flex;
       align-items: center;
-      gap: 0.375rem;
+      gap: 0.4rem;
       font-weight: 500;
     }
 
@@ -564,19 +573,18 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      border: 2px solid transparent;
-      box-shadow: var(--shadow-sm);
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
       color: white;
-      border-color: var(--primary-green);
+      border: 2px solid transparent;
+      box-shadow: var(--shadow-sm);
     }
 
     .btn-buy:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
+      background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
     }
 
-    /* Enhanced Modal */
     .modal {
       display: none;
       position: fixed;
@@ -591,25 +599,19 @@
 
     .modal-content {
       background-color: var(--card-bg);
-      margin: 3% auto;
+      margin: 5% auto;
       padding: 0;
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-lg);
       width: 90%;
-      max-width: 600px;
-      box-shadow: var(--shadow-xl);
-      animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 700px;
+      box-shadow: var(--shadow-lg);
+      animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       overflow: hidden;
     }
 
     @keyframes modalSlideIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9) translateY(-50px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      from { opacity: 0; transform: scale(0.95) translateY(-30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .modal-header {
@@ -651,23 +653,24 @@
     }
 
     .equipment-info {
-      display: flex;
+      display: grid;
+      grid-template-columns: 160px 1fr;
       gap: 1.5rem;
       margin-bottom: 2rem;
-      align-items: flex-start;
+      align-items: start;
     }
 
     .modal-equipment-image {
-      width: 140px;
-      height: 140px;
+      width: 100%;
+      height: 160px;
       object-fit: cover;
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       border: 2px solid var(--border-light);
       background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
+      font-size: 2.5rem;
       color: var(--secondary-green);
       box-shadow: var(--shadow-sm);
     }
@@ -679,7 +682,7 @@
     .modal-equipment-details h3 {
       color: var(--text-primary);
       margin: 0 0 1rem 0;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 700;
     }
 
@@ -726,15 +729,14 @@
     .modal-btn-buy:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
+      background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
     }
 
-    /* Enhanced Footer */
     footer {
       grid-area: footer;
-      background: var(--card-bg);
+      background: var(--primary-green);
       padding: 3rem 0 1rem 0;
-      color: var(--text-secondary);
-      border-top: 1px solid var(--border-light);
+      color: white;
       margin-top: 2rem;
     }
 
@@ -742,7 +744,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 0 2rem;
     }
@@ -751,10 +753,7 @@
       font-size: 1.5rem;
       font-weight: 800;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: white;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -763,7 +762,7 @@
     .footer-section-title {
       font-size: 1.1rem;
       font-weight: 700;
-      color: var(--text-primary);
+      color: white;
       margin-bottom: 1rem;
     }
 
@@ -776,7 +775,7 @@
     }
 
     .footer-links a, .footer-resources a, .footer-connect a {
-      color: var(--text-secondary);
+      color: rgba(255,255,255,0.9);
       text-decoration: none;
       transition: color 0.3s ease;
       display: flex;
@@ -785,23 +784,22 @@
     }
 
     .footer-links a:hover, .footer-resources a:hover, .footer-connect a:hover {
-      color: var(--primary-green);
+      color: var(--accent-green);
     }
 
-    /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
       padding: 4rem 2rem;
       color: var(--text-secondary);
       background: var(--card-bg);
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-lg);
       border: 1px solid var(--border-light);
       box-shadow: var(--shadow-md);
     }
 
     .empty-icon {
-      font-size: 4rem;
+      font-size: 3.5rem;
       margin-bottom: 1.5rem;
       color: var(--secondary-green);
     }
@@ -811,13 +809,6 @@
       margin-bottom: 0.5rem;
       font-size: 1.5rem;
       font-weight: 700;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1200px) {
-      body {
-        grid-template-columns: 280px 1fr;
-      }
     }
 
     @media (max-width: 1024px) {
@@ -834,7 +825,7 @@
         position: fixed;
         left: 0;
         top: 72px;
-        width: 260px;
+        width: 280px;
         height: calc(100vh - 72px);
         z-index: 1001;
         background: var(--card-bg);
@@ -846,25 +837,29 @@
         transform: translateX(0);
       }
       main {
-        padding: 1rem 0 0 0;
+        padding: 1rem 0;
       }
       .navbar ul {
         display: none;
       }
       .sidebar-toggle {
         display: block;
-        position: absolute;
+        position: fixed;
         left: 1rem;
         top: 1rem;
         background: var(--primary-green);
         color: white;
         border: none;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         font-size: 1.5rem;
         cursor: pointer;
         z-index: 1100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
       }
     }
 
@@ -873,30 +868,25 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
-      
       .section-title {
         font-size: 2rem;
         text-align: center;
       }
-      
       .equipment-filters {
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
       }
-      
       .sort-label {
         margin-left: 0;
       }
-      
       .navbar input[type="text"] {
         margin: 0 1rem;
+        width: 100%;
       }
-      
       .auth-buttons {
         display: none;
       }
-      
       .modal-content {
         width: 95%;
         margin: 10% auto;
@@ -908,28 +898,23 @@
         flex-direction: column;
         gap: 1rem;
         padding: 1rem 0.5rem;
+        height: auto;
       }
-      
-      .navbar input[type="text"] {
-        margin: 0;
-        width: 100%;
+      .equipment-card {
+        min-height: 420px;
       }
-      
-      .section-title {
-        font-size: 1.75rem;
+      .equipment-image {
+        height: 180px;
       }
-      
       .equipment-info {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         text-align: center;
       }
-      
       .modal-actions {
         flex-direction: column;
       }
     }
 
-    /* Loading Animation */
     @keyframes shimmer {
       0% { background-position: -200px 0; }
       100% { background-position: calc(200px + 100%) 0; }
@@ -941,12 +926,10 @@
       animation: shimmer 1.5s infinite;
     }
 
-    /* Smooth Scrolling */
     html {
       scroll-behavior: smooth;
     }
 
-    /* Focus States */
     *:focus {
       outline: 2px solid var(--secondary-green);
       outline-offset: 2px;
@@ -954,198 +937,61 @@
   </style>
 </head>
 <body>
-  <!-- Enhanced Navbar -->
-  <header>
-    <nav class="navbar">
-      <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="logo">
-        <i class="fas fa-seedling"></i>
-        TAAZA MANDI
-      </div>
-      <input type="text" placeholder="🔍 Search for equipment, tools, machinery...">
-      <ul>
-        <li><a href="{{ url_for('seller_feed') }}">Home</a></li>
-        <li><a href="{{ url_for('market') }}">Market</a></li>
-        <li><a href="{{ url_for('about') }}">About Us</a></li>
-        <li><a href="{{ url_for('contact') }}">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <button class="sidebar-toggle" onclick="toggleSidebar()" style="display: none;">
+    <i class="fas fa-bars"></i>
+  </button>
 
-  <!-- Enhanced Sidebar -->
-  <aside>
-    <div class="sidebar-profile">
-      <!-- Dynamic Avatar -->
-      <div class="profile-avatar" id="sidebarAvatar">
-        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
-          {{ session.user.user_metadata.first_name[0]|upper }}
-        {% else %}
-          <i class="fas fa-user"></i>
-        {% endif %}
-      </div>
-      
-      <!-- Dynamic Name -->
-      <div class="name" id="sidebarName">
-        {% if session.user and session.user.user_metadata %}
-          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
-        {% elif session.user %}
-          {{ session.user.email.split('@')[0]|title }}
-        {% else %}
-          Loading...
-        {% endif %}
-      </div>
-      
-      <!-- Dynamic Role -->
-      <div class="role" id="sidebarRole">
-        <i class="fas fa-seedling"></i>
-        {% if session.user_role == 'seller' %}
-          Seller Account
-        {% elif session.user_role == 'buyer' %}
-          Buyer Account
-        {% else %}
-          Loading...
-        {% endif %}
-      </div>
-      
-      <!-- Dynamic Profile Link -->
-      {% if session.user_role == 'seller' %}
-        <a href="{{ url_for('seller_profile') }}" class="profile-link">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      {% elif session.user_role == 'buyer' %}
-        <a href="{{ url_for('buyer_profile') }}" class="profile-link">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      {% else %}
-        <a href="{{ url_for('user_select') }}" class="profile-link">
-          <i class="fas fa-user"></i>
-          Complete Setup
-        </a>
-      {% endif %}
-    </div>
-    
-    <div class="sidebar-section-title">Dashboard</div>
-    <ul class="sidebar-menu">
-                  <li><a href="{{ url_for('seller_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
-            <li><a href="{{ url_for('post_upload') }}"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
-    </ul>
-    
-    <div class="sidebar-section-title">Resources</div>
-    <ul class="sidebar-menu">
-                  <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-            <li><a href="{{ url_for('schemes') }}" target="_blank"><i class="fas fa-university"></i> Government Schemes</a></li>
-            <li><a href="{{ url_for('equipment') }}"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
-            <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-    </ul>
-    
-    <div class="sidebar-section-title">Settings</div>
-    <ul class="sidebar-menu">
-                  <li><a href="{{ url_for('seller_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
-            <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
-      {% if session.user %}
-                  <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-      {% endif %}
-    </ul>
-  </aside>
+  {% include 'constants/seller/navbar.html' %}
+  {% include 'constants/seller/sidebar.html' %}
 
-
-  <!-- Enhanced Main Content -->
   <main>
     <div class="equipment-header">
       <h1 class="section-title">
         <i class="fas fa-tools"></i>
         Agricultural Equipment
       </h1>
-      <div class="section-subtitle">Find the best tools, machinery, and equipment for your farming needs 🚜</div>
+      <div class="section-subtitle">Discover premium tools, machinery, and supplies for efficient farming solutions tailored to your needs.</div>
       
       <div class="equipment-filters">
-        <label for="category">
-          <i class="fas fa-filter"></i>
-          Filter by:
-        </label>
+        <label for="category"><i class="fas fa-filter"></i> Category</label>
         <select id="category">
-          <option>All Categories</option>
-          <option>Vehicles</option>
-          <option>Tools</option>
-          <option>Fertilizers</option>
-          <option>Irrigation</option>
-          <option>Seeds</option>
+          <option value="All Categories">All Categories</option>
+          <option value="Vehicles">Vehicles</option>
+          <option value="Tools">Tools</option>
+          <option value="Fertilizers">Fertilizers</option>
+          <option value="Irrigation">Irrigation</option>
+          <option value="Seeds">Seeds</option>
         </select>
         
+        <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
         <select id="location">
-          <option>All India</option>
-          <option>Maharashtra</option>
-          <option>Punjab</option>
-          <option>Uttar Pradesh</option>
-          <option>Uttarakhand</option>
-          <option>Haryana</option>
-          <option>Gujarat</option>
+          <option value="All India">All India</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Uttarakhand">Uttarakhand</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Tamil Nadu">Tamil Nadu</option>
+          <option value="Karnataka">Karnataka</option>
+          <option value="Rajasthan">Rajasthan</option>
         </select>
         
-        <span class="sort-label">
-          <i class="fas fa-sort"></i>
-          Sort by:
-        </span>
+        <span class="sort-label"><i class="fas fa-sort"></i> Sort by:</span>
         <select class="sort-select" id="sort-select">
-          <option>Latest</option>
-          <option>Price: Low to High</option>
-          <option>Price: High to Low</option>
-          <option>Popularity</option>
+          <option value="Latest">Latest</option>
+          <option value="Price: Low to High">Price: Low to High</option>
+          <option value="Price: High to Low">Price: High to Low</option>
+          <option value="Popularity">Popularity</option>
         </select>
       </div>
     </div>
 
-    <div class="equipment-grid" id="equipmentGrid">
-      <!-- Equipment cards will be dynamically generated here -->
-    </div>
+    <div id="equipmentSections"></div>
   </main>
 
-  <!-- Enhanced Footer -->
-  <footer>
-    <div class="footer-main">
-      <div>
-        <div class="footer-brand">
-          <i class="fas fa-seedling"></i>
-          TAAZA MANDI
-        </div>
-        <div>Connecting farmers directly to buyers through a simple and efficient marketplace platform that empowers rural communities.</div>
-      </div>
-      <div>
-        <div class="footer-section-title">Quick Links</div>
-        <ul class="footer-links">
-                      <li><a href="{{ url_for('market') }}"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-            <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
-            <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-section-title">Farmer Resources</div>
-        <ul class="footer-resources">
-                      <li><a href="{{ url_for('predictor') }}"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-            <li><a href="{{ url_for('schemes') }}"><i class="fas fa-university"></i> Government Schemes</a></li>
-            <li><a href="{{ url_for('equipment') }}"><i class="fas fa-tools"></i> Vehicle/Tools Buy-Rent</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-section-title">Connect With Us</div>
-        <ul class="footer-connect">
-          <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-          <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-          <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="#"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
-        </ul>
-      </div>
-    </div>
-    <div style="text-align:center;color:#718096;font-size:0.9rem;padding:2rem 0 1rem 0;border-top:1px solid var(--border-light);margin-top:2rem;">
-      © 2025 TAAZA MANDI. All Rights Reserved. | Made with ❤️ for farmers
-    </div>
-  </footer>
+  {% include 'constants/seller/footer.html' %}
 
-  <!-- Enhanced Equipment Modal -->
   <div id="equipmentModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1159,27 +1005,14 @@
       </div>
       <div class="modal-body">
         <div class="equipment-info">
-          <div id="modalImage" class="modal-equipment-image">
-            <i class="fas fa-tools"></i>
-          </div>
+          <img id="modalImage" class="modal-equipment-image" alt="Equipment">
           <div class="modal-equipment-details">
             <h3 id="modalEquipmentTitle"></h3>
-            <p id="modalCategory">
-              <i class="fas fa-list"></i>
-              <span></span>
-            </p>
-            <p id="modalPrice">
-              <i class="fas fa-rupee-sign"></i>
-              <span></span>
-            </p>
-            <p id="modalLocation">
-              <i class="fas fa-map-marker-alt"></i>
-              <span></span>
-            </p>
-            <p id="modalCertification">
-              <i class="fas fa-certificate"></i>
-              <span></span>
-            </p>
+            <p id="modalCategory"><i class="fas fa-list"></i> <span></span></p>
+            <p id="modalPrice"><i class="fas fa-rupee-sign"></i> <span></span></p>
+            <p id="modalLocation"><i class="fas fa-map-marker-alt"></i> <span></span></p>
+            <p id="modalCertification"><i class="fas fa-certificate"></i> <span></span></p>
+            <p id="modalDescription"><i class="fas fa-info-circle"></i> <span></span></p>
           </div>
         </div>
         <div class="modal-actions">
@@ -1193,13 +1026,6 @@
   </div>
 
   <script>
-    // Sidebar toggle for mobile/tablet
-    function toggleSidebar() {
-      const aside = document.querySelector('aside');
-      aside.classList.toggle('active');
-    }
-
-    // Enhanced Equipment data with more products in tools, irrigation, fertilizers (manure), and seeds
     const equipmentData = [
       // Vehicles
       {
@@ -1216,33 +1042,7 @@
         indiamartLink: "https://www.indiamart.com/proddetail/john-deere-5050-d-tractor-2851303659612.html"
       },
       {
-        id: 5,
-        title: "Seed Drill Machine",
-        category: "Vehicles",
-        description: "Precision seed drill for accurate seed placement. Increases crop yield and reduces seed wastage. Easy to operate.",
-        price: "₹1,20,000",
-        location: "Haryana",
-        icon: "fas fa-seedling",
-        image: "https://3.imimg.com/data3/WW/LL/MY-5494738/a-1000x1000.png",
-        certified: false,
-        certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/seed-drills-6710688055.html"
-      },
-      {
-        id: 6,
-        title: "Harvester Combine",
-        category: "Vehicles",
-        description: "Advanced combine harvester for wheat, rice, and other grains. High efficiency and low grain loss. GPS-enabled navigation.",
-        price: "₹15,00,000",
-        location: "Punjab",
-        icon: "fas fa-truck-loading",
-        image: "https://5.imimg.com/data5/ANDROID/Default/2021/2/FJ/DV/BM/110139306/product-jpeg-1000x1000.jpg",
-        certified: true,
-        certificationDetails: "Certified by ISO 9001:2015 and IAS",
-        indiamartLink: "https://www.indiamart.com/proddetail/harvester-combine-23193481533.html"
-      },
-      {
-        id: 9,
+        id: 2,
         title: "Mahindra Tractor 575 DI",
         category: "Vehicles",
         description: "Reliable 45 HP tractor suitable for various farming tasks. Known for durability and low maintenance.",
@@ -1252,10 +1052,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2021/10/KF/XK/OY/22078775/mahindra-575-di-xp-plus-tractor-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by ISO 9001:2015",
-        indiamartLink: "https://www.indiamart.com/proddetail/mahindra-yuvo-575-di-tractor-16110635488.html?pos=1.3&kwd=mahindra%20tractor%20575%20di&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_B_0_P-|-res:RC2|ktp:N0|stype:attr=1-br|mtp:Brn|wc:4|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17939|com-cf:nl|ptrs:na|mc:182280|cat:370|qry_typ:P|lang:en|rtn:5-0-1-0-1-1-2|tyr:1|qrd:250823|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|crs=glb|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/mahindra-yuvo-575-di-tractor-16110635488.html"
       },
       {
-        id: 10,
+        id: 3,
         title: "Farmtrac Tractor 60",
         category: "Vehicles",
         description: "60 HP tractor with powerful engine and comfortable cabin. Ideal for heavy-duty operations.",
@@ -1265,15 +1065,67 @@
         image: "https://4.imimg.com/data4/TA/AG/ANDROID-9875516/product-250x250.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/escorts-farmtrac-tractor-13081774588.html?pos=1&kwd=farmtrac%20tractor%2060&tags=rk:C|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_C_0_P-|-res:RC2|ktp:N0|stype:attr=1-br|mtp:Brn|wc:3|lcf:0|cq:bengaluru|qr_nm:gl-gd|cs:17667|com-cf:nl|ptrs:na|mc:192496|cat:370|qry_typ:P|lang:en|rtn:2-0-2-1-3-2-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|crs=xnh-city|r=3"
+        indiamartLink: "https://www.indiamart.com/proddetail/escorts-farmtrac-tractor-13081774588.html"
+      },
+      {
+        id: 4,
+        title: "Seed Drill Machine",
+        category: "Vehicles",
+        description: "Precision seed drill for accurate seed placement. Increases crop yield and reduces seed wastage.",
+        price: "₹1,20,000",
+        location: "Haryana",
+        icon: "fas fa-seedling",
+        image: "https://3.imimg.com/data3/WW/LL/MY-5494738/a-1000x1000.png",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/seed-drills-6710688055.html"
+      },
+      {
+        id: 5,
+        title: "Harvester Combine",
+        category: "Vehicles",
+        description: "Advanced combine harvester for wheat, rice, and other grains. High efficiency and low grain loss.",
+        price: "₹15,00,000",
+        location: "Punjab",
+        icon: "fas fa-truck-loading",
+        image: "https://5.imimg.com/data5/ANDROID/Default/2021/2/FJ/DV/BM/110139306/product-jpeg-1000x1000.jpg",
+        certified: true,
+        certificationDetails: "Certified by ISO 9001:2015 and IAS",
+        indiamartLink: "https://www.indiamart.com/proddetail/harvester-combine-23193481533.html"
+      },
+      {
+        id: 6,
+        title: "Swaraj Tractor 855 FE",
+        category: "Vehicles",
+        description: "Robust 52 HP tractor with high torque for heavy-duty tasks. Fuel-efficient and durable.",
+        price: "₹7,20,000",
+        location: "Rajasthan",
+        icon: "fas fa-tractor",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/swaraj-855-fe-tractor-250x250.jpg",
+        certified: true,
+        certificationDetails: "Certified by ISO 9001:2015",
+        indiamartLink: "https://www.indiamart.com/proddetail/swaraj-855-fe-tractor-2851073685333.html"
+      },
+      {
+        id: 7,
+        title: "Eicher Tractor 380",
+        category: "Vehicles",
+        description: "Economical 38 HP tractor ideal for small farms. Easy maintenance and reliable performance.",
+        price: "₹5,50,000",
+        location: "Gujarat",
+        icon: "fas fa-tractor",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/eicher-380-tractor-250x250.jpg",
+        certified: true,
+        certificationDetails: "Certified by ISO 9001:2015",
+        indiamartLink: "https://www.indiamart.com/proddetail/eicher-380-tractor-2851073685333.html"
       },
 
       // Tools
       {
-        id: 2,
+        id: 8,
         title: "Rotavator Attachment",
         category: "Tools",
-        description: "High-quality rotavator for soil preparation and cultivation. Compatible with most tractor models. Durable steel construction.",
+        description: "High-quality rotavator for soil preparation and cultivation. Compatible with most tractor models.",
         price: "₹45,000",
         location: "Maharashtra",
         icon: "fas fa-cog",
@@ -1283,20 +1135,20 @@
         indiamartLink: "https://www.indiamart.com/proddetail/brush-cutter-rotavator-attachment-22644255312.html"
       },
       {
-        id: 7,
+        id: 9,
         title: "Sprayer Pump",
         category: "Tools",
-        description: "High-pressure sprayer for pesticides and fertilizers. Covers large areas efficiently. Adjustable nozzles included.",
+        description: "High-pressure sprayer for pesticides and fertilizers. Covers large areas efficiently.",
         price: "₹8,500",
         location: "Karnataka",
         icon: "fas fa-spray-can",
         image: "https://5.imimg.com/data5/SELLER/Default/2021/4/MU/DV/LR/4733472/earth-motor-110-psi-500x500.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/kdagrotech/sprayer-pump-electric-motor.html"
+        indiamartLink: "https://www.indiamart.com/proddetail/sprayer-pump-24164815062.html"
       },
       {
-        id: 11,
+        id: 10,
         title: "Plough",
         category: "Tools",
         description: "Heavy-duty plough for deep tillage. Made from high-carbon steel for longevity.",
@@ -1306,10 +1158,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2024/6/429331884/LV/DP/AN/137254333/mouldboard-ploughs-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by BIS",
-        indiamartLink: "https://www.indiamart.com/proddetail/agricultural-mould-board-plough-24334171312.html?pos=4&kwd=plough&tags=rk:TS|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_TS_0_P-|-res:RC2|ktp:N0|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:14846|com-cf:nl|ptrs:na|mc:151904|cat:815|qry_typ:P|lang:en|rtn:1-0-0-0-3-5-1|tyr:1|qrd:250821|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|r=5"
+        indiamartLink: "https://www.indiamart.com/proddetail/agricultural-mould-board-plough-24334171312.html"
       },
       {
-        id: 12,
+        id: 11,
         title: "Harrow",
         category: "Tools",
         description: "Disc harrow for soil leveling and weed control. Adjustable angles for versatility.",
@@ -1319,10 +1171,10 @@
         image: "https://2.imimg.com/data2/YC/YQ/MY-1106860/offset-harrow-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/offset-harrow-1963093191.html?pos=2&kwd=harrow&tags=rk:T|plc:1|dt:0|db:01||dtp:p||sv:VGP|rsf:gd|ri:VGP_T_0_P-|-res:RC2|ktp:N0|mtp:G|wc:1|lcf:2|cq:bengaluru|qr_nm:gl-gd|cs:14751|com-cf:nl|ptrs:na|mc:7463|cat:370|qry_typ:P|lang:en|rtn:1-0-0-0-1-7-1|tyr:1|qrd:250822|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/offset-harrow-1963093191.html"
       },
       {
-        id: 13,
+        id: 12,
         title: "Cultivator",
         category: "Tools",
         description: "Spring-loaded cultivator for inter-row cultivation. Reduces soil compaction.",
@@ -1332,10 +1184,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2025/4/503456994/GA/JK/SW/9622219/4i1a0744-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by IAS",
-        indiamartLink: "https://www.indiamart.com/proddetail/9-tyne-staright-rigid-cultivator-2856376688633.html?pos=4&kwd=cultivator&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p||sv:M|rsf:gd|ri:M_B_0_P-|-res:RC3|ktp:N0|mtp:G|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15230|com-cf:nl|ptrs:na|mc:20907|cat:815|qry_typ:P|lang:en|rtn:1-0-0-0-4-5-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/9-tyne-staright-rigid-cultivator-2856376688633.html"
       },
       {
-        id: 14,
+        id: 13,
         title: "Weeder",
         category: "Tools",
         description: "Manual weeder for precise weed removal in vegetable gardens.",
@@ -1345,15 +1197,41 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2023/12/367756244/WX/UN/IP/36802604/-pwp-109-170p-propelling-weeder-agricultural-power-weeder-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/pwp-109-170p-propelling-weeder-agricultural-power-weeder-2853047052548.html?pos=3&kwd=weeder&tags=rk:A|plc:1|dt:0|db:01||dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:14833|com-cf:nl|ptrs:na|mc:141966|cat:150|qry_typ:P|lang:en|rtn:0-0-0-0-3-7-0|tyr:1|qrd:250818|mrd:250805|prdt:250823|pfen:1|gli:G0I0|v=4|r=3"
+        indiamartLink: "https://www.indiamart.com/proddetail/pwp-109-170p-propelling-weeder-agricultural-power-weeder-2853047052548.html"
+      },
+      {
+        id: 14,
+        title: "Sickle",
+        category: "Tools",
+        description: "Ergonomic sickle for manual harvesting of crops. Stainless steel blade.",
+        price: "₹500",
+        location: "Tamil Nadu",
+        icon: "fas fa-tools",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/sickle-250x250.jpg",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/sickle-2851073685333.html"
+      },
+      {
+        id: 15,
+        title: "Pruning Shears",
+        category: "Tools",
+        description: "High-quality pruning shears for precise cutting of branches and vines.",
+        price: "₹1,200",
+        location: "Karnataka",
+        icon: "fas fa-tools",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/pruning-shears-250x250.jpg",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/pruning-shears-2851073685333.html"
       },
 
-      // Fertilizers (Manure)
+      // Fertilizers
       {
-        id: 3,
+        id: 16,
         title: "Organic Manure Pack",
         category: "Fertilizers",
-        description: "Premium organic manure made from natural ingredients. Promotes healthy soil and plant growth. 100% chemical-free.",
+        description: "Premium organic manure made from natural ingredients. Promotes healthy soil and plant growth.",
         price: "₹2,500",
         location: "Uttar Pradesh",
         icon: "fas fa-leaf",
@@ -1363,7 +1241,7 @@
         indiamartLink: "https://www.indiamart.com/proddetail/organic-manure-17746981097.html"
       },
       {
-        id: 15,
+        id: 17,
         title: "Vermicompost",
         category: "Fertilizers",
         description: "Nutrient-rich vermicompost from earthworms. Improves soil structure and water retention.",
@@ -1373,10 +1251,10 @@
         image: "https://5.imimg.com/data5/TL/TE/MY-13359918/vermicompost-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by OCB",
-        indiamartLink: "https://www.indiamart.com/proddetail/vermicompost-organic-fertilizer-17729700797.html?pos=1&kwd=vermicompost&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:L|rsf:gd|ri:L_A_0_P-|-res:RC3|ktp:N0|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15371|com-cf:nl|ptrs:na|mc:2728|cat:99|qry_typ:P|lang:en|rtn:0-0-0-0-1-9-0|tyr:1|qrd:250823|mrd:250601|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/vermicompost-organic-fertilizer-17729700797.html"
       },
       {
-        id: 16,
+        id: 18,
         title: "Cow Dung Manure",
         category: "Fertilizers",
         description: "Traditional cow dung manure, dried and powdered. Rich in nitrogen.",
@@ -1386,10 +1264,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2023/10/356508085/ZZ/KW/MB/13359918/cow-dung-manure-250x250.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/cow-dung-manure-2852761241273.html?pos=1&kwd=cow%20dung%20manure&tags=rk:TS|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_TS_0_P-|-res:RC2|ktp:PB0|stype:attr=1|mtp:S|wc:3|lcf:0|cq:bengaluru|qr_nm:gl-gd|cs:16374|com-cf:nl|ptrs:na|mc:657203|cat:99|qry_typ:P|lang:en|rtn:1-0-0-0-2-5-2|tyr:1|qrd:250823|mrd:250729|prdt:250823|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/cow-dung-manure-2852761241273.html"
       },
       {
-        id: 17,
+        id: 19,
         title: "NPK Fertilizer",
         category: "Fertilizers",
         description: "Balanced NPK fertilizer for all crops. Promotes growth, flowering, and fruiting.",
@@ -1399,10 +1277,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2024/7/438837746/PR/AS/GK/13868726/compressjpeg-online-image-1-250x250.png",
         certified: true,
         certificationDetails: "Certified by BIS",
-        indiamartLink: "https://www.indiamart.com/proddetail/npk-fertilizer-11-11-8-2854555595388.html?pos=3&kwd=npk%20fertilizer&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:S|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16747|com-cf:nl|ptrs:na|mc:43849|cat:99|qry_typ:P|lang:en|rtn:0-0-0-0-2-8-0|tyr:1|qrd:250823|mrd:250721|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/npk-fertilizer-11-11-8-2854555595388.html"
       },
       {
-        id: 18,
+        id: 20,
         title: "Bio Fertilizer",
         category: "Fertilizers",
         description: "Microbial bio-fertilizer for nitrogen fixation. Eco-friendly alternative to chemical fertilizers.",
@@ -1412,15 +1290,41 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2022/12/BB/II/TB/13868726/rhizobia-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by OCB",
-        indiamartLink: "https://www.indiamart.com/proddetail/rhizobia-bio-fertilizer-2849116988212.html?pos=1&kwd=bio%20fertilizer&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:G|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16074|com-cf:nl|ptrs:na|mc:527|cat:99|qry_typ:P|lang:en|rtn:0-0-0-0-0-9-1|tyr:1|qrd:250821|mrd:250823|prdt:250823|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/rhizobia-bio-fertilizer-2849116988212.html"
+      },
+      {
+        id: 21,
+        title: "Phosphate Fertilizer",
+        category: "Fertilizers",
+        description: "High-phosphate fertilizer for root development and early plant growth.",
+        price: "₹1,800",
+        location: "Haryana",
+        icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/phosphate-fertilizer-250x250.jpg",
+        certified: true,
+        certificationDetails: "Certified by BIS",
+        indiamartLink: "https://www.indiamart.com/proddetail/phosphate-fertilizer-2851073685333.html"
+      },
+      {
+        id: 22,
+        title: "Potash Fertilizer",
+        category: "Fertilizers",
+        description: "Potassium-rich fertilizer to enhance fruit quality and disease resistance.",
+        price: "₹1,600",
+        location: "Rajasthan",
+        icon: "fas fa-leaf",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/potash-fertilizer-250x250.jpg",
+        certified: true,
+        certificationDetails: "Certified by BIS",
+        indiamartLink: "https://www.indiamart.com/proddetail/potash-fertilizer-2851073685333.html"
       },
 
       // Irrigation
       {
-        id: 4,
+        id: 23,
         title: "Drip Irrigation System",
         category: "Irrigation",
-        description: "Complete drip irrigation setup for efficient water management. Includes filters and controllers. Saves up to 50% water.",
+        description: "Complete drip irrigation setup for efficient water management. Saves up to 50% water.",
         price: "₹35,000",
         location: "Gujarat",
         icon: "fas fa-tint",
@@ -1430,7 +1334,7 @@
         indiamartLink: "https://www.indiamart.com/proddetail/drip-irrigation-system-16120457191.html"
       },
       {
-        id: 19,
+        id: 24,
         title: "Sprinkler Irrigation System",
         category: "Irrigation",
         description: "Overhead sprinkler system for uniform water distribution. Suitable for large fields.",
@@ -1440,10 +1344,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2024/6/426324817/LW/DW/PG/2427230/product-jpeg-250x250.jpeg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/aluminum-sprinkler-irrigation-system-2854203125430.html?pos=2&kwd=sprinkler%20irrigation%20system&tags=rk:C|plc:1|dt:0|db:01|prc:1|dtp:p||sv:M|rsf:gd|ri:M_C_0_P-|-res:RC3|ktp:N0|mtp:G|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16944|com-cf:nl|ptrs:na|mc:38243|cat:815|qry_typ:P|lang:en|rtn:2-0-1-0-2-5-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/aluminum-sprinkler-irrigation-system-2854203125430.html"
       },
       {
-        id: 20,
+        id: 25,
         title: "Submersible Pump",
         category: "Irrigation",
         description: "Efficient submersible pump for deep wells. High discharge rate and energy efficient.",
@@ -1453,23 +1357,23 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2021/8/AZ/NI/AE/1869952/submersible-sewage-pumps-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by BIS",
-        indiamartLink: "https://www.indiamart.com/proddetail/borewell-submersible-pump-24164815062.html?pos=2&kwd=submersible%20pump&tags=rk:A|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:S|rsf:gd|ri:S_A_0_P-|-res:RC4|ktp:N0|mtp:G|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15702|com-cf:nl|ptrs:na|mc:2085|cat:85|qry_typ:P|lang:en|rtn:0-0-0-0-2-8-0|tyr:1|qrd:250823|mrd:250816|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/borewell-submersible-pump-24164815062.html"
       },
       {
-        id: 21,
+        id: 26,
         title: "Solar Water Pump",
         category: "Irrigation",
-        description: "Eco-friendly solar-powered water pump. No electricity required, ideal for remote areas.",
+        description: "Eco-friendly solar-powered water pump. Ideal for remote areas.",
         price: "₹50,000",
         location: "Rajasthan",
         icon: "fas fa-tint",
         image: "https://5.imimg.com/data5/SELLER/Default/2025/3/499502999/BD/PB/XW/89835025/solar-pumps-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by MNRE",
-        indiamartLink: "https://www.indiamart.com/proddetail/solar-water-pump-2852877651612.html?pos=2&kwd=solar%20water%20pump&tags=rk:A|plc:1|dt:0|db:01||dtp:p|pfs:1|sv:T|rsf:gd|ri:T_A_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:S|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17017|com-cf:nl|ptrs:na|mc:139150|cat:517|qry_typ:P|lang:en|rtn:0-0-0-0-3-7-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/solar-water-pump-2852877651612.html"
       },
       {
-        id: 22,
+        id: 27,
         title: "Pivot Irrigation System",
         category: "Irrigation",
         description: "Center pivot irrigation for large-scale farming. Automated and water-efficient.",
@@ -1479,25 +1383,51 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2025/5/507345743/TC/YT/TB/1080311/agricultural-irrigation-systems-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/agricultural-irrigation-systems-4985514762.html?pos=2&kwd=pivot%20irrigation%20system&tags=rk:TS|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:M|rsf:gd|ri:M_TS_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17732|com-cf:nl|ptrs:na|mc:10310|cat:815|qry_typ:P|lang:en|rtn:1-0-0-0-1-7-1|tyr:1|qrd:250817|mrd:250823|prdt:250823|pfen:1|gli:G0I0|v=4|r=3"
+        indiamartLink: "https://www.indiamart.com/proddetail/agricultural-irrigation-systems-4985514762.html"
+      },
+      {
+        id: 28,
+        title: "Mist Irrigation System",
+        category: "Irrigation",
+        description: "Micro-mist irrigation for greenhouses and nurseries. Precise water delivery.",
+        price: "₹18,000",
+        location: "Tamil Nadu",
+        icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/mist-irrigation-250x250.jpg",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/mist-irrigation-system-2851073685333.html"
+      },
+      {
+        id: 29,
+        title: "Water Sprinkler Gun",
+        category: "Irrigation",
+        description: "High-range sprinkler gun for large fields. Adjustable spray patterns.",
+        price: "₹12,000",
+        location: "Karnataka",
+        icon: "fas fa-tint",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/sprinkler-gun-250x250.jpg",
+        certified: false,
+        certificationDetails: "Not certified",
+        indiamartLink: "https://www.indiamart.com/proddetail/sprinkler-gun-2851073685333.html"
       },
 
       // Seeds
       {
-        id: 8,
+        id: 30,
         title: "Hybrid Seeds Collection",
         category: "Seeds",
-        description: "Premium hybrid seeds for various crops. High yield potential and disease resistance. Certified by agricultural department.",
+        description: "Premium hybrid seeds for various crops. High yield potential and disease resistance.",
         price: "₹1,800",
         location: "Tamil Nadu",
         icon: "fas fa-spa",
         image: "https://5.imimg.com/data5/SELLER/Default/2025/2/486331153/QB/RM/GD/239154742/organic-hybrid-bajra-seed-250x250.jpeg",
         certified: true,
         certificationDetails: "Certified by Seed Certification Agency (SCA)",
-        indiamartLink: "https://www.indiamart.com/proddetail/organic-hybrid-bajra-seed-2855731279991.html?pos=4&kwd=hybrid%20seeds%20collections&tags=rk:T|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_T_0_P-|-res:RC3|ktp:N0|stype:attr=1|mtp:G|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:17148|com-cf:nl|ptrs:na|mc:10813|cat:14|qry_typ:P|lang:en|rtn:0-0-0-0-5-5-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/organic-hybrid-bajra-seed-2855731279991.html"
       },
       {
-        id: 23,
+        id: 31,
         title: "Wheat Seeds",
         category: "Seeds",
         description: "High-yielding wheat seeds suitable for rabi season. Drought resistant variety.",
@@ -1507,10 +1437,10 @@
         image: "https://5.imimg.com/data5/ANDROID/Default/2025/6/516164376/EU/TD/HW/242483203/product-jpeg-250x250.jpg",
         certified: true,
         certificationDetails: "Certified by SCA",
-        indiamartLink: "https://www.indiamart.com/proddetail/wheat-seeds-2856626178848.html?pos=1&kwd=wheat%20seeds&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p||sv:VGP|rsf:gd|ri:VGP_B_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16362|com-cf:nl|ptrs:na|mc:41024|cat:14|qry_typ:P|lang:en|rtn:2-0-0-2-1-5-0|tyr:1|qrd:250823|mrd:250701|prdt:250823|pfen:1|gli:G0I0|v=4|r=2"
+        indiamartLink: "https://www.indiamart.com/proddetail/wheat-seeds-2856626178848.html"
       },
       {
-        id: 24,
+        id: 32,
         title: "Rice Seeds",
         category: "Seeds",
         description: "Hybrid rice seeds for higher productivity. Short duration crop.",
@@ -1520,10 +1450,10 @@
         image: "https://5.imimg.com/data5/JK/BF/GLADMIN-10325502/hybrid-seeds-of-rice-250x250.jpg",
         certified: false,
         certificationDetails: "Not certified",
-        indiamartLink: "https://www.indiamart.com/proddetail/hybrid-rice-seeds-16039208873.html?pos=1&kwd=rice%20seeds&tags=rk:C|plc:1|dt:0|db:01||dtp:p||sv:VGP|rsf:gd|ri:VGP_C_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:1|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16611|com-cf:nl|ptrs:na|mc:5679|cat:14|qry_typ:P|lang:en|rtn:2-0-0-2-3-3-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|qcr:1|pfen:1|gli:G0I0|v=4|r=4"
+        indiamartLink: "https://www.indiamart.com/proddetail/hybrid-rice-seeds-16039208873.html"
       },
       {
-        id: 25,
+        id: 33,
         title: "Vegetable Seeds Kit",
         category: "Seeds",
         description: "Assorted vegetable seeds including tomato, brinjal, and okra. Organic certified.",
@@ -1533,10 +1463,10 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2022/1/NE/FG/RB/126949226/ng-kitchecn-seed-kit-combo-250x250.png",
         certified: true,
         certificationDetails: "Certified by OCB",
-        indiamartLink: "https://www.indiamart.com/proddetail/ng-kitchecn-seed-kit-combo-24669065288.html?pos=2&kwd=vegetable%20seeds%20kit&tags=rk:B|plc:1|dt:0|db:01|prc:1|dtp:p|pfs:1|sv:T|rsf:gd|ri:T_B_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:G|wc:3|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:16541|com-cf:nl|ptrs:na|mc:1606|cat:14|qry_typ:P|lang:en|rtn:1-0-1-1-3-4-0|tyr:1|qrd:250823|mrd:250823|prdt:250823|gli:G0I0|v=4|r=3"
+        indiamartLink: "https://www.indiamart.com/proddetail/ng-kitchecn-seed-kit-combo-24669065288.html"
       },
       {
-        id: 26,
+        id: 34,
         title: "Cotton Seeds",
         category: "Seeds",
         description: "Bt cotton seeds for pest resistance. High fiber quality.",
@@ -1546,46 +1476,87 @@
         image: "https://5.imimg.com/data5/SELLER/Default/2024/3/400318533/CZ/BF/CX/18861196/cotton-seeds-250x250.png",
         certified: true,
         certificationDetails: "Certified by SCA",
-        indiamartLink: "https://www.indiamart.com/proddetail/cotton-seeds-9855262948.html?pos=3&kwd=cotton%20seeds&tags=rk:C|plc:1|dt:0|db:01|prc:1|dtp:p||sv:M|rsf:gd|ri:M_C_0_P-|-res:RC2|ktp:N0|stype:attr=1|mtp:S|wc:2|lcf:3|cq:bengaluru|qr_nm:gl-gd|cs:15968|com-cf:nl|ptrs:na|mc:26086|cat:14|qry_typ:P|lang:en|rtn:1-0-1-0-5-2-1|tyr:1|qrd:250823|mrd:250601|prdt:250823|gli:G0I0|v=4|r=3"
+        indiamartLink: "https://www.indiamart.com/proddetail/cotton-seeds-9855262948.html"
+      },
+      {
+        id: 35,
+        title: "Maize Seeds",
+        category: "Seeds",
+        description: "Hybrid maize seeds for high yield. Suitable for all seasons.",
+        price: "₹2,500",
+        location: "Maharashtra",
+        icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/maize-seeds-250x250.jpg",
+        certified: true,
+        certificationDetails: "Certified by SCA",
+        indiamartLink: "https://www.indiamart.com/proddetail/maize-seeds-2851073685333.html"
+      },
+      {
+        id: 36,
+        title: "Soybean Seeds",
+        category: "Seeds",
+        description: "High-protein soybean seeds with excellent germination rate.",
+        price: "₹3,200",
+        location: "Rajasthan",
+        icon: "fas fa-spa",
+        image: "https://5.imimg.com/data5/SELLER/Default/2023/7/323322775/YU/MX/AU/22078775/soybean-seeds-250x250.jpg",
+        certified: true,
+        certificationDetails: "Certified by SCA",
+        indiamartLink: "https://www.indiamart.com/proddetail/soybean-seeds-2851073685333.html"
       }
     ];
 
-    // Initialize equipment page with animations
     document.addEventListener('DOMContentLoaded', function() {
       displayEquipment();
       setupFilters();
       initializeAnimations();
+      document.getElementById('searchInput').addEventListener('input', filterEquipment);
     });
 
-    // Display equipment cards with enhanced styling
+    function toggleSidebar() {
+      document.querySelector('aside').classList.toggle('active');
+    }
+
     function displayEquipment(equipment = equipmentData) {
-      const grid = document.getElementById('equipmentGrid');
-      
+      const sectionsContainer = document.getElementById('equipmentSections');
+      sectionsContainer.innerHTML = '';
+
       if (equipment.length === 0) {
-        grid.innerHTML = `
+        sectionsContainer.innerHTML = `
           <div class="empty-state">
-            <div class="empty-icon">
-              <i class="fas fa-tools"></i>
-            </div>
-            <h3>No equipment found</h3>
-            <p>Try adjusting your filters to find the equipment you're looking for.</p>
+            <div class="empty-icon"><i class="fas fa-tools"></i></div>
+            <h3>No Equipment Found</h3>
+            <p>Try adjusting your filters or search to find the equipment you're looking for.</p>
           </div>
         `;
         return;
       }
 
-      grid.innerHTML = '';
+      const categories = ['Vehicles', 'Tools', 'Fertilizers', 'Irrigation', 'Seeds'];
+      categories.forEach(category => {
+        const categoryItems = equipment.filter(item => item.category === category);
+        if (categoryItems.length > 0) {
+          const section = document.createElement('div');
+          section.className = 'category-section';
+          section.innerHTML = `
+            <h2 class="category-title">
+              <i class="${categoryItems[0].icon}"></i>
+              ${category}
+            </h2>
+            <div class="equipment-grid" id="${category.toLowerCase()}-grid"></div>
+          `;
+          sectionsContainer.appendChild(section);
 
-      equipment.forEach(item => {
-        const card = createEquipmentCard(item);
-        grid.appendChild(card);
+          const grid = section.querySelector(`#${category.toLowerCase()}-grid`);
+          categoryItems.forEach(item => {
+            grid.appendChild(createEquipmentCard(item));
+          });
+        }
       });
 
-      // Re-initialize animations for new cards
       initializeAnimations();
     }
 
-    // Create enhanced equipment card with certification label
     function createEquipmentCard(item) {
       const card = document.createElement('div');
       card.className = 'equipment-card';
@@ -1593,40 +1564,27 @@
 
       card.innerHTML = `
         <div class="equipment-image">
-          <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <i class="${item.icon}" style="display: none;"></i>
+          <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none';">
         </div>
         ${item.certified ? '<div class="certified-label"><i class="fas fa-check-circle"></i> Certified</div>' : ''}
         <div class="equipment-content">
           <h3 class="equipment-title">${item.title}</h3>
-          <span class="equipment-category">
-            <i class="${item.icon}"></i>
-            ${item.category}
-          </span>
+          <span class="equipment-category"><i class="${item.icon}"></i> ${item.category}</span>
           <p class="equipment-description">${item.description}</p>
           <div class="equipment-details">
-            <span class="equipment-price">
-              <i class="fas fa-rupee-sign"></i>
-              ${item.price.replace('₹', '')}
-            </span>
-            <span class="equipment-location">
-              <i class="fas fa-map-marker-alt"></i>
-              ${item.location}
-            </span>
+            <span class="equipment-price"><i class="fas fa-rupee-sign"></i> ${item.price.replace('₹', '')}</span>
+            <span class="equipment-location"><i class="fas fa-map-marker-alt"></i> ${item.location}</span>
           </div>
           <div class="equipment-actions">
             <a href="${item.indiamartLink}" target="_blank" class="btn-buy" onclick="event.stopPropagation();">
-              <i class="fas fa-shopping-cart"></i>
-              Buy on IndiaMart
+              <i class="fas fa-shopping-cart"></i> Buy on IndiaMart
             </a>
           </div>
         </div>
       `;
-
       return card;
     }
 
-    // Setup enhanced filters
     function setupFilters() {
       const categoryFilter = document.getElementById('category');
       const locationFilter = document.getElementById('location');
@@ -1637,19 +1595,19 @@
       sortFilter.addEventListener('change', filterEquipment);
     }
 
-    // Enhanced filter equipment
     function filterEquipment() {
       const category = document.getElementById('category').value;
       const location = document.getElementById('location').value;
       const sort = document.getElementById('sort-select').value;
+      const search = document.getElementById('searchInput').value.toLowerCase();
 
       let filtered = equipmentData.filter(item => {
         const categoryMatch = category === 'All Categories' || item.category === category;
         const locationMatch = location === 'All India' || item.location === location;
-        return categoryMatch && locationMatch;
+        const searchMatch = item.title.toLowerCase().includes(search) || item.description.toLowerCase().includes(search);
+        return categoryMatch && locationMatch && searchMatch;
       });
 
-      // Sort equipment
       switch(sort) {
         case 'Price: Low to High':
           filtered.sort((a, b) => parseInt(a.price.replace(/[^\d]/g, '')) - parseInt(b.price.replace(/[^\d]/g, '')));
@@ -1661,16 +1619,16 @@
           filtered.sort(() => Math.random() - 0.5);
           break;
         default:
+          filtered.sort((a, b) => a.id - b.id);
           break;
       }
 
       displayEquipment(filtered);
     }
 
-    // Initialize animations
     function initializeAnimations() {
       const observerOptions = {
-        threshold: 0.1,
+        threshold: 0.2,
         rootMargin: '0px 0px -50px 0px'
       };
 
@@ -1679,6 +1637,7 @@
           if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
           }
         });
       }, observerOptions);
@@ -1686,23 +1645,32 @@
       document.querySelectorAll('.equipment-card').forEach(card => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(card);
+      });
+
+      document.querySelectorAll('.category-title').forEach(title => {
+        title.style.opacity = '0';
+        title.style.transform = 'translateY(20px)';
+        title.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(title);
       });
     }
 
-    // Enhanced modal functions
     let currentEquipment = null;
 
     function openModal(equipment) {
       currentEquipment = equipment;
       document.getElementById('modalTitle').innerHTML = `<i class="${equipment.icon}"></i> ${equipment.title}`;
-      document.getElementById('modalImage').innerHTML = `<i class="${equipment.icon}"></i>`;
+      document.getElementById('modalImage').src = equipment.image;
+      document.getElementById('modalImage').onerror = () => {
+        document.getElementById('modalImage').style.display = 'none';
+      };
       document.getElementById('modalEquipmentTitle').textContent = equipment.title;
       document.getElementById('modalCategory').querySelector('span').textContent = `Category: ${equipment.category}`;
       document.getElementById('modalPrice').querySelector('span').textContent = `Price: ${equipment.price}`;
       document.getElementById('modalLocation').querySelector('span').textContent = `Location: ${equipment.location}`;
       document.getElementById('modalCertification').querySelector('span').textContent = `Certification: ${equipment.certificationDetails}`;
+      document.getElementById('modalDescription').querySelector('span').textContent = `Description: ${equipment.description}`;
       document.getElementById('modalBuyLink').href = equipment.indiamartLink;
       
       document.getElementById('equipmentModal').style.display = 'block';
@@ -1715,7 +1683,6 @@
       currentEquipment = null;
     }
 
-    // Enhanced event listeners
     window.onclick = function(event) {
       const modal = document.getElementById('equipmentModal');
       if (event.target === modal) {

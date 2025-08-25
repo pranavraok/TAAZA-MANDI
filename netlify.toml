@@ -1,7 +1,0 @@
-# netlify.toml
-[build]
-  publish = "dist"  # or your static build directory
-  command = "npm run build"
-
-[functions]
-  directory = "netlify/functions"

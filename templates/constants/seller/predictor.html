@@ -569,30 +569,9 @@
     }
 
     @media (max-width: 1024px) {
-      body {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "nav"
-          "main"
-          "footer";
-      }
-      aside {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100%;
-        transform: translateX(-100%);
-        z-index: 200;
-      }
-      aside.active {
-        transform: translateX(0);
-      }
+
       .hamburger {
         display: block;
-      }
-      .navbar ul {
-        display: none;
       }
     }
 
@@ -609,24 +588,9 @@
       .crop-recommendations {
         grid-template-columns: 1fr;
       }
-      .navbar input[type="text"] {
-        margin: 0 1rem;
-      }
-      .auth-buttons {
-        display: none;
-      }
     }
 
     @media (max-width: 480px) {
-      .navbar {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem 0.5rem;
-      }
-      .navbar input[type="text"] {
-        margin: 0;
-        width: 100%;
-      }
       .predictor-title {
         font-size: 1.75rem;
       }
@@ -652,89 +616,10 @@
 </head>
 <body>
   <!-- Navbar -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <i class="fas fa-seedling"></i>
-        TAAZA MANDI
-      </div>
-      <label for="searchInput" class="sr-only">Search for equipment, tools, machinery</label>
-      <input type="text" id="searchInput" placeholder="🔍 Search for equipment, tools, machinery..." aria-label="Search for equipment, tools, machinery">
-      <ul>
-        <li><a href="{{ url_for('seller_feed') }}" aria-label="Home page">Home</a></li>
-        <li><a href="{{ url_for('market') }}" aria-label="Market page">Market</a></li>
-        <li><a href="{{ url_for('about') }}" aria-label="About us page">About Us</a></li>
-        <li><a href="{{ url_for('contact') }}" aria-label="Contact page">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  {% include 'constants/seller/navbar.html' %}
 
   <!-- Sidebar -->
-  <aside>
-    <div class="sidebar-profile">
-      <div class="profile-avatar" id="sidebarAvatar">
-        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
-          {{ session.user.user_metadata.first_name[0]|upper }}
-        {% else %}
-          <i class="fas fa-user"></i>
-        {% endif %}
-      </div>
-      <div class="name" id="sidebarName">
-        {% if session.user and session.user.user_metadata %}
-          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
-        {% elif session.user %}
-          {{ session.user.email.split('@')[0]|title }}
-        {% else %}
-          Guest
-        {% endif %}
-      </div>
-      <div class="role" id="sidebarRole">
-        <i class="fas fa-seedling"></i>
-        {% if session.user_role == 'seller' %}
-          Seller Account
-        {% elif session.user_role == 'buyer' %}
-          Buyer Account
-        {% else %}
-          Guest
-        {% endif %}
-      </div>
-      {% if session.user_role == 'seller' %}
-        <a href="{{ url_for('seller_profile') }}" class="profile-link" aria-label="View seller profile">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      {% elif session.user_role == 'buyer' %}
-        <a href="{{ url_for('buyer_profile') }}" class="profile-link" aria-label="View buyer profile">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      {% else %}
-        <a href="{{ url_for('user_select') }}" class="profile-link" aria-label="Complete account setup">
-          <i class="fas fa-user"></i>
-          Complete Setup
-        </a>
-      {% endif %}
-    </div>
-    <div class="sidebar-section-title">Dashboard</div>
-    <ul class="sidebar-menu">
-      <li><a href="{{ url_for('seller_feed') }}" class="sidebar-link" aria-label="View feed"><i class="fas fa-home"></i> Feed</a></li>
-      <li><a href="{{ url_for('post_upload') }}" class="sidebar-link" aria-label="Upload post"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
-    </ul>
-    <div class="sidebar-section-title">Resources</div>
-    <ul class="sidebar-resources">
-      <li><a href="{{ url_for('predictor') }}" class="sidebar-link" aria-label="Smart Crop Predictor"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="{{ url_for('schemes') }}" target="_blank" class="sidebar-link" aria-label="Government Schemes"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="{{ url_for('equipment') }}" class="sidebar-link" aria-label="Equipment's Bazaar"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
-    </ul>
-    <div class="sidebar-section-title">Settings</div>
-    <ul class="sidebar-settings">
-      <li><a href="{{ url_for('seller_profile') }}" class="sidebar-link" aria-label="Account Settings"><i class="fas fa-cog"></i> Account Settings</a></li>
-      <li><a href="{{ url_for('contact') }}" class="sidebar-link" aria-label="Help and Support"><i class="fas fa-question-circle"></i> Help & Support</a></li>
-      {% if session.user %}
-        <li><a href="{{ url_for('logout') }}" class="sidebar-link" aria-label="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-      {% endif %}
-    </ul>
-  </aside>
+  {% include 'constants/seller/sidebar.html' %}
 
   <!-- Main Content -->
   <main>
@@ -749,17 +634,17 @@
       <form id="cropForm" class="prediction-form" aria-label="Crop prediction form">
         <div>
           <label for="n"><i class="fas fa-leaf"></i> Nitrogen (N)</label>
-          <input type="number" id="n" name="nitrogen" placeholder="e.g., 90" min="0" max="200" required aria-describedby="n-error">
+          <input type="number" id="n" name="n" placeholder="e.g., 90" min="0" max="200" required aria-describedby="n-error">
           <div id="n-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
         </div>
         <div>
           <label for="p"><i class="fas fa-leaf"></i> Phosphorus (P)</label>
-          <input type="number" id="p" name="phosphorus" placeholder="e.g., 40" min="0" max="150" required aria-describedby="p-error">
+          <input type="number" id="p" name="p" placeholder="e.g., 40" min="0" max="150" required aria-describedby="p-error">
           <div id="p-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
         </div>
         <div>
           <label for="k"><i class="fas fa-leaf"></i> Potassium (K)</label>
-          <input type="number" id="k" name="potassium" placeholder="e.g., 50" min="0" max="200" required aria-describedby="k-error">
+          <input type="number" id="k" name="k" placeholder="e.g., 50" min="0" max="200" required aria-describedby="k-error">
           <div id="k-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
         </div>
         <div>
@@ -792,147 +677,104 @@
   </main>
 
   <!-- Footer -->
-  <footer>
-    <div class="footer-main">
-      <div>
-        <div class="footer-brand">
-          <i class="fas fa-seedling"></i>
-          TAAZA MANDI
-        </div>
-        <div>Connecting farmers directly to buyers through a simple and efficient marketplace platform that empowers rural communities.</div>
-      </div>
-      <div>
-        <div class="footer-section-title">Quick Links</div>
-        <ul class="footer-links">
-          <li><a href="{{ url_for('market') }}" aria-label="Market Prices"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-          <li><a href="{{ url_for('about') }}" aria-label="About Us"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="{{ url_for('contact') }}" aria-label="Contact Us"><i class="fas fa-envelope"></i> Contact Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-section-title">Farmer Resources</div>
-        <ul class="footer-resources">
-          <li><a href="{{ url_for('predictor') }}" aria-label="Smart Crop Predictor"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-          <li><a href="{{ url_for('schemes') }}" aria-label="Government Schemes"><i class="fas fa-university"></i> Government Schemes</a></li>
-          <li><a href="{{ url_for('equipment') }}" aria-label="Vehicle/Tools Buy-Rent"><i class="fas fa-tools"></i> Vehicle/Tools Buy-Rent</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-section-title">Connect With Us</div>
-        <ul class="footer-connect">
-          <li><a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i> Facebook</a></li>
-          <li><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a></li>
-          <li><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="#" aria-label="Email support"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
-        </ul>
-      </div>
-    </div>
-    <div style="text-align:center;color:#718096;font-size:0.9rem;padding:2rem 0 1rem 0;border-top:1px solid var(--border-light);margin-top:2rem;">
-      © 2025 TAAZA MANDI. All Rights Reserved. | Made with ❤️ for farmers
-    </div>
-  </footer>
+  {% include 'constants/seller/footer.html' %}
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('cropForm');
-      const resultsSection = document.getElementById('results');
-      const cropRecommendations = document.getElementById('cropRecommendations');
-      const hamburger = document.querySelector('.hamburger');
-      const sidebar = document.querySelector('aside');
+        const form = document.getElementById('cropForm');
+        const resultsSection = document.getElementById('results');
+        const cropRecommendations = document.getElementById('cropRecommendations');
+        const hamburger = document.querySelector('.hamburger');
+        const sidebar = document.querySelector('aside');
 
-      // Hamburger menu toggle
-      hamburger.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-      });
-
-      // Close sidebar when clicking outside on mobile
-      document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-          sidebar.classList.remove('active');
-        }
-      });
-
-      const cropDatabase = [
-        { name: "Rice", confidence: 95, description: "Thrives in high humidity and moderate rainfall.", waterNeeded: "High", season: "Kharif", yield: "4-6 tons/ha" },
-        { name: "Wheat", confidence: 88, description: "Performs well with your soil nutrient levels.", waterNeeded: "Medium", season: "Rabi", yield: "3-4 tons/ha" },
-        { name: "Cotton", confidence: 82, description: "Requires moderate water and warm temperatures.", waterNeeded: "Medium", season: "Kharif", yield: "2-3 tons/ha" },
-        { name: "Sugarcane", confidence: 78, description: "Needs high water and warm temperatures.", waterNeeded: "High", season: "Year-round", yield: "70-80 tons/ha" },
-        { name: "Maize", confidence: 75, description: "Adapts well to various climate conditions.", waterNeeded: "Medium", season: "Kharif", yield: "3-4 tons/ha" }
-      ];
-
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Clear previous error messages
-        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-
-        // Validate inputs
-        const formData = new FormData(form);
-        const inputs = [
-          { id: 'n', name: 'nitrogen', min: 0, max: 200 },
-          { id: 'p', name: 'phosphorus', min: 0, max: 150 },
-          { id: 'k', name: 'potassium', min: 0, max: 200 },
-          { id: 'temperature', name: 'temperature', min: -10, max: 50 },
-          { id: 'humidity', name: 'humidity', min: 0, max: 100 },
-          { id: 'ph', name: 'ph', min: 0, max: 14 },
-          { id: 'rainfall', name: 'rainfall', min: 0, max: 3000 }
-        ];
-
-        let isValid = true;
-        inputs.forEach(input => {
-          const value = parseFloat(formData.get(input.name));
-          const errorEl = document.getElementById(`${input.id}-error`);
-          if (isNaN(value) || value < input.min || value > input.max) {
-            errorEl.textContent = `Please enter a value between ${input.min} and ${input.max}.`;
-            errorEl.style.display = 'block';
-            isValid = false;
-          }
+        // Hamburger menu toggle
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
         });
 
-        if (!isValid) return;
-
-        const recommendations = generateRecommendations(formData);
-        displayResults(recommendations);
-        resultsSection.classList.add('show');
-        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-
-      function generateRecommendations(formData) {
-        const nitrogen = parseFloat(formData.get('nitrogen'));
-        const phosphorus = parseFloat(formData.get('phosphorus'));
-        const potassium = parseFloat(formData.get('potassium'));
-        const humidity = parseFloat(formData.get('humidity'));
-        const rainfall = parseFloat(formData.get('rainfall'));
-        const temperature = parseFloat(formData.get('temperature'));
-
-        return cropDatabase.map(crop => {
-          let confidence = crop.confidence;
-          if (nitrogen > 100) confidence += 5; if (nitrogen < 50) confidence -= 10;
-          if (humidity > 70) confidence += 3; if (humidity < 30) confidence -= 5;
-          if (rainfall > 1000) confidence += 4; if (rainfall < 500) confidence -= 8;
-          if (temperature > 25) confidence += 2; if (temperature < 15) confidence -= 3;
-          return { ...crop, confidence: Math.max(60, Math.min(98, confidence)) };
-        }).sort((a, b) => b.confidence - a.confidence);
-      }
-
-      function displayResults(recommendations) {
-        cropRecommendations.innerHTML = '';
-        recommendations.forEach((crop, index) => {
-          const cropCard = document.createElement('div');
-          cropCard.className = `crop-card ${index === 0 ? 'best-match' : ''}`;
-          cropCard.innerHTML = `
-            <div class="crop-name">${index === 0 ? '<i class="fas fa-crown" style="color:#fbbf24;"></i>' : ''}${crop.name}<span class="confidence">${crop.confidence}%</span></div>
-            <div class="crop-description">${crop.description}</div>
-            <div class="crop-stats">
-              <div class="crop-stat"><i class="fas fa-tint"></i> <span>Water: ${crop.waterNeeded}</span></div>
-              <div class="crop-stat"><i class="fas fa-calendar"></i> <span>Season: ${crop.season}</span></div>
-              <div class="crop-stat"><i class="fas fa-chart-line"></i> <span>Yield: ${crop.yield}</span></div>
-              <div class="crop-stat"><i class="fas fa-star"></i> <span>${index === 0 ? 'Best Match' : 'Good Option'}</span></div>
-            </div>
-          `;
-          cropRecommendations.appendChild(cropCard);
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
         });
-      }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear previous error and result messages
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            cropRecommendations.innerHTML = '';
+
+            // Validate inputs
+            const formData = new FormData(form);
+            const inputs = [
+                { id: 'n', name: 'n', min: 0, max: 200 },
+                { id: 'p', name: 'p', min: 0, max: 150 },
+                { id: 'k', name: 'k', min: 0, max: 200 },
+                { id: 'humidity', name: 'humidity', min: 0, max: 100 },
+                { id: 'rainfall', name: 'rainfall', min: 0, max: 3000 }
+            ];
+
+            let isValid = true;
+            inputs.forEach(input => {
+                const value = parseFloat(formData.get(input.name));
+                const errorEl = document.getElementById(`${input.id}-error`);
+                if (isNaN(value) || value < input.min || value > input.max) {
+                    errorEl.textContent = `Please enter a value between ${input.min} and ${input.max}.`;
+                    errorEl.style.display = 'block';
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) return;
+
+            // Send AJAX request
+            fetch('/predictor', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.style.color = 'var(--error)';
+                    errorDiv.style.fontSize = '0.85rem';
+                    errorDiv.textContent = data.message;
+                    form.appendChild(errorDiv);
+                } else {
+                    // Display result on the same page with timestamp
+                    const cropCard = document.createElement('div');
+                    cropCard.className = 'crop-card best-match';
+                    cropCard.innerHTML = `
+                        <div class="crop-name"><i class="fas fa-crown" style="color:#fbbf24;"></i> ${data.crop_name}<span class="confidence">95%</span></div>
+                        <div class="crop-description">Recommended crop based on your input as of ${data.timestamp}.</div>
+                        <div class="crop-stats">
+                            <div class="crop-stat"><i class="fas fa-leaf"></i> <span>N: ${data.n}</span></div>
+                            <div class="crop-stat"><i class="fas fa-leaf"></i> <span>P: ${data.p}</span></div>
+                            <div class="crop-stat"><i class="fas fa-leaf"></i> <span>K: ${data.k}</span></div>
+                            <div class="crop-stat"><i class="fas fa-tint"></i> <span>Humidity: ${data.humidity}%</span></div>
+                            <div class="crop-stat"><i class="fas fa-cloud-rain"></i> <span>Rainfall: ${data.rainfall}mm</span></div>
+                            <div class="crop-stat"><i class="fas fa-star"></i> <span>Best Match</span></div>
+                        </div>
+                    `;
+                    cropRecommendations.innerHTML = '';
+                    cropRecommendations.appendChild(cropCard);
+                    resultsSection.classList.add('show');
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.style.color = 'var(--error)';
+                errorDiv.style.fontSize = '0.85rem';
+                errorDiv.textContent = 'An unexpected error occurred. Please try again.';
+                form.appendChild(errorDiv);
+            });
+        });
     });
   </script>
 </body>

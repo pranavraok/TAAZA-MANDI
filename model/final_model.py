@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import joblib as jb
 
-ds = pd.read_csv('Crop_recommendation.csv')
+ds = pd.read_csv('model/Crop_recommendation.csv')
 print(ds['label'].unique())
 
 ds.drop(columns=['ph'], inplace=True)
@@ -26,5 +26,5 @@ accuracy = accuracy_score(y_test, y_pred)
 # print("Random Forest Model Accuracy:", round(accuracy * 100, 2), "%")
 # print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
-jb.dump(rf, 'final_model.pkl')
-print("Model saved as final_model.pkl")
+jb.dump(rf, 'model/final_model.pkl')
+print("Model saved as model/final_model.pkl")
