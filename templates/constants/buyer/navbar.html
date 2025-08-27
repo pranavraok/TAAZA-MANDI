@@ -22,11 +22,9 @@
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
       --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-      --shadow-xl: 0 12px 32px rgba(0,0,0,0.16);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --radius-xl: 20px;
     }
 
     * {
@@ -41,13 +39,12 @@
       line-height: 1.6;
     }
 
-    /* Enhanced Navbar */
     header {
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
       box-shadow: var(--shadow-md);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
     .navbar {
@@ -131,7 +128,6 @@
       width: 100%;
     }
 
-    /* Responsive Design */
     @media (max-width: 1024px) {
       .navbar {
         padding: 1rem;
@@ -154,7 +150,6 @@
       }
     }
 
-    /* Focus States */
     *:focus {
       outline: 2px solid var(--secondary-green);
       outline-offset: 2px;
@@ -162,17 +157,20 @@
   </style>
 </head>
 <body>
-  <!-- Top Navbar -->
   <header>
-    <nav class="navbar">
-      <a href="{{ url_for('index') }}" class="logo">
-        <i class="fas fa-seedling"></i>
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="{{ url_for('index') }}" class="logo" aria-label="Taaza Mandi Home">
+        <i class="fas fa-seedling" aria-hidden="true"></i>
         TAAZA MANDI
       </a>
-      <input type="text" placeholder="🔍 Search for crops, vegetables, fruits..." id="searchInput">
-      <ul>
-        <li><a href="{{ url_for('seller_feed') }}">Home</a></li>
-        <li><a href="{{ url_for('post_upload') }}">Post</a></li>
+      <input 
+        type="text" 
+        placeholder="Search for crops, vegetables, fruits..." 
+        id="searchInput"
+        aria-label="Search products"
+      >
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('buyer_feed') }}">Home</a></li>
         <li><a href="{{ url_for('about') }}">About Us</a></li>
         <li><a href="{{ url_for('contact') }}">Contact</a></li>
       </ul>
@@ -185,14 +183,34 @@
     });
 
     function setupSearch() {
-      // Search functionality
       const searchInput = document.getElementById('searchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          console.log('Searching for:', this.value);
-          // Add search logic here
-        });
+      if (!searchInput) {
+        console.error('Search input not found');
+        return;
       }
+
+      let debounceTimer;
+      searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          const query = this.value.trim();
+          if (query.length > 2) {
+            console.log('Searching for:', query);
+            // Implement search logic here
+          }
+        }, 300);
+      });
+
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const query = this.value.trim();
+          if (query) {
+            console.log('Enter pressed, searching for:', query);
+            // Implement search submission logic here
+          }
+        }
+      });
     }
   </script>
 </body>

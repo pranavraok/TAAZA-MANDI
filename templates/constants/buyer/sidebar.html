@@ -40,7 +40,6 @@
       line-height: 1.6;
     }
 
-    /* Enhanced Sidebar */
     aside {
       background: var(--card-bg);
       box-shadow: var(--shadow-md);
@@ -158,14 +157,12 @@
       transform: translateX(4px);
     }
 
-    /* Responsive Design */
     @media (max-width: 1024px) {
       aside {
         display: none;
       }
     }
 
-    /* Focus States */
     *:focus {
       outline: 2px solid var(--secondary-green);
       outline-offset: 2px;
@@ -173,10 +170,8 @@
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
   <aside>
     <div class="sidebar-profile">
-      <!-- Dynamic Avatar -->
       <div class="profile-avatar" id="sidebarAvatar">
         {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
           {{ session.user.user_metadata.first_name[0]|upper }}
@@ -185,28 +180,25 @@
         {% endif %}
       </div>
       
-      <!-- Dynamic Name -->
       <div class="name" id="sidebarName">
         {% if session.user and session.user.user_metadata %}
           {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
         {% elif session.user %}
           {{ session.user.email.split('@')[0]|title }}
         {% else %}
-          Loading...
+          Guest User
         {% endif %}
       </div>
       
-      <!-- Dynamic Role -->
       <div class="role" id="sidebarRole">
         <i class="fas fa-seedling"></i>
         {% if session.user_role == 'buyer' %}
           Buyer Account
         {% else %}
-          Loading...
+          User
         {% endif %}
       </div>
       
-      <!-- Dynamic Profile Link -->
       {% if session.user_role == 'buyer' %}
         <a href="{{ url_for('buyer_profile') }}" class="profile-link">
           <i class="fas fa-user"></i>
@@ -223,6 +215,7 @@
     <div class="sidebar-section-title">Dashboard</div>
     <ul class="sidebar-menu">
       <li><a href="{{ url_for('buyer_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
+    </ul>
     
     <div class="sidebar-section-title">Resources</div>
     <ul class="sidebar-menu">
@@ -234,7 +227,9 @@
       <li><a href="{{ url_for('buyer_profile') }}"><i class="fas fa-cog"></i> Account Settings</a></li>
       <li><a href="{{ url_for('contact') }}"><i class="fas fa-question-circle"></i> Help & Support</a></li>
       {% if session.user %}
-      <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
       {% endif %}
     </ul>
   </aside>
@@ -245,9 +240,8 @@
     });
 
     function loadUserData() {
-      // User data is now dynamically loaded from Flask session in the HTML template
       const userData = {
-        name: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session.user else '') }}",
+        name: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session.user else 'Guest') }}",
         role: "{{ session.user_role if session.user_role else 'User' }}",
         email: "{{ session.user.email if session.user else '' }}",
         avatar: "{{ session.user.user_metadata.first_name[0]|upper if session.user and session.user.user_metadata and session.user.user_metadata.first_name else 'U' }}"

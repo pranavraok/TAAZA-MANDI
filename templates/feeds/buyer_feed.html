@@ -53,14 +53,13 @@
       min-height: 100vh;
     }
 
-    /* Navbar */
     header {
       grid-area: nav;
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
       box-shadow: var(--shadow-md);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
     .navbar {
@@ -81,12 +80,18 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      text-decoration: none;
     }
 
-    .navbar input[type="text"] {
+    .search-container {
+      position: relative;
       flex: 1;
       max-width: 400px;
       margin: 0 2rem;
+    }
+
+    .navbar input[type="text"] {
+      width: 100%;
       padding: 0.75rem 1rem 0.75rem 2.5rem;
       border: 2px solid rgba(255,255,255,0.2);
       border-radius: var(--radius-lg);
@@ -108,13 +113,21 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
     }
 
-    .navbar ul {
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.7);
+    }
+
+    .nav-menu {
       list-style: none;
       display: flex;
       gap: 2rem;
     }
 
-    .navbar ul li a {
+    .nav-menu li a {
       color: rgba(255,255,255,0.9);
       text-decoration: none;
       font-weight: 600;
@@ -124,11 +137,11 @@
       padding: 0.5rem 0;
     }
 
-    .navbar ul li a:hover {
+    .nav-menu li a:hover {
       color: white;
     }
 
-    .navbar ul li a::after {
+    .nav-menu li a::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -139,8 +152,17 @@
       transition: width 0.3s ease;
     }
 
-    .navbar ul li a:hover::after {
+    .nav-menu li a:hover::after {
       width: 100%;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
     .auth-buttons {
@@ -176,15 +198,6 @@
       box-shadow: var(--shadow-md);
     }
 
-    .hamburger {
-      display: none;
-      font-size: 1.5rem;
-      color: white;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-
-    /* Sidebar */
     aside {
       grid-area: sidebar;
       background: var(--card-bg);
@@ -338,7 +351,6 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Main Content */
     main {
       grid-area: feed;
       padding: 2rem 0 0 0;
@@ -373,7 +385,6 @@
       font-weight: 500;
     }
 
-    /* Filters */
     .market-filters {
       display: flex;
       gap: 1rem;
@@ -430,7 +441,6 @@
       min-width: 180px;
     }
 
-    /* Product Grid */
     .market-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -440,7 +450,6 @@
       padding: 0 1rem;
     }
 
-    /* Product Cards */
     .product-card {
       background: var(--card-bg);
       border-radius: var(--radius-xl);
@@ -713,7 +722,6 @@
       transform: translateY(-2px);
     }
 
-    /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -746,7 +754,6 @@
       margin: 0 auto;
     }
 
-    /* Pagination */
     .pagination-row {
       display: flex;
       justify-content: center;
@@ -768,7 +775,6 @@
       gap: 0.5rem;
     }
 
-    /* Footer */
     footer {
       grid-area: footer;
       background: var(--card-bg);
@@ -828,7 +834,6 @@
       color: var(--primary-green);
     }
 
-    /* Responsive Design */
     @media (max-width: 1200px) {
       body {
         grid-template-columns: 280px 1fr;
@@ -858,8 +863,22 @@
       .hamburger {
         display: block;
       }
-      .navbar ul {
+      .nav-menu {
         display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: var(--primary-green);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow-md);
+      }
+      .nav-menu.active {
+        display: flex;
+      }
+      .nav-menu li {
+        margin: 0.5rem 0;
       }
       .auth-buttons {
         display: none;
@@ -883,18 +902,18 @@
       .sort-label {
         margin-left: 0;
       }
-      .navbar input[type="text"] {
+      .search-container {
         margin: 0 1rem;
       }
     }
 
     @media (max-width: 480px) {
       .navbar {
-        flex-direction: column;
+        flex-wrap: wrap;
         gap: 1rem;
         padding: 1rem 0.5rem;
       }
-      .navbar input[type="text"] {
+      .search-container {
         margin: 0;
         width: 100%;
       }
@@ -913,7 +932,6 @@
       }
     }
 
-    /* Accessibility */
     .sr-only {
       position: absolute;
       width: 1px;
@@ -930,7 +948,6 @@
       outline-offset: 2px;
     }
 
-    /* Badge for verified sellers */
     .verified-badge {
       background: var(--success);
       color: white;
@@ -943,7 +960,6 @@
       gap: 0.25rem;
     }
 
-    /* Loading Animation */
     @keyframes shimmer {
       0% { background-position: -200px 0; }
       100% { background-position: calc(200px + 100%) 0; }
@@ -955,111 +971,16 @@
       animation: shimmer 1.5s infinite;
     }
 
-    /* Smooth Scrolling */
     html {
       scroll-behavior: smooth;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <i class="fas fa-seedling"></i>
-        TAAZA MANDI
-      </div>
-      <label for="searchInput" class="sr-only">Search for crops, vegetables, fruits</label>
-      <input type="text" id="searchInput" placeholder="🔍 Search for crops, vegetables, fruits..." aria-label="Search for crops, vegetables, fruits">
-      <ul>
-        <li><a href="{{ url_for('buyer_feed') }}" aria-label="Home page">Home</a></li>
-        <li><a href="{{ url_for('market') }}" aria-label="Market page">Market</a></li>
-        <li><a href="{{ url_for('about') }}" aria-label="About us page">About Us</a></li>
-        <li><a href="{{ url_for('contact') }}" aria-label="Contact page">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  {% include 'constants/buyer/navbar.html' %}
 
-  <!-- Sidebar -->
-  <aside>
-    <div class="sidebar-profile">
-      <div class="profile-avatar" id="sidebarAvatar">
-        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
-          {{ session.user.user_metadata.first_name[0]|upper }}
-        {% else %}
-          <i class="fas fa-user"></i>
-        {% endif %}
-      </div>
-      <div class="name" id="sidebarName">
-        {% if session.user and session.user.user_metadata %}
-          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
-        {% elif session.user %}
-          {{ session.user.email.split('@')[0]|title }}
-        {% else %}
-          Guest
-        {% endif %}
-      </div>
-      <div class="role" id="sidebarRole">
-        <i class="fas fa-seedling"></i>
-        {% if session.user_role == 'seller' %}
-          Seller Account
-        {% elif session.user_role == 'buyer' %}
-          Buyer Account
-        {% else %}
-          Guest
-        {% endif %}
-      </div>
-      {% if session.user_role == 'seller' %}
-        <a href="{{ url_for('seller_profile') }}" class="profile-link" aria-label="View seller profile">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      {% elif session.user_role == 'buyer' %}
-        <a href="{{ url_for('buyer_profile') }}" class="profile-link" aria-label="View buyer profile">
-          <i class="fas fa-user"></i>
-          View Profile
-        </a>
-      {% else %}
-        <a href="{{ url_for('user_select') }}" class="profile-link" aria-label="Complete account setup">
-          <i class="fas fa-user"></i>
-          Complete Setup
-        </a>
-      {% endif %}
-    </div>
-    <div class="sidebar-section-title">Dashboard</div>
-    <ul class="sidebar-menu">
-      <li><a href="{{ url_for('seller_feed') }}" class="sidebar-link" aria-label="View feed"><i class="fas fa-home"></i> Feed</a></li>
-      <li><a href="{{ url_for('post_upload') }}" class="sidebar-link" aria-label="Upload post"><i class="fas fa-plus-circle"></i> Post Upload</a></li>
-      <li><a href="{{ url_for('market') }}" class="sidebar-link" aria-label="Marketplace"><i class="fas fa-store"></i> Marketplace</a></li>
-    </ul>
-    <div class="sidebar-section-title">Resources</div>
-    <ul class="sidebar-resources">
-      <li><a href="{{ url_for('predictor') }}" class="sidebar-link" aria-label="Smart Crop Predictor"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-      <li><a href="{{ url_for('schemes') }}" class="sidebar-link" aria-label="Government Schemes"><i class="fas fa-university"></i> Government Schemes</a></li>
-      <li><a href="{{ url_for('equipment') }}" class="sidebar-link" aria-label="Equipment's Bazaar"><i class="fas fa-truck"></i> Equipment's Bazaar</a></li>
-    </ul>
-    <div class="sidebar-section-title">Settings</div>
-    <ul class="sidebar-settings">
-      <li><a href="{{ url_for('seller_profile') }}" class="sidebar-link" aria-label="Account Settings"><i class="fas fa-cog"></i> Account Settings</a></li>
-      <li><a href="{{ url_for('contact') }}" class="sidebar-link" aria-label="Help and Support"><i class="fas fa-question-circle"></i> Help & Support</a></li>
-      {% if session.user %}
-        <li><a href="{{ url_for('logout') }}" class="sidebar-link" aria-label="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-      {% endif %}
-    </ul>
-    <div class="sidebar-help">
-      <strong>
-        <i class="fas fa-question-circle"></i>
-        Need Help?
-      </strong>
-      Check out our guides on how to connect with farmers and purchase fresh produce.
-      <a href="{{ url_for('about') }}" class="view-guides-btn" aria-label="View guides">
-        <i class="fas fa-book-open"></i>
-        View Guides
-      </a>
-    </div>
-  </aside>
+  {% include 'constants/buyer/sidebar.html' %}
 
-  <!-- Main Content -->
   <main>
     <div class="market-header">
       <div class="market-title">
@@ -1122,418 +1043,219 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-main">
-      <div>
-        <div class="footer-brand">
-          <i class="fas fa-seedling"></i>
-          TAAZA MANDI
-        </div>
-        <div>Connecting farmers directly to buyers through a simple and efficient marketplace platform that empowers rural communities.</div>
-      </div>
-      <div>
-        <div class="footer-section-title">Quick Links</div>
-        <ul class="footer-links">
-          <li><a href="{{ url_for('market') }}" aria-label="Market Prices"><i class="fas fa-chart-line"></i> Market Prices</a></li>
-          <li><a href="{{ url_for('about') }}" aria-label="About Us"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li><a href="{{ url_for('contact') }}" aria-label="Contact Us"><i class="fas fa-envelope"></i> Contact Us</a></li>
-          <li><a href="{{ url_for('contact') }}" aria-label="FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-section-title">Farmer Resources</div>
-        <ul class="footer-resources">
-          <li><a href="{{ url_for('predictor') }}" aria-label="Smart Crop Predictor"><i class="fas fa-brain"></i> Smart Crop Predictor</a></li>
-          <li><a href="{{ url_for('schemes') }}" aria-label="Government Schemes"><i class="fas fa-university"></i> Government Schemes</a></li>
-          <li><a href="{{ url_for('equipment') }}" aria-label="Vehicle/Tools Buy-Rent"><i class="fas fa-truck"></i> Vehicle/Tools Buy-Rent</a></li>
-          <li><a href="{{ url_for('market') }}" aria-label="Best Deals"><i class="fas fa-tags"></i> Best Deals</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-section-title">Connect With Us</div>
-        <ul class="footer-connect">
-          <li><a href="https://facebook.com/taazamandi" aria-label="Facebook"><i class="fab fa-facebook"></i> Facebook</a></li>
-          <li><a href="https://twitter.com/taazamandi" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a></li>
-          <li><a href="https://instagram.com/taazamandi" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="mailto:support@taazamandi.com" aria-label="Email support"><i class="fas fa-envelope"></i> support@taazamandi.com</a></li>
-        </ul>
-      </div>
-    </div>
-    <div style="text-align:center;color:#718096;font-size:0.9rem;padding:2rem 0 1rem 0;border-top:1px solid var(--border-light);margin-top:2rem;">
-      © 2025 TAAZA MANDI. All Rights Reserved. | Made with ❤️ for farmers
-    </div>
-  </footer>
+  {% include 'constants/buyer/footer.html' %}
 
   <script>
-    // Mock data for posts (since no Supabase credentials are provided)
-    const mockPosts = [
-      {
-        id: 1,
-        title: "Fresh Tomatoes",
-        description: "Organic tomatoes grown with care in Maharashtra. Juicy and perfect for your kitchen.",
-        image: "https://via.placeholder.com/380x240?text=Tomatoes",
-        category: "Vegetables",
-        location: "Maharashtra",
-        price: "₹40/kg",
-        available: "100kg",
-        verified: true,
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        likes: 15,
-        comments: 3
-      },
-      {
-        id: 2,
-        title: "Basmati Rice",
-        description: "Premium quality basmati rice from Punjab. Aromatic and long-grained.",
-        image: "https://via.placeholder.com/380x240?text=Rice",
-        category: "Grains",
-        location: "Punjab",
-        price: "₹120/kg",
-        available: "500kg",
-        verified: false,
-        timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-        likes: 8,
-        comments: 1
-      },
-      {
-        id: 3,
-        title: "Alphonso Mangoes",
-        description: "Sweet and juicy Alphonso mangoes from Gujarat. Perfect for desserts and smoothies.",
-        image: "https://via.placeholder.com/380x240?text=Mangoes",
-        category: "Fruits",
-        location: "Gujarat",
-        price: "₹200/kg",
-        available: "50kg",
-        verified: true,
-        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-        likes: 20,
-        comments: 5
-      }
-    ];
-
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Initialize mock data in localStorage if not present
-      if (!localStorage.getItem('cropPosts')) {
-        localStorage.setItem('cropPosts', JSON.stringify(mockPosts));
-      }
-
-      await loadUserData();
-      loadBuyerFeed();
-      initializeFilters();
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
       initializeAnimations();
-      initializeHamburgerMenu();
+      setupInteractions();
+      setupSearch();
+      setupFilters();
+      loadProducts();
     });
 
-    function initializeHamburgerMenu() {
-      const hamburger = document.querySelector('.hamburger');
-      const sidebar = document.querySelector('aside');
-
-      hamburger.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-      });
-
-      // Close sidebar when clicking outside on mobile
-      document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-          sidebar.classList.remove('active');
-        }
-      });
-    }
-
-    async function loadUserData() {
-      // Mock user data since Supabase is not configured
-      const mockUser = {
-        user_metadata: {
-          first_name: "John",
-          last_name: "Doe"
-        },
-        email: "john.doe@example.com"
+    function loadUserData() {
+      const userData = {
+        name: localStorage.getItem("userName") || "Guest User",
+        role: localStorage.getItem("userRole") || "Buyer",
+        email: localStorage.getItem("userEmail") || "guest@example.com",
+        avatar: (localStorage.getItem("userName") || "U").charAt(0).toUpperCase()
       };
-      const mockRole = "buyer";
 
-      try {
-        document.getElementById('sidebarAvatar').innerHTML = mockUser.user_metadata.first_name[0].toUpperCase();
-        document.getElementById('sidebarName').textContent = `${mockUser.user_metadata.first_name} ${mockUser.user_metadata.last_name}`;
-        document.getElementById('sidebarRole').innerHTML = `<i class="fas fa-seedling"></i> ${mockRole.charAt(0).toUpperCase() + mockRole.slice(1)} Account`;
-      } catch (error) {
-        console.error('Error loading user data:', error.message);
-        document.getElementById('sidebarAvatar').innerHTML = '<i class="fas fa-user"></i>';
-        document.getElementById('sidebarName').textContent = 'Guest';
-        document.getElementById('sidebarRole').innerHTML = '<i class="fas fa-seedling"></i> Guest';
-      }
-    }
+      console.log("Current user:", userData);
 
-    function loadBuyerFeed(page = 1, itemsPerPage = 6) {
-      const feedContainer = document.getElementById('dynamicFeed');
-      if (!feedContainer) return;
+      const profileName = document.querySelector(".sidebar-profile .name");
+      const profileRole = document.querySelector(".sidebar-profile .role");
+      const profileAvatar = document.querySelector(".profile-avatar");
 
-      let posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      const categoryFilter = document.getElementById('category').value;
-      const locationFilter = document.getElementById('location').value;
-      const sortOption = document.querySelector('.sort-select').value;
-
-      // Apply filters
-      if (categoryFilter) {
-        posts = posts.filter(post => post.category === categoryFilter);
-      }
-      if (locationFilter) {
-        posts = posts.filter(post => post.location === locationFilter);
-      }
-
-      // Apply sorting
-      if (sortOption === 'price-low') {
-        posts.sort((a, b) => parseFloat(a.price.replace('₹', '')) - parseFloat(b.price.replace('₹', '')));
-      } else if (sortOption === 'price-high') {
-        posts.sort((a, b) => parseFloat(b.price.replace('₹', '')) - parseFloat(a.price.replace('₹', '')));
-      } else if (sortOption === 'popular') {
-        posts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
-      } else {
-        posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-      }
-
-      // Pagination
-      const totalPages = Math.ceil(posts.length / itemsPerPage);
-      const start = (page - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      const paginatedPosts = posts.slice(start, end);
-
-      // Update pagination buttons
-      document.getElementById('prevPage').disabled = page === 1;
-      document.getElementById('nextPage').disabled = page === totalPages;
-
-      if (paginatedPosts.length === 0) {
-        feedContainer.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">
-              <i class="fas fa-seedling"></i>
-            </div>
-            <h3>No products available</h3>
-            <p>Try adjusting your filters or check back later for fresh produce from local farmers!</p>
-          </div>
-        `;
-        return;
-      }
-
-      feedContainer.innerHTML = '';
-      paginatedPosts.forEach(post => {
-        const productCard = createProductCard(post);
-        feedContainer.appendChild(productCard);
-      });
-
-      // Re-initialize animations for new cards
-      initializeAnimations();
-    }
-
-    function createProductCard(post) {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-
-      const postTime = new Date(post.timestamp);
-      const now = new Date();
-      const timeDiff = now - postTime;
-      const hoursAgo = Math.floor(timeDiff / (1000 * 60 * 60));
-      const timeText = hoursAgo === 0 ? 'Just posted' : `${hoursAgo} hour${hoursAgo > 1 ? 's' : ''} ago`;
-
-      card.innerHTML = `
-        <div class="product-card-header">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%236bb77b'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" alt="Farmer avatar">
-          <div class="user-info">
-            <span class="name">
-              Verified Farmer
-              ${post.verified ? '<span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
-            </span>
-            <span class="time"><i class="fas fa-clock"></i> ${timeText}</span>
-          </div>
-        </div>
-        
-        <div class="product-description">
-          ${post.description}
-        </div>
-        
-        <img src="${post.image}" class="product-image" alt="${post.title}" loading="lazy">
-        
-        <div class="product-tags">
-          <span class="product-tag">
-            <i class="fas fa-tag"></i>
-            ${post.title}
-          </span>
-          <span class="product-tag">
-            <i class="fas fa-list"></i>
-            ${post.category}
-          </span>
-          <span class="product-tag">
-            <i class="fas fa-map-marker-alt"></i>
-            ${post.location}
-          </span>
-        </div>
-        
-        <div class="product-details-row">
-          <span class="detail">
-            <i class="fas fa-rupee-sign icon"></i>
-            ${post.price.replace('₹', '')}
-          </span>
-          <span class="detail">
-            <i class="fas fa-weight-hanging icon"></i>
-            ${post.available}
-          </span>
-          <span class="detail">
-            <i class="fas fa-truck icon"></i>
-            Delivery Available
-          </span>
-        </div>
-        
-        <div class="product-actions-row">
-          <span class="action" onclick="likeProduct(${post.id}, this)">
-            <i class="fas fa-heart"></i>
-            <span>${post.likes || 0} likes</span>
-          </span>
-          <span class="action">
-            <i class="fas fa-comment"></i>
-            <span>${post.comments || 0} comments</span>
-          </span>
-        </div>
-        
-        <div class="product-card-footer">
-          <a href="#" class="share-link" onclick="shareProduct(${post.id})" aria-label="Share ${post.title}">
-            <i class="fas fa-share"></i>
-            Share
-          </a>
-        </div>
-        
-        <div class="contact-seller-section">
-          <button class="btn-contact" onclick="contactSeller(${post.id})" aria-label="Contact seller for ${post.title}">
-            <i class="fas fa-phone"></i>
-            Contact Seller
-          </button>
-        </div>
-        
-        <div class="product-actions">
-          <button class="btn-outline" onclick="addToCart(${post.id})" aria-label="Add ${post.title} to cart">
-            <i class="fas fa-shopping-cart"></i>
-            Add to Cart
-          </button>
-          <button class="btn-green" onclick="buyNow(${post.id})" aria-label="Buy ${post.title} now">
-            <i class="fas fa-bolt"></i>
-            Buy Now
-          </button>
-        </div>
-      `;
-
-      return card;
-    }
-
-    function initializeFilters() {
-      const categoryFilter = document.getElementById('category');
-      const locationFilter = document.getElementById('location');
-      const sortSelect = document.querySelector('.sort-select');
-
-      [categoryFilter, locationFilter, sortSelect].forEach(filter => {
-        filter.addEventListener('change', () => {
-          loadBuyerFeed(1); // Reset to first page on filter change
-        });
-      });
+      if (profileName) profileName.textContent = userData.name;
+      if (profileRole) profileRole.textContent = userData.role;
+      if (profileAvatar) profileAvatar.textContent = userData.avatar;
     }
 
     function initializeAnimations() {
       const observerOptions = {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: "0px 0px -50px 0px"
       };
 
-      const observer = new IntersectionObserver((entries) => {
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
           }
         });
       }, observerOptions);
 
-      document.querySelectorAll('.product-card').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      document.querySelectorAll(".product-card").forEach(card => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
         observer.observe(card);
       });
     }
 
-    function contactSeller(postId) {
-      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      const post = posts.find(p => p.id === postId);
-      
-      if (post) {
-        alert(`📞 Contacting seller for: ${post.title}\n📍 Location: ${post.location}\n💰 Price: ${post.price}\n\nPhone: +91 98765-43210\nWhatsApp available 24/7`);
-      }
-    }
-
-    function buyNow(postId) {
-      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      const post = posts.find(p => p.id === postId);
-      
-      if (post) {
-        alert(`🛒 Initiating purchase for: ${post.title}\n📦 Quantity: ${post.available}\n💰 Price: ${post.price}\n\nRedirecting to checkout...`);
-      }
-    }
-
-    function addToCart(postId) {
-      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      const post = posts.find(p => p.id === postId);
-      
-      if (post) {
-        alert(`✅ Added to cart: ${post.title}\n💰 Price: ${post.price}`);
-      }
-    }
-
-    function likeProduct(postId, element) {
-      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      const post = posts.find(p => p.id === postId);
-      
-      if (post) {
-        post.likes = (post.likes || 0) + 1;
-        localStorage.setItem('cropPosts', JSON.stringify(posts));
-        const heartIcon = element.querySelector('i');
-        const likeCount = element.querySelector('span');
-        heartIcon.style.color = 'red';
-        heartIcon.style.transform = 'scale(1.2)';
-        likeCount.textContent = `${post.likes} likes`;
-        
-        setTimeout(() => {
-          heartIcon.style.transform = 'scale(1)';
-        }, 200);
-      }
-    }
-
-    function shareProduct(postId) {
-      const posts = JSON.parse(localStorage.getItem('cropPosts') || '[]');
-      const post = posts.find(p => p.id === postId);
-      
-      if (post && navigator.share) {
-        navigator.share({
-          title: post.title,
-          text: post.description,
-          url: window.location.href
-        }).catch(() => {
-          alert('📤 Share link copied to clipboard!');
+    function setupInteractions() {
+      document.querySelectorAll(".action").forEach(action => {
+        action.addEventListener("click", function () {
+          const icon = this.querySelector("i");
+          if (icon.classList.contains("fa-heart")) {
+            icon.style.color = icon.style.color === "red" ? "" : "red";
+            icon.style.transform = "scale(1.2)";
+            setTimeout(() => {
+              icon.style.transform = "scale(1)";
+            }, 200);
+          }
         });
-      } else {
-        alert('📤 Share link copied to clipboard!');
+      });
+
+      document.querySelectorAll(".btn-contact").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const ripple = document.createElement("span");
+          ripple.style.position = "absolute";
+          ripple.style.borderRadius = "50%";
+          ripple.style.background = "rgba(255,255,255,0.6)";
+          ripple.style.transform = "scale(0)";
+          ripple.style.animation = "ripple 0.6s linear";
+          ripple.style.left = "50%";
+          ripple.style.top = "50%";
+          ripple.style.width = ripple.style.height = "100px";
+          ripple.style.marginLeft = "-50px";
+          ripple.style.marginTop = "-50px";
+
+          this.style.position = "relative";
+          this.style.overflow = "hidden";
+          this.appendChild(ripple);
+
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+    }
+
+    function setupSearch() {
+      const searchInput = document.querySelector(".navbar input[type='text']");
+      if (searchInput) {
+        searchInput.addEventListener("input", function () {
+          console.log("Searching for:", this.value);
+          filterProducts();
+        });
       }
     }
 
-    // Pagination controls
-    let currentPage = 1;
-    document.getElementById('prevPage').addEventListener('click', () => {
-      if (currentPage > 1) {
-        currentPage--;
-        loadBuyerFeed(currentPage);
-      }
-    });
+    function setupFilters() {
+      const categoryFilter = document.getElementById("category");
+      const locationFilter = document.getElementById("location");
+      const sortSelect = document.querySelector(".sort-select");
 
-    document.getElementById('nextPage').addEventListener('click', () => {
-      currentPage++;
-      loadBuyerFeed(currentPage);
-    });
+      [categoryFilter, locationFilter, sortSelect].forEach(filter => {
+        if (filter) {
+          filter.addEventListener("change", filterProducts);
+        }
+      });
+    }
+
+    function filterProducts() {
+      console.log("Filtering products...");
+      // Add your filtering logic here
+    }
+
+    function loadProducts() {
+      // Mock product data for demonstration
+      const mockProducts = [
+        {
+          id: 1,
+          title: "Fresh Organic Tomatoes",
+          description: "Premium quality organic tomatoes, freshly harvested from our farm. Perfect for cooking and salads.",
+          price: "₹80/kg",
+          quantity: "500kg",
+          location: "Maharashtra",
+          seller: "Raj Farmers",
+          time: "2 hours ago",
+          image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400",
+          tags: ["Organic", "Fresh", "Vegetables"]
+        },
+        {
+          id: 2,
+          title: "Premium Basmati Rice",
+          description: "Long grain basmati rice with excellent aroma and taste. Aged for perfect texture.",
+          price: "₹120/kg",
+          quantity: "1000kg",
+          location: "Punjab",
+          seller: "Singh Agriculture",
+          time: "4 hours ago",
+          image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400",
+          tags: ["Basmati", "Premium", "Grains"]
+        }
+      ];
+
+      const feedContainer = document.getElementById("dynamicFeed");
+      
+      if (mockProducts.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-store"></i></div>
+            <h3>No products found</h3>
+            <p>No products available at the moment. Check back later for fresh produce!</p>
+          </div>
+        `;
+        return;
+      }
+
+      feedContainer.innerHTML = mockProducts.map(product => `
+        <div class="product-card">
+          <div class="product-card-header">
+            <img src="https://via.placeholder.com/48x48/4a8f5f/ffffff?text=${product.seller.charAt(0)}" alt="Seller Avatar">
+            <div class="user-info">
+              <div class="name">${product.seller}</div>
+              <div class="time">${product.time}</div>
+            </div>
+          </div>
+
+          <div class="product-description">${product.description}</div>
+
+          <img src="${product.image}" class="product-image" alt="${product.title}">
+
+          <div class="product-tags">
+            ${product.tags.map(tag => `<span class="product-tag">${tag}</span>`).join('')}
+          </div>
+
+          <div class="product-details-row">
+            <div class="detail"><i class="fas fa-tag icon"></i> ${product.price}</div>
+            <div class="detail"><i class="fas fa-box icon"></i> ${product.quantity}</div>
+            <div class="detail"><i class="fas fa-map-marker-alt icon"></i> ${product.location}</div>
+          </div>
+
+          <div class="product-actions-row">
+            <div class="action"><i class="fas fa-heart"></i> Like</div>
+            <div class="action"><i class="fas fa-comment"></i> Comment</div>
+            <div class="action"><i class="fas fa-share"></i> Share</div>
+          </div>
+
+          <div class="contact-seller-section">
+            <button class="btn-contact"><i class="fas fa-envelope"></i> Contact Seller</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Re-initialize animations for new content
+      initializeAnimations();
+      setupInteractions();
+    }
+
+    const style = document.createElement("style");
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>

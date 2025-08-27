@@ -282,7 +282,7 @@
             flex-wrap: wrap;
         }
 
-        .btn-primary, .btn-secondary {
+        .btn-primary, .btn-secondary, .Join, .get {
             padding: 1rem 2rem;
             border-radius: var(--radius-lg);
             font-weight: 700;
@@ -296,6 +296,7 @@
         }
 
         .btn-primary {
+            
             background: linear-gradient(135deg, #ffffff, #f8f9fa);
             color: var(--primary-green);
             border: 2px solid rgba(255,255,255,0.3);
@@ -304,6 +305,36 @@
         }
 
         .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 6px 20px rgba(255,255,255,0.3);
+            background: linear-gradient(135deg, #ffffff, #f0f8ff);
+        }
+
+        .Join { 
+            margin-left: 150px; 
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            color: var(--primary-green);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 4px 16px rgba(255,255,255,0.2);
+        }
+
+        .Join:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 6px 20px rgba(255,255,255,0.3);
+            background: linear-gradient(135deg, #ffffff, #f0f8ff);
+        }
+
+        .get { 
+            margin-left: 460px; 
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            color: var(--primary-green);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 4px 16px rgba(255,255,255,0.2);
+        }
+
+        .get:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 6px 20px rgba(255,255,255,0.3);
             background: linear-gradient(135deg, #ffffff, #f0f8ff);
@@ -1073,16 +1104,16 @@
                         <div class="step">
                             <div class="step-number">2</div>
                             <div class="step-content">
-                                <h3>Buyers Browse and Connect</h3>
-                                <p>Buyers search for specific produce, browse by location, and directly connect with farmers to negotiate and purchase.</p>
+                                <h3>Buyers Browse</h3>
+                                <p>Buyers search for specific produce, browse by location, and view product details.</p>
                             </div>
                         </div>
 
                         <div class="step">
                             <div class="step-number">3</div>
                             <div class="step-content">
-                                <h3>Secure Transactions</h3>
-                                <p>We facilitate secure payments and help arrange logistics for a hassle-free transaction from farm to table.</p>
+                                <h3>Both Connect</h3>
+                                <p>Buyers can directly connect with farmers to negotiate and purchase.</p>
                             </div>
                         </div>
                     </div>
@@ -1173,33 +1204,9 @@
                         </div>
                     </div>
 
-                    <div class="product-card fade-in-up" style="animation-delay: 0.6s;">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&h=300&fit=crop&crop=center" alt="Authentic Mangoes" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px;">
-                        </div>
-                        <div class="product-content">
-                            <h3 class="product-title">Authentic Mangoes</h3>
-                            <p class="product-description">Sweet and juicy mangoes from the best orchards.</p>
-                            <div class="product-footer">
-                                <span class="product-price">₹120/kg</span>
-                                <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <div class="product-seller">
-                                <div class="seller-avatar">VR</div>
-                                <span>Venkatesh Rao</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div style="text-align: center; margin-top: 3rem;">
-                    <a href="#" class="btn-primary fade-in-up">
+                <div style="text-align: center; margin-top: 3rem;margin-right: -780px;">
+                    <a href="{{ url_for('signup') }}" class="btn-primary fade-in-up">
                         <i class="fas fa-eye"></i>
                         View All Produce
                     </a>
@@ -1225,7 +1232,7 @@
                                 <span class="stat-label">Farmers</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number counter" data-target="5000">0+</span>
+                                <span class="stat-number counter" data-target="15000">0+</span>
                                 <span class="stat-label">Buyers</span>
                             </div>
                             <div class="stat-item">
@@ -1233,12 +1240,12 @@
                                 <span class="stat-label">States</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number counter" data-target="20000000">₹0Cr+</span>
-                                <span class="stat-label">Transactions</span>
+                                <span class="stat-number counter" data-target="20000">₹0Cr+</span>
+                                <span class="stat-label">Connected</span>
                             </div>
                         </div>
 
-                        <a href="#" class="btn-primary">
+                        <a href="{{ url_for('signup') }}" class="Join">
                             <i class="fas fa-users"></i>
                             Join Community
                         </a>
@@ -1318,13 +1325,9 @@
                     <h2 class="section-title fade-in-up" style="color: white;">Ready to Transform Your Agricultural Business?</h2>
                     <p class="section-subtitle fade-in-up" style="color: rgba(255,255,255,0.9); animation-delay: 0.2s;">Join thousands of farmers and buyers who are building a better agricultural future on TAAZA MANDI's platform.</p>
                     <div class="hero-buttons fade-in-up" style="animation-delay: 0.4s;">
-                        <a href="#" class="btn-primary">
+                        <a href="{{ url_for('signup') }}" class="get">
                             <i class="fas fa-rocket"></i>
                             Get Started
-                        </a>
-                        <a href="{{ url_for('about') }}" class="btn-secondary">
-                            <i class="fas fa-info-circle"></i>
-                            Learn More
                         </a>
                     </div>
                 </div>
@@ -1332,62 +1335,7 @@
         </section>
     </main>
 
-    <!-- Enhanced Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h3>
-                        <i class="fas fa-seedling"></i>
-                        TAAZA MANDI
-                    </h3>
-                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">Connecting farmers directly to buyers, creating a transparent and efficient marketplace for agricultural produce.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                                    <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('about') }}">About Us</a></li>
-            <li><a href="{{ url_for('market') }}">Services</a></li>
-            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Farmer Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Support Center</a></li>
-                        <li><a href="#">Government Schemes</a></li>
-                        <li><a href="#">Subscription Plans</a></li>
-                        <li><a href="#">Best Practices</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Connect With Us</h3>
-                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">Subscribe to our newsletter for updates.</p>
-                    <form class="newsletter-form" id="newsletterForm">
-                        <input type="email" class="newsletter-input" placeholder="Your Email" required>
-                        <button type="submit" class="newsletter-btn">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                    <p id="newsletterStatus" style="margin-top: 0.5rem; font-size: 0.9rem;"></p>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 TAAZA MANDI. All Rights Reserved. | Made with ❤️ for farmers | <a href="#" style="color: rgba(255,255,255,0.8);">Privacy Policy</a> | <a href="#" style="color: rgba(255,255,255,0.8);">Terms of Service</a></p>
-            </div>
-        </div>
-    </footer>
+{% include 'constants/seller/footer.html' %}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

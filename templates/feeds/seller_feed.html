@@ -50,7 +50,6 @@
       min-height: 100vh;
     }
 
-    /* Enhanced Navbar */
     header {
       grid-area: nav;
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
@@ -81,10 +80,15 @@
       text-decoration: none;
     }
 
-    .navbar input[type="text"] {
+    .search-container {
+      position: relative;
       flex: 1;
       max-width: 400px;
       margin: 0 2rem;
+    }
+
+    .navbar input[type="text"] {
+      width: 100%;
       padding: 0.75rem 1rem 0.75rem 2.5rem;
       border: 2px solid rgba(255,255,255,0.2);
       border-radius: var(--radius-lg);
@@ -104,6 +108,14 @@
       border-color: rgba(255,255,255,0.5);
       background: rgba(255,255,255,0.15);
       box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.7);
     }
 
     .navbar ul {
@@ -141,7 +153,6 @@
       width: 100%;
     }
 
-    /* Enhanced Sidebar */
     aside {
       grid-area: sidebar;
       background: var(--card-bg);
@@ -260,7 +271,6 @@
       transform: translateX(4px);
     }
 
-    /* Enhanced Main Content */
     main {
       grid-area: feed;
       padding: 2rem 0 0 0;
@@ -294,6 +304,62 @@
     .feed-actions {
       display: flex;
       gap: 1rem;
+    }
+
+    .feed-filters {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      max-width: 1200px;
+      margin: 0 auto 2rem auto;
+    }
+
+    .feed-filters label {
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .feed-filters select {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-light);
+      font-size: 0.95rem;
+      background: var(--ultra-light-green);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      font-family: inherit;
+      min-width: 150px;
+    }
+
+    .feed-filters select:focus {
+      outline: none;
+      border-color: var(--secondary-green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(106, 183, 123, 0.1);
+    }
+
+    .sort-label {
+      margin-left: auto;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sort-select {
+      min-width: 180px;
     }
 
     .btn-green, .btn-outline {
@@ -337,7 +403,6 @@
       transform: translateY(-2px);
     }
 
-    /* Enhanced Feed Container */
     .feed-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -347,7 +412,6 @@
       padding: 0 1rem;
     }
 
-    /* Enhanced Crop Cards */
     .crop-card {
       background: var(--card-bg);
       border-radius: var(--radius-xl);
@@ -540,7 +604,6 @@
       font-size: 1.1rem;
     }
 
-    /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -599,7 +662,6 @@
       margin: 3rem 0 2rem 0;
     }
 
-    /* Enhanced Footer */
     footer {
       grid-area: footer;
       background: var(--card-bg);
@@ -659,7 +721,6 @@
       color: var(--primary-green);
     }
 
-    /* Responsive Design */
     @media (max-width: 1200px) {
       body {
         grid-template-columns: 280px 1fr;
@@ -717,6 +778,16 @@
       .navbar input {
         margin: 0 1rem;
       }
+
+      .feed-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .sort-label {
+        margin-left: 0;
+      }
     }
 
     @media (max-width: 480px) {
@@ -749,7 +820,6 @@
       }
     }
 
-    /* Loading Animation */
     @keyframes shimmer {
       0% { background-position: -200px 0; }
       100% { background-position: calc(200px + 100%) 0; }
@@ -761,12 +831,10 @@
       animation: shimmer 1.5s infinite;
     }
 
-    /* Smooth Scrolling */
     html {
       scroll-behavior: smooth;
     }
 
-    /* Focus States */
     *:focus {
       outline: 2px solid var(--secondary-green);
       outline-offset: 2px;
@@ -774,200 +842,293 @@
   </style>
 </head>
 <body>
-  <!-- Include Navbar -->
   {% include 'constants/seller/navbar.html' %}
 
-  <!-- Include Sidebar -->
   {% include 'constants/seller/sidebar.html' %}
 
-  <!-- Feed Content -->
   <main>
     <div class="feed-header">
       <h1 class="section-title">
         <i class="fas fa-seedling"></i>
-        {% if session.get('user') and session['user'].get('user_metadata') and session['user']['user_metadata'].get('first_name') %}
-          {{ session['user']['user_metadata']['first_name'] }}'s Feed
-        {% else %}
-          {{ 'Seller Feed' if session.get('user_role') == 'seller' else 'Buyer Feed' }}
-        {% endif %}
+        <span id="feedTitle">Seller Feed</span>
       </h1>
       <div class="feed-actions">
+        <button class="btn-green"><i class="fas fa-plus"></i> Add Product</button>
         <button class="btn-outline"><i class="fas fa-filter"></i> Filter</button>
       </div>
     </div>
 
-    <div class="feed-container">
-      {% if products and products|length > 0 %}
-        {% for product in products %}
-          <div class="crop-card">
-            <!-- Product Image -->
-            {% if product.images and product.images|length > 0 %}
-              <img src="{{ product.images[0] }}" class="crop-image" alt="{{ product.title }}">
-            {% else %}
-              <div class="crop-image" style="display:flex;align-items:center;justify-content:center;color:#4a8f5f;font-weight:bold;">
-                No Image
-              </div>
-            {% endif %}
+    <div class="feed-filters">
+      <label for="category">
+        <i class="fas fa-filter"></i>
+        Filter by:
+      </label>
+      <select id="category" aria-label="Filter by category">
+        <option value="">All Categories</option>
+        <option value="Vegetables">🥬 Vegetables</option>
+        <option value="Fruits">🍎 Fruits</option>
+        <option value="Grains">🌾 Grains</option>
+        <option value="Pulses">🫘 Pulses</option>
+        <option value="Spices">🌶️ Spices</option>
+      </select>
+      
+      <label for="status" class="sr-only">Filter by status</label>
+      <select id="status" aria-label="Filter by status">
+        <option value="">All Status</option>
+        <option value="active">Active</option>
+        <option value="sold">Sold Out</option>
+        <option value="pending">Pending</option>
+      </select>
+      
+      <span class="sort-label">
+        <i class="fas fa-sort"></i>
+        Sort by:
+      </span>
+      <select class="sort-select" aria-label="Sort products">
+        <option value="latest">Latest First</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="popular">Most Popular</option>
+      </select>
+    </div>
 
-            <!-- Crop Card Header -->
-            <div class="crop-card-header">
-              <img src="{{ session.user.user_metadata.avatar_url if session.user.user_metadata.avatar_url else '' }}" alt="Seller Avatar">
-              <div class="user-info">
-                <div class="name">{{ session.user.user_metadata.first_name if session.user else 'Seller' }}</div>
-                <div class="time">{{ product.created_at }}</div>
-              </div>
-            </div>
+    <div class="feed-container" id="dynamicFeed">
+      <!-- Dynamic content will be loaded here -->
+    </div>
 
-            <!-- Description -->
-            <div class="crop-description">{{ product.description }}</div>
-
-            <!-- Details Row -->
-            <div class="crop-details-row">
-              <div class="detail"><i class="fas fa-tag icon"></i> ₹{{ product.price }}</div>
-              <div class="detail"><i class="fas fa-box icon"></i> {{ product.quantity }}</div>
-              <div class="detail"><i class="fas fa-map-marker-alt icon"></i> {{ product.location }}</div>
-            </div>
-
-            <!-- Contact Seller Button -->
-            <div class="contact-seller-section">
-              <button class="btn-contact"><i class="fas fa-envelope icon"></i> Contact Seller</button>
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <div class="empty-state">
-          <div class="empty-icon"><i class="fas fa-seedling"></i></div>
-          <h3>No products found</h3>
-          <p>You haven't uploaded any products yet.</p>
-          <a href="{{ url_for('post_upload') }}" class="upload-link">Post Your First Product</a>
-        </div>
-      {% endif %}
+    <div class="load-more-row">
+      <button class="btn-green">
+        <i class="fas fa-chevron-down"></i>
+        Load More Posts
+      </button>
     </div>
   </main>
 
-  <!-- Include Footer -->
   {% include 'constants/seller/footer.html' %}
 
   <script>
-    // Enhanced JavaScript functionality with user data
     document.addEventListener('DOMContentLoaded', function() {
-      // Load user data for sidebar
       loadUserData();
-      
-      // Initialize animations and interactions
       initializeAnimations();
       setupInteractions();
       setupSearch();
+      setupFilters();
+      loadProducts();
     });
 
     function loadUserData() {
-      // User data is now dynamically loaded from Flask session in the HTML template
       const userData = {
-        name: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session.user else '') }}",
-        role: "{{ session.user_role if session.user_role else 'User' }}",
-        email: "{{ session.user.email if session.user else '' }}",
-        avatar: "{{ session.user.user_metadata.first_name[0]|upper if session.user and session.user.user_metadata and session.user.user_metadata.first_name else 'U' }}"
+        name: localStorage.getItem("userName") || "Guest Seller",
+        role: localStorage.getItem("userRole") || "Seller",
+        email: localStorage.getItem("userEmail") || "seller@example.com",
+        avatar: (localStorage.getItem("userName") || "S").charAt(0).toUpperCase()
       };
-      if (userData.email) {
-        console.log('Current user:', userData);
-      } else {
-        console.log('No user session found');
+
+      console.log("Current user:", userData);
+
+      // Update feed title
+      const feedTitle = document.getElementById("feedTitle");
+      if (feedTitle && userData.name !== "Guest Seller") {
+        feedTitle.textContent = `${userData.name.split(' ')[0]}'s Feed`;
       }
+
+      // Update sidebar
+      const profileName = document.querySelector(".sidebar-profile .name");
+      const profileRole = document.querySelector(".sidebar-profile .role");
+      const profileAvatar = document.querySelector(".profile-avatar");
+
+      if (profileName) profileName.textContent = userData.name;
+      if (profileRole) profileRole.textContent = userData.role;
+      if (profileAvatar) profileAvatar.textContent = userData.avatar;
     }
 
     function initializeAnimations() {
-      // Smooth animations for crop cards
       const observerOptions = {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: "0px 0px -50px 0px"
       };
 
-      const observer = new IntersectionObserver((entries) => {
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
           }
         });
       }, observerOptions);
 
-      // Observe all crop cards
-      document.querySelectorAll('.crop-card').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      document.querySelectorAll(".crop-card").forEach(card => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
         observer.observe(card);
       });
     }
 
     function setupInteractions() {
-      // Enhanced interactions
-      document.querySelectorAll('.action').forEach(action => {
-        action.addEventListener('click', function() {
-          const icon = this.querySelector('i');
-          if (icon.classList.contains('fa-heart')) {
-            icon.style.color = icon.style.color === 'red' ? '' : 'red';
-            icon.style.transform = 'scale(1.2)';
+      document.querySelectorAll(".action").forEach(action => {
+        action.addEventListener("click", function () {
+          const icon = this.querySelector("i");
+          if (icon.classList.contains("fa-heart")) {
+            icon.style.color = icon.style.color === "red" ? "" : "red";
+            icon.style.transform = "scale(1.2)";
             setTimeout(() => {
-              icon.style.transform = 'scale(1)';
+              icon.style.transform = "scale(1)";
             }, 200);
           }
         });
       });
 
-      // Contact seller functionality
-      document.querySelectorAll('.btn-contact').forEach(btn => {
-        btn.addEventListener('click', function() {
-          // Add ripple effect
-          const ripple = document.createElement('span');
-          ripple.style.position = 'absolute';
-          ripple.style.borderRadius = '50%';
-          ripple.style.background = 'rgba(255,255,255,0.6)';
-          ripple.style.transform = 'scale(0)';
-          ripple.style.animation = 'ripple 0.6s linear';
-          ripple.style.left = '50%';
-          ripple.style.top = '50%';
-          ripple.style.width = ripple.style.height = '100px';
-          ripple.style.marginLeft = '-50px';
-          ripple.style.marginTop = '-50px';
-          
-          this.style.position = 'relative';
-          this.style.overflow = 'hidden';
+      document.querySelectorAll(".btn-contact").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const ripple = document.createElement("span");
+          ripple.style.position = "absolute";
+          ripple.style.borderRadius = "50%";
+          ripple.style.background = "rgba(255,255,255,0.6)";
+          ripple.style.transform = "scale(0)";
+          ripple.style.animation = "ripple 0.6s linear";
+          ripple.style.left = "50%";
+          ripple.style.top = "50%";
+          ripple.style.width = ripple.style.height = "100px";
+          ripple.style.marginLeft = "-50px";
+          ripple.style.marginTop = "-50px";
+
+          this.style.position = "relative";
+          this.style.overflow = "hidden";
           this.appendChild(ripple);
-          
+
           setTimeout(() => {
             ripple.remove();
           }, 600);
         });
       });
 
-      // Load more functionality
-      const loadMoreBtn = document.querySelector('.load-more-row button');
+      const loadMoreBtn = document.querySelector(".load-more-row button");
       if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
+        loadMoreBtn.addEventListener("click", function () {
           this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
           
           setTimeout(() => {
             this.innerHTML = '<i class="fas fa-chevron-down"></i> Load More Posts';
-            // Add more posts logic here
           }, 1500);
         });
       }
     }
 
     function setupSearch() {
-      // Search functionality
-      const searchInput = document.getElementById('searchInput');
+      const searchInput = document.querySelector(".navbar input[type='text']");
       if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          console.log('Searching for:', this.value);
-          // Add search logic here
+        searchInput.addEventListener("input", function () {
+          console.log("Searching for:", this.value);
+          filterProducts();
         });
       }
     }
 
-    // Add ripple animation CSS
-    const style = document.createElement('style');
+    function setupFilters() {
+      const categoryFilter = document.getElementById("category");
+      const statusFilter = document.getElementById("status");
+      const sortSelect = document.querySelector(".sort-select");
+
+      [categoryFilter, statusFilter, sortSelect].forEach(filter => {
+        if (filter) {
+          filter.addEventListener("change", filterProducts);
+        }
+      });
+    }
+
+    function filterProducts() {
+      console.log("Filtering products...");
+      // Add your filtering logic here
+    }
+
+    function loadProducts() {
+      // Mock product data for seller's products
+      const mockProducts = [
+        {
+          id: 1,
+          title: "Fresh Organic Tomatoes",
+          description: "Premium quality organic tomatoes, freshly harvested from our farm. Perfect for cooking and salads.",
+          price: "₹80/kg",
+          quantity: "500kg",
+          location: "Maharashtra",
+          seller: "My Farm",
+          time: "2 hours ago",
+          image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400",
+          tags: ["Organic", "Fresh", "Vegetables"],
+          status: "active"
+        },
+        {
+          id: 2,
+          title: "Premium Basmati Rice",
+          description: "Long grain basmati rice with excellent aroma and taste. Aged for perfect texture.",
+          price: "₹120/kg",
+          quantity: "1000kg",
+          location: "Punjab",
+          seller: "My Farm",
+          time: "1 day ago",
+          image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400",
+          tags: ["Basmati", "Premium", "Grains"],
+          status: "active"
+        }
+      ];
+
+      const feedContainer = document.getElementById("dynamicFeed");
+      
+      if (mockProducts.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-seedling"></i></div>
+            <h3>No products found</h3>
+            <p>You haven't posted any products yet.</p>
+            <a href="#" class="upload-link">Post Your First Product</a>
+          </div>
+        `;
+        return;
+      }
+
+      feedContainer.innerHTML = mockProducts.map(product => `
+        <div class="crop-card">
+          <img src="${product.image}" class="crop-image" alt="${product.title}">
+
+          <div class="crop-card-header">
+            <img src="https://via.placeholder.com/48x48/4a8f5f/ffffff?text=${product.seller.charAt(0)}" alt="Seller Avatar">
+            <div class="user-info">
+              <div class="name">${product.seller}</div>
+              <div class="time">${product.time}</div>
+            </div>
+          </div>
+
+          <div class="crop-description">${product.description}</div>
+
+          <div class="crop-tags">
+            ${product.tags.map(tag => `<span class="crop-tag">${tag}</span>`).join('')}
+          </div>
+
+          <div class="crop-details-row">
+            <div class="detail"><i class="fas fa-tag icon"></i> ${product.price}</div>
+            <div class="detail"><i class="fas fa-box icon"></i> ${product.quantity}</div>
+            <div class="detail"><i class="fas fa-map-marker-alt icon"></i> ${product.location}</div>
+          </div>
+
+          <div class="crop-actions-row">
+            <div class="action"><i class="fas fa-eye"></i> 24 Views</div>
+            <div class="action"><i class="fas fa-heart"></i> 12 Likes</div>
+            <div class="action"><i class="fas fa-message"></i> 3 Inquiries</div>
+          </div>
+
+          <div class="contact-seller-section">
+            <button class="btn-contact"><i class="fas fa-edit icon"></i> Edit Product</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Re-initialize animations for new content
+      initializeAnimations();
+      setupInteractions();
+    }
+
+    const style = document.createElement("style");
     style.textContent = `
       @keyframes ripple {
         to {
