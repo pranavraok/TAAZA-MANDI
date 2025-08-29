@@ -356,11 +356,12 @@
       color: var(--text-primary);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 1rem;
     }
 
     .prediction-form input {
-      padding: 1rem;
+      width: 100%;
+      padding: 0.75rem 1.25rem;
       border: 2px solid var(--border-light);
       border-radius: var(--radius-md);
       font-size: 1rem;
@@ -376,6 +377,7 @@
     }
 
     .predict-button {
+      margin-left: 190px;
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
       color: white;
       border: none;
@@ -385,7 +387,7 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      width: 100%;
+      width: 350px;
       box-shadow: var(--shadow-md);
       display: flex;
       align-items: center;
@@ -648,19 +650,9 @@
           <div id="k-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
         </div>
         <div>
-          <label for="temperature"><i class="fas fa-thermometer-half"></i> Temperature (°C)</label>
-          <input type="number" id="temperature" name="temperature" placeholder="e.g., 25" min="-10" max="50" step="0.1" required aria-describedby="temperature-error">
-          <div id="temperature-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
-        </div>
-        <div>
           <label for="humidity"><i class="fas fa-tint"></i> Humidity (%)</label>
           <input type="number" id="humidity" name="humidity" placeholder="e.g., 80" min="0" max="100" required aria-describedby="humidity-error">
           <div id="humidity-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
-        </div>
-        <div>
-          <label for="ph"><i class="fas fa-vial"></i> pH Level</label>
-          <input type="number" id="ph" name="ph" placeholder="e.g., 6.5" min="0" max="14" step="0.1" required aria-describedby="ph-error">
-          <div id="ph-error" class="error-message" style="color: var(--error); font-size: 0.85rem; display: none;"></div>
         </div>
         <div>
           <label for="rainfall"><i class="fas fa-cloud-rain"></i> Rainfall (mm)</label>
@@ -680,102 +672,106 @@
   {% include 'constants/seller/footer.html' %}
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('cropForm');
-        const resultsSection = document.getElementById('results');
-        const cropRecommendations = document.getElementById('cropRecommendations');
-        const hamburger = document.querySelector('.hamburger');
-        const sidebar = document.querySelector('aside');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('cropForm');
+    const resultsSection = document.getElementById('results');
+    const cropRecommendations = document.getElementById('cropRecommendations');
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('aside');
 
-        // Hamburger menu toggle
-        hamburger.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
+    // Hamburger toggle
+    hamburger?.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                sidebar.classList.remove('active');
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+            sidebar.classList.remove('active');
+        }
+    });
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Clear old messages
+        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+        cropRecommendations.innerHTML = '';
+        resultsSection.classList.remove('show');
+
+        // Validate inputs
+        const formData = new FormData(form);
+        const inputs = [
+            { id: 'n', name: 'n', min: 0, max: 200 },
+            { id: 'p', name: 'p', min: 0, max: 150 },
+            { id: 'k', name: 'k', min: 0, max: 200 },
+            { id: 'humidity', name: 'humidity', min: 0, max: 100 },
+            { id: 'rainfall', name: 'rainfall', min: 0, max: 3000 }
+        ];
+
+        let isValid = true;
+        inputs.forEach(input => {
+            const value = parseFloat(formData.get(input.name));
+            const errorEl = document.getElementById(`${input.id}-error`);
+            if (isNaN(value) || value < input.min || value > input.max) {
+                errorEl.textContent = `Please enter a value between ${input.min} and ${input.max}.`;
+                errorEl.style.display = 'block';
+                isValid = false;
             }
         });
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+        if (!isValid) return;
 
-            // Clear previous error and result messages
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-            cropRecommendations.innerHTML = '';
+        try {
+            const response = await fetch('/predictor', { method: 'POST', body: formData });
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error('Server did not return valid JSON');
+            }
 
-            // Validate inputs
-            const formData = new FormData(form);
-            const inputs = [
-                { id: 'n', name: 'n', min: 0, max: 200 },
-                { id: 'p', name: 'p', min: 0, max: 150 },
-                { id: 'k', name: 'k', min: 0, max: 200 },
-                { id: 'humidity', name: 'humidity', min: 0, max: 100 },
-                { id: 'rainfall', name: 'rainfall', min: 0, max: 3000 }
-            ];
-
-            let isValid = true;
-            inputs.forEach(input => {
-                const value = parseFloat(formData.get(input.name));
-                const errorEl = document.getElementById(`${input.id}-error`);
-                if (isNaN(value) || value < input.min || value > input.max) {
-                    errorEl.textContent = `Please enter a value between ${input.min} and ${input.max}.`;
-                    errorEl.style.display = 'block';
-                    isValid = false;
-                }
-            });
-
-            if (!isValid) return;
-
-            // Send AJAX request
-            fetch('/predictor', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'error') {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'error-message';
-                    errorDiv.style.color = 'var(--error)';
-                    errorDiv.style.fontSize = '0.85rem';
-                    errorDiv.textContent = data.message;
-                    form.appendChild(errorDiv);
-                } else {
-                    // Display result on the same page with timestamp
-                    const cropCard = document.createElement('div');
-                    cropCard.className = 'crop-card best-match';
-                    cropCard.innerHTML = `
-                        <div class="crop-name"><i class="fas fa-crown" style="color:#fbbf24;"></i> ${data.crop_name}<span class="confidence">95%</span></div>
-                        <div class="crop-description">Recommended crop based on your input as of ${data.timestamp}.</div>
-                        <div class="crop-stats">
-                            <div class="crop-stat"><i class="fas fa-leaf"></i> <span>N: ${data.n}</span></div>
-                            <div class="crop-stat"><i class="fas fa-leaf"></i> <span>P: ${data.p}</span></div>
-                            <div class="crop-stat"><i class="fas fa-leaf"></i> <span>K: ${data.k}</span></div>
-                            <div class="crop-stat"><i class="fas fa-tint"></i> <span>Humidity: ${data.humidity}%</span></div>
-                            <div class="crop-stat"><i class="fas fa-cloud-rain"></i> <span>Rainfall: ${data.rainfall}mm</span></div>
-                            <div class="crop-stat"><i class="fas fa-star"></i> <span>Best Match</span></div>
-                        </div>
-                    `;
-                    cropRecommendations.innerHTML = '';
-                    cropRecommendations.appendChild(cropCard);
-                    resultsSection.classList.add('show');
-                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            if (!response.ok || data.status === 'error') {
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'error-message';
                 errorDiv.style.color = 'var(--error)';
                 errorDiv.style.fontSize = '0.85rem';
-                errorDiv.textContent = 'An unexpected error occurred. Please try again.';
+                errorDiv.textContent = data.message || 'An error occurred. Please try again.';
                 form.appendChild(errorDiv);
-            });
-        });
+                return;
+            }
+
+            // Show prediction
+            const cropCard = document.createElement('div');
+            cropCard.className = 'crop-card best-match';
+            cropCard.innerHTML = `
+                <div class="crop-name"><i class="fas fa-crown" style="color:#fbbf24;"></i> ${data.crop_name}<span class="confidence">95%</span></div>
+                <div class="crop-description">Recommended crop based on your input as of ${data.timestamp}.</div>
+                <div class="crop-stats">
+                    <div class="crop-stat"><i class="fas fa-leaf"></i> <span>N: ${data.n}</span></div>
+                    <div class="crop-stat"><i class="fas fa-leaf"></i> <span>P: ${data.p}</span></div>
+                    <div class="crop-stat"><i class="fas fa-leaf"></i> <span>K: ${data.k}</span></div>
+                    <div class="crop-stat"><i class="fas fa-tint"></i> <span>Humidity: ${data.humidity}%</span></div>
+                    <div class="crop-stat"><i class="fas fa-cloud-rain"></i> <span>Rainfall: ${data.rainfall}mm</span></div>
+                    <div class="crop-stat"><i class="fas fa-star"></i> <span>Best Match</span></div>
+                </div>
+            `;
+            cropRecommendations.appendChild(cropCard);
+            resultsSection.classList.add('show');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        } catch (err) {
+            console.error('Prediction fetch error:', err);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.style.color = 'var(--error)';
+            errorDiv.style.fontSize = '0.85rem';
+            errorDiv.textContent = 'An unexpected error occurred. Please try again.';
+            form.appendChild(errorDiv);
+        }
     });
-  </script>
+});
+</script>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -418,6 +418,242 @@
       display: none;
     }
 
+    /* Favorites Section */
+    .favorites-section {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .favorites-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .favorites-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .favorites-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .favorites-section h2 i {
+      color: var(--secondary-green);
+    }
+
+    .clear-favorites-btn {
+      background: linear-gradient(135deg, var(--error), #e53e3e);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .clear-favorites-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .favorite-item {
+      background: var(--ultra-light-green);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 2px solid var(--border-light);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .favorite-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--secondary-green);
+    }
+
+    .favorite-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary-green), var(--accent-green));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .favorite-item:hover::before {
+      transform: scaleX(1);
+    }
+
+    .favorite-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .favorite-item h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .remove-favorite-btn {
+      background: none;
+      border: none;
+      color: var(--error);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      padding: 0.25rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .remove-favorite-btn:hover {
+      background: rgba(245, 101, 101, 0.1);
+      transform: scale(1.1);
+    }
+
+    .favorite-item .product-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .favorite-item:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .favorite-item-details {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .favorite-item-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .favorite-item-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-green);
+    }
+
+    .contact-seller-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .contact-seller-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .no-favorites {
+      text-align: center;
+      padding: 3rem;
+      background: var(--ultra-light-green);
+      border-radius: var(--radius-lg);
+      border: 2px dashed var(--border-light);
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .no-favorites:hover {
+      border-color: var(--secondary-green);
+      background: var(--light-green);
+    }
+
+    .no-favorites i {
+      font-size: 2.5rem;
+      color: var(--secondary-green);
+      margin-bottom: 1rem;
+    }
+
+    .no-favorites h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .no-favorites p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .browse-products-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .browse-products-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
     /* Listings Section */
     .listings {
       background: var(--card-bg);
@@ -463,7 +699,7 @@
       background: linear-gradient(135deg, var(--accent-green), var(--secondary-green));
       color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
+      padding: 0.5rem 1.5rem;
       border-radius: var(--radius-md);
       font-weight: 600;
       cursor: pointer;
@@ -590,6 +826,192 @@
       padding: 0.75rem 2rem;
     }
 
+    /* Contact Seller Modal Styles */
+    .modal {
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--radius-xl);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      text-align: center;
+      border: 1px solid var(--border-light);
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .close:hover {
+      color: var(--error);
+      transform: scale(1.1);
+    }
+
+    .modal-header h3 {
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-body {
+      text-align: left;
+    }
+
+    .modal-body > p {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .disclaimer-list {
+      background: var(--ultra-light-green);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--warning);
+      margin-bottom: 1.5rem;
+    }
+
+    .disclaimer-list li {
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .disclaimer-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .agreement-section {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-container {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.4;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin: 0;
+      min-width: 18px;
+      height: 18px;
+      accent-color: var(--primary-green);
+      cursor: pointer;
+    }
+
+    #showNumberBtn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    #showNumberBtn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    #showNumberBtn:disabled {
+      background: var(--border-light);
+      color: var(--text-light);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .contact-info {
+      background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--secondary-green);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .contact-info i {
+      color: var(--secondary-green);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-info p {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-info small {
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
     /* Logout Button */
     .logout-section {
       max-width: 1400px;
@@ -644,6 +1066,12 @@
       border: 1px solid rgba(245, 101, 101, 0.2);
     }
 
+    .message.warning {
+      background: rgba(237, 137, 54, 0.1);
+      color: var(--warning);
+      border: 1px solid rgba(237, 137, 54, 0.2);
+    }
+
     .hidden {
       display: none;
     }
@@ -661,6 +1089,26 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    .delete-btn {
+      background: linear-gradient(135deg, var(--error), #e53e3e);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
     /* Responsive Design */
@@ -686,7 +1134,7 @@
         padding: 0 1rem;
       }
 
-      .listing-grid {
+      .listing-grid, .favorites-grid {
         grid-template-columns: 1fr;
       }
 
@@ -699,26 +1147,26 @@
         height: 100px;
         margin: -60px auto 1rem;
       }
-    }
 
-    .delete-btn {
-      background: linear-gradient(135deg, var(--error), #e53e3e);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
+      .favorites-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+      }
 
-    .delete-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+      
+      .disclaimer-list {
+        padding: 1rem;
+      }
+      
+      .disclaimer-list li {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -766,6 +1214,10 @@
               <strong id="profilePosts">0</strong>
               Active Listings
             </div>
+            <div>
+              <strong id="profileFavorites">0</strong>
+              Favorites
+            </div>
           </div>
         </div>
       </section>
@@ -775,6 +1227,34 @@
         <i class="fas fa-info-circle"></i>
         <span id="message-text"></span>
       </div>
+
+      <!-- Favorites Section -->
+      <section class="favorites-section">
+        <div class="favorites-header">
+          <h2>
+            <i class="fas fa-heart"></i>
+            My Favorites
+          </h2>
+          <button class="clear-favorites-btn" id="clearFavoritesBtn" onclick="clearAllFavorites()" style="display: none;">
+            <i class="fas fa-trash"></i>
+            Clear All
+          </button>
+        </div>
+        
+        <div class="favorites-grid" id="favoritesGrid">
+          <!-- Favorites will be loaded here -->
+        </div>
+
+        <div class="no-favorites" id="noFavorites">
+          <i class="fas fa-heart-broken"></i>
+          <h3>No Favorites Yet</h3>
+          <p>Start exploring and like products to see them here!</p>
+          <a href="/marketplace" class="browse-products-btn">
+            <i class="fas fa-shopping-bag"></i>
+            Browse Products
+          </a>
+        </div>
+      </section>
 
       <!-- Account Settings -->
       <section class="account-settings">
@@ -879,7 +1359,6 @@
           <h3>No Posts Available</h3>
           <p>Start selling by adding your first product listing!</p>
           <button class="add-btn" onclick="addNewListing()">
-            <i class="fas fa-plus"></i>
             Post Now
           </button>
         </div>
@@ -895,252 +1374,604 @@
     </button>
   </div>
 
+  <!-- Contact Seller Modal -->
+  <div id="contactSellerModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="modalCloseBtn">&times;</span>
+      <div class="modal-header">
+        <i class="fas fa-exclamation-triangle" style="color: #ed8936; font-size: 2rem; margin-bottom: 1rem;"></i>
+        <h3>Contact Seller - Important Notice</h3>
+      </div>
+      
+      <div class="modal-body">
+        <p><strong>Please read carefully before proceeding:</strong></p>
+        <ul class="disclaimer-list">
+          <li>We are <strong>not responsible</strong> for any transactions or deals made directly with sellers</li>
+          <li>All communication and negotiations are <strong>at your own risk</strong></li>
+          <li>We do not guarantee the authenticity or quality of products</li>
+          <li>Any disputes should be resolved directly between buyer and seller</li>
+          <li>We are merely a platform connecting buyers and sellers</li>
+        </ul>
+        
+        <div class="agreement-section">
+          <label class="checkbox-container">
+            <input type="checkbox" id="agreeCheckbox">
+            <span>I understand and agree to all terms mentioned above and proceed at my own risk</span>
+          </label>
+        </div>
+        
+        <button id="showNumberBtn" disabled>
+          <i class="fas fa-phone"></i>
+          Show Contact Number
+        </button>
+        
+        <div id="contactNumberSection" class="hidden">
+          <div class="contact-info">
+            <i class="fas fa-phone-alt"></i>
+            <p id="contactNumber"></p>
+            <small>Contact the seller directly at your own responsibility</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   {% include 'constants/seller/footer.html' %}
 
-  <script>
-    // Initialize Supabase client
-    const supabaseUrl = '{{ config.SUPABASE_URL if config else "YOUR_SUPABASE_URL" }}';
-    const supabaseKey = '{{ config.SUPABASE_ANON_KEY if config else "YOUR_SUPABASE_ANON_KEY" }}';
-    const { createClient } = supabase;
-    const supabaseClient = createClient(supabaseUrl, supabaseKey);
+<script>
+  // Initialize Supabase client
+  const supabaseUrl = '{{ config.SUPABASE_URL if config else "YOUR_SUPABASE_URL" }}';
+  const supabaseKey = '{{ config.SUPABASE_ANON_KEY if config else "YOUR_SUPABASE_ANON_KEY" }}';
+  const { createClient } = supabase;
+  const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
-    let editMode = false;
+  let editMode = false;
+  let favorites = [];
 
-    // Show message function
-    function showMessage(message, type = 'success') {
-      const messageDiv = document.getElementById('message');
-      const messageText = document.getElementById('message-text');
+  // Initialize favorites from localStorage (using same key as marketplace)
+  function initializeFavorites() {
+    const storedFavorites = localStorage.getItem('userFavorites'); // Changed from 'sellerFavorites'
+    if (storedFavorites) {
+      try {
+        favorites = JSON.parse(storedFavorites);
+      } catch (e) {
+        favorites = [];
+      }
+    }
+    loadFavorites();
+    updateFavoritesCount();
+  }
+
+  // Add product to favorites (synchronized with marketplace)
+  function addToFavorites(product) {
+    const existingIndex = favorites.findIndex(fav => fav.id === product.id);
+    if (existingIndex === -1) {
+      favorites.push({
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        location: product.location,
+        seller: product.seller,
+        image: product.image,
+        dateAdded: new Date().toISOString()
+      });
       
-      if (messageDiv && messageText) {
-        messageDiv.className = `message ${type}`;
-        messageText.textContent = message;
-        messageDiv.classList.remove('hidden');
+      // Save to localStorage with unified key
+      localStorage.setItem('userFavorites', JSON.stringify(favorites));
+      
+      // Update UI
+      loadFavorites();
+      updateFavoritesCount();
+      showMessage(`${product.title} added to favorites!`, 'success');
+      
+      // Dispatch custom event for same-tab communication
+      window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+        detail: { action: 'add', product: product, favorites: favorites }
+      }));
+      
+      return true;
+    }
+    return false;
+  }
+
+  // Remove from favorites (synchronized with marketplace)
+  function removeFromFavorites(productId) {
+    const initialLength = favorites.length;
+    const removedProduct = favorites.find(fav => fav.id === productId);
+    favorites = favorites.filter(fav => fav.id !== productId);
+    
+    if (favorites.length < initialLength) {
+      // Save to localStorage with unified key
+      localStorage.setItem('userFavorites', JSON.stringify(favorites));
+      
+      // Update UI
+      loadFavorites();
+      updateFavoritesCount();
+      showMessage('Removed from favorites', 'success');
+      
+      // Dispatch custom event for same-tab communication
+      window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+        detail: { action: 'remove', productId: productId, favorites: favorites }
+      }));
+      
+      return true;
+    }
+    return false;
+  }
+
+  // Clear all favorites (synchronized with marketplace)
+  function clearAllFavorites() {
+    if (favorites.length === 0) {
+      showMessage('No favorites to clear', 'error');
+      return;
+    }
+
+    if (confirm('Are you sure you want to remove all favorites? This action cannot be undone.')) {
+      favorites = [];
+      localStorage.setItem('userFavorites', JSON.stringify(favorites));
+      loadFavorites();
+      updateFavoritesCount();
+      showMessage('All favorites cleared successfully', 'success');
+      
+      // Dispatch custom event for same-tab communication
+      window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+        detail: { action: 'clear', favorites: [] }
+      }));
+    }
+  }
+
+  // Check if product is in favorites
+  function isFavorite(productId) {
+    return favorites.some(fav => fav.id === productId);
+  }
+
+  // Get all favorites (for external access)
+  function getFavorites() {
+    return favorites;
+  }
+
+  // Load and display favorites
+  function loadFavorites() {
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    const noFavorites = document.getElementById('noFavorites');
+    const clearBtn = document.getElementById('clearFavoritesBtn');
+
+    if (favorites.length === 0) {
+      favoritesGrid.style.display = 'none';
+      noFavorites.style.display = 'block';
+      clearBtn.style.display = 'none';
+      return;
+    }
+
+    favoritesGrid.style.display = 'grid';
+    noFavorites.style.display = 'none';
+    clearBtn.style.display = 'inline-flex';
+
+    // Sort favorites by date added (newest first)
+    const sortedFavorites = favorites.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+
+    favoritesGrid.innerHTML = sortedFavorites.map(item => `
+      <div class="favorite-item" data-product-id="${item.id}">
+        <div class="favorite-item-header">
+          <h3>${item.title}</h3>
+          <button class="remove-favorite-btn" onclick="removeFromFavorites(${item.id})" title="Remove from favorites">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
         
-        setTimeout(() => {
-          messageDiv.classList.add('hidden');
-        }, 5000);
-      }
+        <img src="${item.image}" alt="${item.title}" class="product-image" onerror="this.src='https://via.placeholder.com/300x150/e8f5e8/4a8f5f?text=No+Image'">
+        
+        <div class="favorite-item-details">
+          ${item.description}
+        </div>
+        
+        <div class="favorite-item-footer">
+          <div class="favorite-item-price">${item.price}</div>
+          <button class="contact-seller-btn" onclick="contactSeller('${item.seller}', ${item.id})">
+            <i class="fas fa-envelope"></i>
+            Contact
+          </button>
+        </div>
+        
+        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light);">
+          <i class="fas fa-map-marker-alt"></i> ${item.location} • 
+          <i class="fas fa-user"></i> ${item.seller}
+        </div>
+      </div>
+    `).join('');
+
+    // Add animation to new items
+    const favoriteItems = favoritesGrid.querySelectorAll('.favorite-item');
+    favoriteItems.forEach((item, index) => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        item.style.transition = 'all 0.6s ease';
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      }, index * 100);
+    });
+  }
+
+  // Update favorites count in profile
+  function updateFavoritesCount() {
+    const favoritesCountElement = document.getElementById('profileFavorites');
+    if (favoritesCountElement) {
+      favoritesCountElement.textContent = favorites.length;
     }
+  }
 
-    // Load user data from Supabase and Flask session
-    async function loadUserData() {
-      try {
-        const userData = {
-          fullName: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata else 'John' }} {{ session.user.user_metadata.last_name if session.user and session.user.user_metadata else 'Doe' }}",
-          email: "{{ session.user.email if session.user else 'john.doe@example.com' }}",
-          phone: "{{ session.user.user_metadata.phone if session.user and session.user.user_metadata else '+91 9876543210' }}",
-          location: "{{ session.user.user_metadata.state if session.user and session.user.user_metadata else 'Punjab' }}",
-          userType: "{{ session.user.user_metadata.user_type if session.user and session.user.user_metadata else 'Seller' }}",
-          farmSize: "{{ session.user.user_metadata.farm_size if session.user and session.user.user_metadata else '50 Acres' }}",
-          experience: "{{ session.user.user_metadata.experience if session.user and session.user.user_metadata else '10 Years' }}",
-          about: "{{ session.user.user_metadata.about if session.user and session.user.user_metadata else 'Experienced organic farmer specializing in wheat and rice cultivation.' }}",
-          rating: "{{ session.user.user_metadata.rating if session.user and session.user.user_metadata else '4.5' }}",
-          reviews: "{{ session.user.user_metadata.reviews if session.user and session.user.user_metadata else '50' }}"
-        };
+  // Enhanced Contact Seller Modal Functions
+  function openContactSellerModal(sellerName, phoneNumber) {
+    const modal = document.getElementById('contactSellerModal');
+    const agreeCheckbox = document.getElementById('agreeCheckbox');
+    const showNumberBtn = document.getElementById('showNumberBtn');
+    const contactNumberSection = document.getElementById('contactNumberSection');
+    const contactNumberElem = document.getElementById('contactNumber');
 
-        // Populate form fields
-        document.getElementById('fullName').value = userData.fullName;
-        document.getElementById('email').value = userData.email;
-        document.getElementById('phone').value = userData.phone;
-        document.getElementById('location').value = userData.location;
-        document.getElementById('userType').value = userData.userType.charAt(0).toUpperCase() + userData.userType.slice(1);
-        document.getElementById('farmSize').value = userData.farmSize;
-        document.getElementById('experience').value = userData.experience;
-        document.getElementById('about').value = userData.about;
+    // Reset modal state
+    agreeCheckbox.checked = false;
+    agreeCheckbox.disabled = false;
+    showNumberBtn.disabled = true;
+    showNumberBtn.style.display = 'inline-flex';
+    contactNumberSection.classList.add('hidden');
+    contactNumberElem.textContent = '';
 
-        // Update profile section
-        document.getElementById('mainName').textContent = userData.fullName;
-        document.getElementById('profileLocation').textContent = userData.location;
-        document.getElementById('profileFarmSize').textContent = userData.farmSize;
-        document.getElementById('profileExperience').textContent = userData.experience;
-        document.getElementById('profileRating').textContent = `${userData.rating} (${userData.reviews} reviews)`;
+    // Show modal with animation
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
 
-        // Load listings from Supabase
-        await loadListings();
-      } catch (error) {
-        console.error('Error loading user data:', error);
-        showMessage('Failed to load profile data', 'error');
+    // Handle checkbox change
+    agreeCheckbox.onchange = function() {
+      showNumberBtn.disabled = !agreeCheckbox.checked;
+      if (agreeCheckbox.checked) {
+        showNumberBtn.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
+      } else {
+        showNumberBtn.style.background = 'var(--border-light)';
       }
+    };
+
+    // Handle show number button click
+    showNumberBtn.onclick = function() {
+      contactNumberElem.textContent = phoneNumber;
+      contactNumberSection.classList.remove('hidden');
+      showNumberBtn.style.display = 'none';
+      agreeCheckbox.disabled = true;
+      
+      // Add success animation
+      contactNumberSection.style.animation = 'slideIn 0.5s ease-out';
+      
+      showMessage(`Contact information revealed for ${sellerName}. Proceed with caution.`, 'warning');
+    };
+
+    // Close modal handlers
+    const closeBtn = document.getElementById('modalCloseBtn');
+    closeBtn.onclick = closeModal;
+    
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    // Handle escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    }, { once: true });
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
     }
+  }
 
-    // Load listings from Supabase
-    async function loadListings() {
-      try {
-        const userEmail = "{{ session.user.email if session.user else '' }}";
-        const { data: listings, error } = await supabaseClient
-          .from('products')
-          .select('*')
-          .eq('seller_email', userEmail);
+  // Updated contact seller function
+  function contactSeller(seller, productId) {
+    // Phone numbers for different sellers
+    const phoneNumbers = {
+      'Raj Farmers': '+91-9876543210',
+      'Singh Agriculture': '+91-9988776655',
+      'Mountain Orchards': '+91-9123456789',
+      'Green Valley Farm': '+91-9555444333',
+      'Spice Gardens': '+91-9777888999',
+      'Pulse Growers Co-op': '+91-9222333444'
+    };
+    
+    const phoneNumber = phoneNumbers[seller] || '+91-9876543210';
+    
+    // Open the modal with seller info
+    openContactSellerModal(seller, phoneNumber);
+  }
 
-        if (error) throw error;
+  // Show message function
+  function showMessage(message, type = 'success') {
+    const messageDiv = document.getElementById('message');
+    const messageText = document.getElementById('message-text');
+    
+    if (messageDiv && messageText) {
+      messageDiv.className = `message ${type}`;
+      messageText.textContent = message;
+      messageDiv.classList.remove('hidden');
+      
+      setTimeout(() => {
+        messageDiv.classList.add('hidden');
+      }, 5000);
+    }
+  }
 
-        const listingGrid = document.getElementById('listingGrid');
-        const noPostsDiv = document.getElementById('noPosts');
-        listingGrid.innerHTML = '';
+  // Load user data from Supabase and Flask session
+  async function loadUserData() {
+    try {
+      const userData = {
+        fullName: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata else 'John' }} {{ session.user.user_metadata.last_name if session.user and session.user.user_metadata else 'Doe' }}",
+        email: "{{ session.user.email if session.user else 'john.doe@example.com' }}",
+        phone: "{{ session.user.user_metadata.phone if session.user and session.user.user_metadata else '+91 9876543210' }}",
+        location: "{{ session.user.user_metadata.state if session.user and session.user.user_metadata else 'Punjab' }}",
+        userType: "{{ session.user.user_metadata.user_type if session.user and session.user.user_metadata else 'Seller' }}",
+        farmSize: "{{ session.user.user_metadata.farm_size if session.user and session.user.user_metadata else '50 Acres' }}",
+        experience: "{{ session.user.user_metadata.experience if session.user and session.user.user_metadata else '10 Years' }}",
+        about: "{{ session.user.user_metadata.about if session.user and session.user.user_metadata else 'Experienced organic farmer specializing in wheat and rice cultivation.' }}",
+        rating: "{{ session.user.user_metadata.rating if session.user and session.user.user_metadata else '4.5' }}",
+        reviews: "{{ session.user.user_metadata.reviews if session.user and session.user.user_metadata else '50' }}"
+      };
 
-        if (listings && listings.length > 0) {
-          listings.forEach(listing => {
-            const listingDiv = document.createElement('div');
-            listingDiv.className = 'listing';
-            listingDiv.innerHTML = `
-              <div class="listing-icon">
-                <i class="fas fa-${listing.icon || 'seedling'}"></i>
-              </div>
-              <h4>${listing.title}</h4>
-              <p class="listing-price">${listing.price}</p>
-              <button class="delete-btn" onclick="deleteListing(${listing.id})"><i class="fas fa-trash"></i> Delete</button>
-            `;
-            listingGrid.appendChild(listingDiv);
-          });
-          noPostsDiv.classList.add('hidden');
-          document.getElementById('profilePosts').textContent = listings.length;
-        } else {
-          listingGrid.classList.add('hidden');
-          noPostsDiv.classList.remove('hidden');
-          document.getElementById('profilePosts').textContent = '0';
-        }
+      // Populate form fields
+      document.getElementById('fullName').value = userData.fullName;
+      document.getElementById('email').value = userData.email;
+      document.getElementById('phone').value = userData.phone;
+      document.getElementById('location').value = userData.location;
+      document.getElementById('userType').value = userData.userType.charAt(0).toUpperCase() + userData.userType.slice(1);
+      document.getElementById('farmSize').value = userData.farmSize;
+      document.getElementById('experience').value = userData.experience;
+      document.getElementById('about').value = userData.about;
 
-        console.log('Listings loaded successfully');
-      } catch (error) {
-        console.error('Error loading listings:', error);
-        showMessage('Failed to load listings', 'error');
-        const listingGrid = document.getElementById('listingGrid');
-        const noPostsDiv = document.getElementById('noPosts');
+      // Update profile section
+      document.getElementById('mainName').textContent = userData.fullName;
+      document.getElementById('profileLocation').textContent = userData.location;
+      document.getElementById('profileFarmSize').textContent = userData.farmSize;
+      document.getElementById('profileExperience').textContent = userData.experience;
+      document.getElementById('profileRating').textContent = `${userData.rating} (${userData.reviews} reviews)`;
+
+      // Load listings from Supabase
+      await loadListings();
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      showMessage('Failed to load profile data', 'error');
+    }
+  }
+
+  // Load listings from Supabase
+  async function loadListings() {
+    try {
+      const userEmail = "{{ session.user.email if session.user else '' }}";
+      const { data: listings, error } = await supabaseClient
+        .from('products')
+        .select('*')
+        .eq('seller_email', userEmail);
+
+      if (error) throw error;
+
+      const listingGrid = document.getElementById('listingGrid');
+      const noPostsDiv = document.getElementById('noPosts');
+      listingGrid.innerHTML = '';
+
+      if (listings && listings.length > 0) {
+        listings.forEach(listing => {
+          const listingDiv = document.createElement('div');
+          listingDiv.className = 'listing';
+          listingDiv.innerHTML = `
+            <div class="listing-icon">
+              <i class="fas fa-${listing.icon || 'seedling'}"></i>
+            </div>
+            <h4>${listing.title}</h4>
+            <p class="listing-price">${listing.price}</p>
+            <button class="delete-btn" onclick="deleteListing(${listing.id})"><i class="fas fa-trash"></i> Delete</button>
+          `;
+          listingGrid.appendChild(listingDiv);
+        });
+        noPostsDiv.classList.add('hidden');
+        document.getElementById('profilePosts').textContent = listings.length;
+      } else {
         listingGrid.classList.add('hidden');
         noPostsDiv.classList.remove('hidden');
+        document.getElementById('profilePosts').textContent = '0';
       }
+
+      console.log('Listings loaded successfully');
+    } catch (error) {
+      console.error('Error loading listings:', error);
+      showMessage('Failed to load listings', 'error');
+      const listingGrid = document.getElementById('listingGrid');
+      const noPostsDiv = document.getElementById('noPosts');
+      listingGrid.classList.add('hidden');
+      noPostsDiv.classList.remove('hidden');
     }
+  }
 
-    async function deleteListing(id) {
-      if (confirm('Are you sure you want to delete this listing?')) {
-        try {
-          const { error } = await supabaseClient
-            .from('products')
-            .delete()
-            .eq('id', id);
-
-          if (error) throw error;
-
-          showMessage('Listing deleted successfully', 'success');
-          await loadListings();
-        } catch (error) {
-          console.error('Error deleting listing:', error);
-          showMessage('Failed to delete listing', 'error');
-        }
-      }
-    }
-
-    // Toggle edit mode
-    function toggleEditMode() {
-      editMode = !editMode;
-      const inputs = document.querySelectorAll('#accountForm input:not(#email):not(#userType), #accountForm textarea');
-      const saveBtn = document.getElementById('saveBtn');
-      const editBtn = document.getElementById('editBtn');
-
-      inputs.forEach(input => {
-        input.readOnly = !editMode;
-        if (editMode) {
-          input.style.background = 'white';
-          input.style.borderColor = 'var(--border-light)';
-        } else {
-          input.style.background = 'var(--ultra-light-green)';
-        }
-      });
-
-      if (editMode) {
-        saveBtn.style.display = 'inline-flex';
-        editBtn.innerHTML = '<i class="fas fa-times"></i> Cancel';
-        editBtn.style.background = 'var(--error)';
-        showMessage('Edit mode enabled. Make your changes and click Save.', 'success');
-      } else {
-        saveBtn.style.display = 'none';
-        editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Profile';
-        editBtn.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
-      }
-    }
-
-    // Save account form
-    document.getElementById("accountForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      
-      const saveBtn = document.getElementById('saveBtn');
-      const originalContent = saveBtn.innerHTML;
-      
-      saveBtn.disabled = true;
-      saveBtn.innerHTML = '<div class="loading"></div> Saving...';
-
+  async function deleteListing(id) {
+    if (confirm('Are you sure you want to delete this listing?')) {
       try {
-        const userId = "{{ session.user.id if session.user else 'demo-user-id' }}";
-        const updates = {
-          first_name: document.getElementById('fullName').value.split(' ')[0],
-          last_name: document.getElementById('fullName').value.split(' ').slice(1).join(' '),
-          phone: document.getElementById('phone').value,
-          state: document.getElementById('location').value,
-          farm_size: document.getElementById('farmSize').value,
-          experience: document.getElementById('experience').value,
-          about: document.getElementById('about').value
-        };
-
         const { error } = await supabaseClient
-          .from('profiles')
-          .update(updates)
-          .eq('user_id', userId);
+          .from('products')
+          .delete()
+          .eq('id', id);
 
         if (error) throw error;
 
-        showMessage("Profile updated successfully!", 'success');
-        
-        // Update profile section
-        const fullName = document.getElementById('fullName').value;
-        document.getElementById('mainName').textContent = fullName;
-        document.getElementById('profileLocation').textContent = document.getElementById('location').value;
-        document.getElementById('profileFarmSize').textContent = document.getElementById('farmSize').value;
-        document.getElementById('profileExperience').textContent = document.getElementById('experience').value;
-
-        toggleEditMode();
+        showMessage('Listing deleted successfully', 'success');
+        await loadListings();
       } catch (error) {
-        console.error('Save error:', error);
-        showMessage("Failed to update profile. Please try again.", 'error');
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = originalContent;
+        console.error('Error deleting listing:', error);
+        showMessage('Failed to delete listing', 'error');
+      }
+    }
+  }
+
+  // Toggle edit mode
+  function toggleEditMode() {
+    editMode = !editMode;
+    const inputs = document.querySelectorAll('#accountForm input:not(#email):not(#userType), #accountForm textarea');
+    const saveBtn = document.getElementById('saveBtn');
+    const editBtn = document.getElementById('editBtn');
+
+    inputs.forEach(input => {
+      input.readOnly = !editMode;
+      if (editMode) {
+        input.style.background = 'white';
+        input.style.borderColor = 'var(--border-light)';
+      } else {
+        input.style.background = 'var(--ultra-light-green)';
       }
     });
 
-    // Add new listing
-    function addNewListing() {
-      showMessage("Redirecting to add new listing page...", 'success');
+    if (editMode) {
+      saveBtn.style.display = 'inline-flex';
+      editBtn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+      editBtn.style.background = 'var(--error)';
+      showMessage('Edit mode enabled. Make your changes and click Save.', 'success');
+    } else {
+      saveBtn.style.display = 'none';
+      editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Profile';
+      editBtn.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
+    }
+  }
+
+  // Save account form
+  document.getElementById("accountForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    const saveBtn = document.getElementById('saveBtn');
+    const originalContent = saveBtn.innerHTML;
+    
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<div class="loading"></div> Saving...';
+
+    try {
+      const userId = "{{ session.user.id if session.user else 'demo-user-id' }}";
+      const updates = {
+        first_name: document.getElementById('fullName').value.split(' ')[0],
+        last_name: document.getElementById('fullName').value.split(' ').slice(1).join(' '),
+        phone: document.getElementById('phone').value,
+        state: document.getElementById('location').value,
+        farm_size: document.getElementById('farmSize').value,
+        experience: document.getElementById('experience').value,
+        about: document.getElementById('about').value
+      };
+
+      const { error } = await supabaseClient
+        .from('profiles')
+        .update(updates)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      showMessage("Profile updated successfully!", 'success');
+      
+      // Update profile section
+      const fullName = document.getElementById('fullName').value;
+      document.getElementById('mainName').textContent = fullName;
+      document.getElementById('profileLocation').textContent = document.getElementById('location').value;
+      document.getElementById('profileFarmSize').textContent = document.getElementById('farmSize').value;
+      document.getElementById('profileExperience').textContent = document.getElementById('experience').value;
+
+      toggleEditMode();
+    } catch (error) {
+      console.error('Save error:', error);
+      showMessage("Failed to update profile. Please try again.", 'error');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = originalContent;
+    }
+  });
+
+  // Add new listing
+  function addNewListing() {
+    showMessage("Redirecting to add new listing page...", 'success');
+    setTimeout(() => {
+      window.location.href = '/post-upload';
+    }, 1000);
+  }
+
+  // Logout function
+  function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+      showMessage("Logging out...", 'success');
       setTimeout(() => {
-        window.location.href = '/post-upload';
+        window.location.href = '/logout';
       }, 1000);
     }
+  }
 
-    // Logout function
-    function logout() {
-      if (confirm('Are you sure you want to logout?')) {
-        showMessage("Logging out...", 'success');
-        setTimeout(() => {
-          window.location.href = '/logout';
-        }, 1000);
+  // Make functions available globally for cross-page access
+  window.addToFavorites = addToFavorites;
+  window.removeFromFavorites = removeFromFavorites;
+  window.isFavorite = isFavorite;
+  window.getFavorites = getFavorites;
+
+  // Setup cross-tab and same-tab synchronization
+  function setupSynchronization() {
+    // Listen for storage changes from other tabs/windows
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'userFavorites') {
+        console.log('Favorites updated from another tab');
+        const storedFavorites = localStorage.getItem('userFavorites');
+        if (storedFavorites) {
+          try {
+            favorites = JSON.parse(storedFavorites);
+            loadFavorites();
+            updateFavoritesCount();
+            showMessage('Favorites synchronized from another tab', 'success');
+          } catch (error) {
+            console.error('Error parsing favorites from storage:', error);
+          }
+        }
       }
-    }
-
-    // Load data when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      loadUserData();
-      
-      // Add entrance animation
-      setTimeout(() => {
-        document.querySelector('.main-wrapper').style.opacity = '0';
-        document.querySelector('.main-wrapper').style.transform = 'translateY(20px)';
-        document.querySelector('.main-wrapper').style.transition = 'all 0.6s ease';
-        
-        requestAnimationFrame(() => {
-          document.querySelector('.main-wrapper').style.opacity = '1';
-          document.querySelector('.main-wrapper').style.transform = 'translateY(0)';
-        });
-      }, 100);
     });
-  </script>
+
+    // Listen for custom events from same tab (marketplace to profile)
+    window.addEventListener('favoritesUpdated', function(e) {
+      console.log('Favorites updated from same tab:', e.detail);
+      
+      if (e.detail.action === 'add' || e.detail.action === 'remove' || e.detail.action === 'clear') {
+        // Refresh favorites from localStorage to stay in sync
+        initializeFavorites();
+        
+        // Show notification
+        const action = e.detail.action;
+        if (action === 'add') {
+          showMessage(`Added "${e.detail.product.title}" to favorites`, 'success');
+        } else if (action === 'remove') {
+          showMessage('Removed from favorites', 'success');
+        } else if (action === 'clear') {
+          showMessage('All favorites cleared', 'success');
+        }
+      }
+    });
+  }
+
+  // Load data when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    loadUserData();
+    initializeFavorites();
+    setupSynchronization();
+    
+    // Add entrance animation
+    setTimeout(() => {
+      document.querySelector('.main-wrapper').style.opacity = '0';
+      document.querySelector('.main-wrapper').style.transform = 'translateY(20px)';
+      document.querySelector('.main-wrapper').style.transition = 'all 0.6s ease';
+      
+      requestAnimationFrame(() => {
+        document.querySelector('.main-wrapper').style.opacity = '1';
+        document.querySelector('.main-wrapper').style.transform = 'translateY(0)';
+      });
+    }, 100);
+
+    console.log('Seller profile loaded with synchronized favorites');
+  });
+</script>
 </body>
 </html>

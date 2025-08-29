@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAAZA MANDI - Seller Feed</title>
+  <title>TAAZA MANDI - Feed</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -27,6 +27,9 @@
       --radius-md: 12px;
       --radius-lg: 16px;
       --radius-xl: 20px;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --error: #f56565;
     }
 
     * {
@@ -56,7 +59,7 @@
       box-shadow: var(--shadow-md);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
     .navbar {
@@ -118,13 +121,13 @@
       color: rgba(255,255,255,0.7);
     }
 
-    .navbar ul {
+    .nav-menu {
       list-style: none;
       display: flex;
       gap: 2rem;
     }
 
-    .navbar ul li a {
+    .nav-menu li a {
       color: rgba(255,255,255,0.9);
       text-decoration: none;
       font-weight: 600;
@@ -134,11 +137,11 @@
       padding: 0.5rem 0;
     }
 
-    .navbar ul li a:hover {
+    .nav-menu li a:hover {
       color: white;
     }
 
-    .navbar ul li a::after {
+    .nav-menu li a::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -149,8 +152,17 @@
       transition: width 0.3s ease;
     }
 
-    .navbar ul li a:hover::after {
+    .nav-menu li a:hover::after {
       width: 100%;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
     aside {
@@ -161,24 +173,14 @@
       display: flex;
       flex-direction: column;
       border-right: 1px solid var(--border-light);
+      transition: transform 0.3s ease;
     }
 
     .sidebar-profile {
       padding: 2rem;
       text-align: center;
-      background: linear-gradient(135deg, var(--light-green) 0%, var(--ultra-light-green) 100%);
+      background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
       border-bottom: 1px solid var(--border-light);
-      position: relative;
-    }
-
-    .sidebar-profile::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
     }
 
     .profile-avatar {
@@ -187,16 +189,15 @@
       border-radius: 50%;
       border: 4px solid white;
       box-shadow: var(--shadow-md);
-      margin-bottom: 1rem;
+      margin: 0 auto 1rem auto;
       background: var(--secondary-green);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
       font-size: 2rem;
+      color: white;
       font-weight: 700;
-      margin-left: auto;
-      margin-right: auto;
+      text-transform: uppercase;
     }
 
     .sidebar-profile .name {
@@ -278,20 +279,17 @@
       min-height: 100vh;
     }
 
-    .feed-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .market-header {
       max-width: 1200px;
       margin: 0 auto 2rem auto;
       padding: 0 1rem;
     }
 
-    .section-title {
+    .market-title {
       color: var(--text-primary);
       font-size: 2.5rem;
       font-weight: 800;
-      margin: 0;
+      margin: 0 0 0.5rem 0;
       background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -301,12 +299,14 @@
       gap: 0.75rem;
     }
 
-    .feed-actions {
-      display: flex;
-      gap: 1rem;
+    .market-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
     }
 
-    .feed-filters {
+    .market-filters {
       display: flex;
       gap: 1rem;
       align-items: center;
@@ -317,11 +317,9 @@
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
-      max-width: 1200px;
-      margin: 0 auto 2rem auto;
     }
 
-    .feed-filters label {
+    .market-filters label {
       color: var(--text-primary);
       font-weight: 600;
       font-size: 0.95rem;
@@ -330,7 +328,7 @@
       gap: 0.5rem;
     }
 
-    .feed-filters select {
+    .market-filters select {
       padding: 0.75rem 1rem;
       border-radius: var(--radius-md);
       border: 2px solid var(--border-light);
@@ -342,7 +340,7 @@
       min-width: 150px;
     }
 
-    .feed-filters select:focus {
+    .market-filters select:focus {
       outline: none;
       border-color: var(--secondary-green);
       background: white;
@@ -362,48 +360,7 @@
       min-width: 180px;
     }
 
-    .btn-green, .btn-outline {
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.75rem 1.5rem;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-green {
-      background: var(--primary-green);
-      color: white;
-      border-color: var(--primary-green);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .btn-green:hover {
-      background: var(--secondary-green);
-      border-color: var(--secondary-green);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .btn-outline {
-      background: white;
-      color: var(--primary-green);
-      border-color: var(--border-light);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .btn-outline:hover {
-      background: var(--light-green);
-      border-color: var(--secondary-green);
-      transform: translateY(-2px);
-    }
-
-    .feed-container {
+    .market-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 2rem;
@@ -412,7 +369,7 @@
       padding: 0 1rem;
     }
 
-    .crop-card {
+    .product-card {
       background: var(--card-bg);
       border-radius: var(--radius-xl);
       padding: 0;
@@ -425,7 +382,7 @@
       position: relative;
     }
 
-    .crop-card::before {
+    .product-card::before {
       content: '';
       position: absolute;
       top: 0;
@@ -437,24 +394,24 @@
       transition: opacity 0.3s ease;
     }
 
-    .crop-card:hover {
+    .product-card:hover {
       transform: translateY(-8px);
       box-shadow: var(--shadow-xl);
       border-color: var(--secondary-green);
     }
 
-    .crop-card:hover::before {
+    .product-card:hover::before {
       opacity: 1;
     }
 
-    .crop-card-header {
+    .product-card-header {
       display: flex;
       align-items: center;
       gap: 1rem;
       padding: 1.5rem 1.5rem 0 1.5rem;
     }
 
-    .crop-card-header img {
+    .product-card-header img {
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -463,32 +420,40 @@
       background: var(--secondary-green);
     }
 
-    .crop-card-header .user-info {
+    .product-card-header .user-info {
       display: flex;
       flex-direction: column;
       flex: 1;
     }
 
-    .crop-card-header .user-info .name {
+    .product-card-header .user-info .name {
       font-weight: 700;
       color: var(--text-primary);
       font-size: 1.1rem;
       margin-bottom: 0.125rem;
     }
 
-    .crop-card-header .user-info .time {
+    .product-card-header .user-info .time {
       color: var(--text-light);
       font-size: 0.9rem;
     }
 
-    .crop-description {
-      color: var(--text-secondary);
+    .product-title {
+      color: var(--text-primary);
+      font-size: 1.3rem;
+      font-weight: 700;
       margin: 1rem 1.5rem 0 1.5rem;
+      line-height: 1.3;
+    }
+
+    .product-description {
+      color: var(--text-secondary);
+      margin: 0.5rem 1.5rem 0 1.5rem;
       line-height: 1.6;
       font-size: 1rem;
     }
 
-    .crop-image {
+    .product-image {
       width: 100%;
       height: 240px;
       object-fit: cover;
@@ -497,18 +462,18 @@
       transition: transform 0.3s ease;
     }
 
-    .crop-card:hover .crop-image {
+    .product-card:hover .product-image {
       transform: scale(1.05);
     }
 
-    .crop-tags {
+    .product-tags {
       display: flex;
       gap: 0.5rem;
       margin: 1rem 1.5rem 0 1.5rem;
       flex-wrap: wrap;
     }
 
-    .crop-tag {
+    .product-tag {
       background: var(--light-green);
       color: var(--primary-green);
       font-size: 0.85rem;
@@ -519,36 +484,44 @@
       transition: all 0.3s ease;
     }
 
-    .crop-tag:hover {
+    .product-tag:hover {
       background: var(--secondary-green);
       color: white;
       transform: translateY(-1px);
     }
 
-    .crop-details-row {
+    .product-details-row {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1rem;
       margin: 1rem 1.5rem 0 1.5rem;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       flex-wrap: wrap;
+      background: var(--ultra-light-green);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
     }
 
-    .crop-details-row .icon {
+    .product-details-row .icon {
       color: var(--secondary-green);
       font-size: 1.1rem;
       margin-right: 0.25rem;
     }
 
-    .crop-details-row .detail {
+    .product-details-row .detail {
       display: flex;
       align-items: center;
       gap: 0.25rem;
-      font-weight: 500;
+      font-weight: 600;
+      background: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
     }
 
-    .crop-actions-row {
+    .product-actions-row {
       display: flex;
       align-items: center;
       gap: 1.5rem;
@@ -557,7 +530,7 @@
       color: var(--text-light);
     }
 
-    .crop-actions-row .action {
+    .product-actions-row .action {
       display: flex;
       align-items: center;
       gap: 0.375rem;
@@ -567,14 +540,13 @@
       border-radius: var(--radius-sm);
     }
 
-    .crop-actions-row .action:hover {
+    .product-actions-row .action:hover {
       color: var(--secondary-green);
       background: var(--light-green);
     }
 
     .contact-seller-section {
       margin: 1rem 1.5rem 1.5rem 1.5rem;
-      padding: 0;
     }
 
     .btn-contact {
@@ -598,10 +570,6 @@
     .btn-contact:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
-    }
-
-    .btn-contact .icon {
-      font-size: 1.1rem;
     }
 
     .empty-state {
@@ -630,36 +598,56 @@
 
     .empty-state p {
       color: var(--text-secondary);
-      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
       line-height: 1.6;
       max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
     }
 
-    .upload-link {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 1rem 2rem;
-      background: var(--primary-green);
-      color: white;
-      text-decoration: none;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .upload-link:hover {
-      background: var(--secondary-green);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .load-more-row {
+    .pagination-row {
       display: flex;
       justify-content: center;
+      gap: 1rem;
       margin: 3rem 0 2rem 0;
+    }
+
+    .pagination-row button {
+      min-width: 120px;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: 2px solid var(--border-light);
+      background: white;
+      color: var(--text-primary);
+    }
+
+    .pagination-row button:hover:not(:disabled) {
+      background: var(--light-green);
+      border-color: var(--secondary-green);
+      transform: translateY(-2px);
+    }
+
+    .pagination-row button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-green {
+      background: var(--primary-green) !important;
+      color: white !important;
+      border-color: var(--primary-green) !important;
+    }
+
+    .btn-green:hover:not(:disabled) {
+      background: var(--secondary-green) !important;
+      border-color: var(--secondary-green) !important;
     }
 
     footer {
@@ -721,6 +709,273 @@
       color: var(--primary-green);
     }
 
+    .loading-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--border-light);
+      border-top: 4px solid var(--secondary-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    .verified-badge {
+      background: var(--success);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-left: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Contact Seller Modal Styles */
+    .modal {
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--radius-xl);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      text-align: center;
+      border: 1px solid var(--border-light);
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .close:hover {
+      color: var(--error);
+      transform: scale(1.1);
+    }
+
+    .modal-header h3 {
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-body {
+      text-align: left;
+    }
+
+    .modal-body > p {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .disclaimer-list {
+      background: var(--ultra-light-green);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--warning);
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .disclaimer-list li {
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .disclaimer-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .agreement-section {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-container {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.4;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin: 0;
+      min-width: 18px;
+      height: 18px;
+      accent-color: var(--primary-green);
+      cursor: pointer;
+    }
+
+    #showNumberBtn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    #showNumberBtn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    #showNumberBtn:disabled {
+      background: var(--border-light);
+      color: var(--text-light);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .contact-info {
+      background: linear-gradient(135deg, var(--light-green), var(--ultra-light-green));
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--secondary-green);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .contact-info i {
+      color: var(--secondary-green);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-info p {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-info small {
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    *:focus {
+      outline: 2px solid var(--secondary-green);
+      outline-offset: 2px;
+    }
+
     @media (max-width: 1200px) {
       body {
         grid-template-columns: 280px 1fr;
@@ -735,109 +990,111 @@
           "feed"
           "footer";
       }
+      
       aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100%;
+        transform: translateX(-100%);
+        z-index: 200;
+      }
+      
+      aside.active {
+        transform: translateX(0);
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .nav-menu {
         display: none;
-      }
-      main {
-        padding: 1rem 0 0 0;
-      }
-      .navbar {
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: var(--primary-green);
+        flex-direction: column;
         padding: 1rem;
+        box-shadow: var(--shadow-md);
       }
-      .navbar ul {
-        display: none;
+      
+      .nav-menu.active {
+        display: flex;
+      }
+      
+      .nav-menu li {
+        margin: 0.5rem 0;
       }
     }
 
     @media (max-width: 768px) {
-      .feed-container {
+      .market-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
-        padding: 0 1rem;
       }
       
-      .crop-card {
-        max-width: 100%;
-      }
-      
-      .feed-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: stretch;
-      }
-      
-      .feed-actions {
-        justify-content: center;
-      }
-      
-      .section-title {
+      .market-title {
         font-size: 2rem;
         text-align: center;
       }
       
-      .navbar input {
-        margin: 0 1rem;
-      }
-
-      .feed-filters {
+      .market-filters {
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
       }
-
+      
       .sort-label {
         margin-left: 0;
+      }
+      
+      .search-container {
+        margin: 0 1rem;
+      }
+      
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+      
+      .disclaimer-list {
+        padding: 1rem;
+      }
+      
+      .disclaimer-list li {
+        font-size: 0.9rem;
       }
     }
 
     @media (max-width: 480px) {
       .navbar {
-        flex-direction: column;
+        flex-wrap: wrap;
         gap: 1rem;
         padding: 1rem 0.5rem;
       }
       
-      .navbar input {
+      .search-container {
         margin: 0;
         width: 100%;
       }
       
-      .section-title {
+      .market-title {
         font-size: 1.75rem;
       }
       
-      .crop-card-header {
-        padding: 1rem 1rem 0 1rem;
-      }
-      
-      .crop-description,
-      .crop-tags,
-      .crop-details-row,
-      .crop-actions-row,
+      .product-card-header,
+      .product-description,
+      .product-tags,
+      .product-details-row,
+      .product-actions-row,
       .contact-seller-section {
         margin-left: 1rem;
         margin-right: 1rem;
       }
-    }
-
-    @keyframes shimmer {
-      0% { background-position: -200px 0; }
-      100% { background-position: calc(200px + 100%) 0; }
-    }
-
-    .loading-shimmer {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200px 100%;
-      animation: shimmer 1.5s infinite;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    *:focus {
-      outline: 2px solid var(--secondary-green);
-      outline-offset: 2px;
     }
   </style>
 </head>
@@ -847,99 +1104,537 @@
   {% include 'constants/seller/sidebar.html' %}
 
   <main>
-    <div class="feed-header">
-      <h1 class="section-title">
-        <i class="fas fa-seedling"></i>
-        <span id="feedTitle">Seller Feed</span>
-      </h1>
-      <div class="feed-actions">
-        <button class="btn-green"><i class="fas fa-plus"></i> Add Product</button>
-        <button class="btn-outline"><i class="fas fa-filter"></i> Filter</button>
+    <div class="market-header">
+      <div class="market-title">
+        
+        <span id="feedTitle">Fresh Produce Marketplace</span>
+      </div>
+      <div class="market-subtitle" id="feedSubtitle">Browse fresh produce directly from farmers across India 🇮🇳</div>
+      
+      <div class="market-filters">
+        <label for="category">
+          <i class="fas fa-filter"></i>
+          Filter by:
+        </label>
+        <select id="category" aria-label="Filter by category">
+          <option value="">All Categories</option>
+          <option value="Vegetables">🥬 Vegetables</option>
+          <option value="Fruits">🍎 Fruits</option>
+          <option value="Grains">🌾 Grains</option>
+          <option value="Pulses">🫘 Pulses</option>
+          <option value="Spices">🌶️ Spices</option>
+        </select>
+        
+        <label for="location" class="sr-only">Filter by location</label>
+        <select id="location" aria-label="Filter by location">
+          <option value="">All India</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Uttarakhand">Uttarakhand</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Gujarat">Gujarat</option>
+        </select>
+        
+        <span class="sort-label">
+          <i class="fas fa-sort"></i>
+          Sort by:
+        </span>
+        <select id="sortSelect" class="sort-select" aria-label="Sort products">
+          <option value="latest">Latest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="popular">Most Popular</option>
+        </select>
       </div>
     </div>
-
-    <div class="feed-filters">
-      <label for="category">
-        <i class="fas fa-filter"></i>
-        Filter by:
-      </label>
-      <select id="category" aria-label="Filter by category">
-        <option value="">All Categories</option>
-        <option value="Vegetables">🥬 Vegetables</option>
-        <option value="Fruits">🍎 Fruits</option>
-        <option value="Grains">🌾 Grains</option>
-        <option value="Pulses">🫘 Pulses</option>
-        <option value="Spices">🌶️ Spices</option>
-      </select>
-      
-      <label for="status" class="sr-only">Filter by status</label>
-      <select id="status" aria-label="Filter by status">
-        <option value="">All Status</option>
-        <option value="active">Active</option>
-        <option value="sold">Sold Out</option>
-        <option value="pending">Pending</option>
-      </select>
-      
-      <span class="sort-label">
-        <i class="fas fa-sort"></i>
-        Sort by:
-      </span>
-      <select class="sort-select" aria-label="Sort products">
-        <option value="latest">Latest First</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-        <option value="popular">Most Popular</option>
-      </select>
+    
+    <div class="market-grid" id="dynamicFeed" role="region" aria-live="polite">
     </div>
-
-    <div class="feed-container" id="dynamicFeed">
-      <!-- Dynamic content will be loaded here -->
-    </div>
-
-    <div class="load-more-row">
-      <button class="btn-green">
-        <i class="fas fa-chevron-down"></i>
-        Load More Posts
+    
+    <div class="pagination-row">
+      <button class="btn-outline" id="prevPage" aria-label="Previous page" disabled>
+        <i class="fas fa-chevron-left"></i>
+        Previous
+      </button>
+      <button class="btn-green" id="nextPage" aria-label="Next page">
+        Next
+        <i class="fas fa-chevron-right"></i>
       </button>
     </div>
   </main>
 
   {% include 'constants/seller/footer.html' %}
 
+  <div id="contactSellerModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="modalCloseBtn">&times;</span>
+      <div class="modal-header">
+        <i class="fas fa-exclamation-triangle" style="color: #ed8936; font-size: 2rem; margin-bottom: 1rem;"></i>
+        <h3>Contact Seller - Important Notice</h3>
+      </div>
+      
+      <div class="modal-body">
+        <p><strong>Please read carefully before proceeding:</strong></p>
+        <ul class="disclaimer-list">
+          <li>We are <strong>not responsible</strong> for any transactions or deals made directly with sellers</li>
+          <li>All communication and negotiations are <strong>at your own risk</strong></li>
+          <li>We do not guarantee the authenticity or quality of products</li>
+          <li>Any disputes should be resolved directly between buyer and seller</li>
+          <li>We are merely a platform connecting buyers and sellers</li>
+          <li>Contact information is provided <strong>at your own responsibility</strong></li>
+        </ul>
+        
+        <div class="agreement-section">
+          <label class="checkbox-container">
+            <input type="checkbox" id="agreeCheckbox">
+            <span>I understand and agree to all terms mentioned above and proceed at my own risk</span>
+          </label>
+        </div>
+        
+        <button id="showNumberBtn" disabled>
+          <i class="fas fa-phone"></i>
+          Show Contact Number
+        </button>
+        
+        <div id="contactNumberSection" class="hidden">
+          <div class="contact-info">
+            <i class="fas fa-phone-alt"></i>
+            <p id="contactNumber"></p>
+            <small>Contact the seller directly at your own responsibility</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Global state
+    let currentPage = 1;
+    let currentFilters = {
+      category: '',
+      location: '',
+      search: '',
+      sort: 'latest'
+    };
+    let allProducts = [];
+    let filteredProducts = [];
+    const productsPerPage = 6;
+    let isLoading = false;
+    let favorites = [];
+    let currentUser = null;
+
+    // Initialize favorites from localStorage
+    function initializeFavorites() {
+      const storedFavorites = localStorage.getItem('userFavorites');
+      if (storedFavorites) {
+        try {
+          favorites = JSON.parse(storedFavorites);
+        } catch (e) {
+          favorites = [];
+        }
+      }
+    }
+
+    // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-      loadUserData();
-      initializeAnimations();
-      setupInteractions();
-      setupSearch();
-      setupFilters();
-      loadProducts();
+      initializeApp();
     });
 
+    function initializeApp() {
+      loadUserData();
+      initializeFavorites();
+      setupEventListeners();
+      loadInitialData();
+      initializeAnimations();
+    }
+
     function loadUserData() {
-      const userData = {
-        name: localStorage.getItem("userName") || "Guest Seller",
-        role: localStorage.getItem("userRole") || "Seller",
-        email: localStorage.getItem("userEmail") || "seller@example.com",
-        avatar: (localStorage.getItem("userName") || "S").charAt(0).toUpperCase()
+      // Get user data from localStorage or session
+      currentUser = {
+        name: localStorage.getItem("userName") || "Guest",
+        email: localStorage.getItem("userEmail") || "user@example.com",
+        role: localStorage.getItem("userRole") || "User",
+        avatar: (localStorage.getItem("userName") || "G").charAt(0).toUpperCase()
       };
 
-      console.log("Current user:", userData);
+      // Update the feed title with user's name
+      updateFeedTitle();
+    }
 
-      // Update feed title
+    function updateFeedTitle() {
       const feedTitle = document.getElementById("feedTitle");
-      if (feedTitle && userData.name !== "Guest Seller") {
-        feedTitle.textContent = `${userData.name.split(' ')[0]}'s Feed`;
+      const feedSubtitle = document.getElementById("feedSubtitle");
+      
+      if (feedTitle && currentUser.name) {
+        if (currentUser.name === "Guest") {
+          feedTitle.innerHTML = '<i class="fas fa-store"></i> Fresh Produce Marketplace';
+        } else {
+          feedTitle.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.name}'s Feed`;
+        }
+      }
+      
+      if (feedSubtitle) {
+        if (currentUser.name === "Guest") {
+          feedSubtitle.textContent = "Browse fresh produce directly from farmers across India 🇮🇳";
+        } else {
+          feedSubtitle.textContent = `Welcome back ${currentUser.name}! Discover fresh produce from farmers across India 🇮🇳`;
+        }
+      }
+    }
+
+    function setupEventListeners() {
+      // Search functionality
+      const searchInput = document.querySelector(".navbar input[type='text']");
+      if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener("input", function () {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            currentFilters.search = this.value.toLowerCase().trim();
+            currentPage = 1;
+            filterAndDisplayProducts();
+          }, 300);
+        });
       }
 
-      // Update sidebar
-      const profileName = document.querySelector(".sidebar-profile .name");
-      const profileRole = document.querySelector(".sidebar-profile .role");
-      const profileAvatar = document.querySelector(".profile-avatar");
+      // Filter functionality
+      const categoryFilter = document.getElementById("category");
+      const locationFilter = document.getElementById("location");
+      const sortSelect = document.getElementById("sortSelect");
 
-      if (profileName) profileName.textContent = userData.name;
-      if (profileRole) profileRole.textContent = userData.role;
-      if (profileAvatar) profileAvatar.textContent = userData.avatar;
+      if (categoryFilter) {
+        categoryFilter.addEventListener("change", function() {
+          currentFilters.category = this.value;
+          currentPage = 1;
+          filterAndDisplayProducts();
+        });
+      }
+
+      if (locationFilter) {
+        locationFilter.addEventListener("change", function() {
+          currentFilters.location = this.value;
+          currentPage = 1;
+          filterAndDisplayProducts();
+        });
+      }
+
+      if (sortSelect) {
+        sortSelect.addEventListener("change", function() {
+          currentFilters.sort = this.value;
+          filterAndDisplayProducts();
+        });
+      }
+
+      // Pagination
+      const prevButton = document.getElementById("prevPage");
+      const nextButton = document.getElementById("nextPage");
+
+      if (prevButton) {
+        prevButton.addEventListener("click", function() {
+          if (currentPage > 1) {
+            currentPage--;
+            filterAndDisplayProducts();
+          }
+        });
+      }
+
+      if (nextButton) {
+        nextButton.addEventListener("click", function() {
+          const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+          if (currentPage < totalPages) {
+            currentPage++;
+            filterAndDisplayProducts();
+          }
+        });
+      }
+
+      // Hamburger menu for mobile
+      const hamburger = document.querySelector('.hamburger');
+      const sidebar = document.querySelector('aside');
+      const navMenu = document.querySelector('.nav-menu');
+
+      if (hamburger && sidebar) {
+        hamburger.addEventListener('click', function() {
+          sidebar.classList.toggle('active');
+          if (navMenu) navMenu.classList.toggle('active');
+        });
+      }
+    }
+
+    function loadInitialData() {
+      showLoadingState();
+      
+      // Simulate API call delay
+      setTimeout(() => {
+        allProducts = getMockProducts();
+        filteredProducts = [...allProducts];
+        hideLoadingState();
+        displayProducts();
+        updatePaginationButtons();
+      }, 1000);
+    }
+
+    function getMockProducts() {
+      return [
+        {
+          id: 1,
+          title: "Fresh Organic Tomatoes",
+          description: "Premium quality organic tomatoes, freshly harvested from our farm. Perfect for cooking and salads. Rich in vitamins and antioxidants.",
+          price: "₹80/kg",
+          priceValue: 80,
+          quantity: "500kg",
+          location: "Maharashtra",
+          category: "Vegetables",
+          seller: "Raj Farmers",
+          time: "2 hours ago",
+          image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop",
+          tags: ["Organic", "Fresh", "Vegetables"],
+          verified: true
+        },
+        {
+          id: 2,
+          title: "Premium Basmati Rice",
+          description: "Long grain basmati rice with excellent aroma and taste. Aged for perfect texture and flavor. Export quality grains.",
+          price: "₹120/kg",
+          priceValue: 120,
+          quantity: "1000kg",
+          location: "Punjab",
+          category: "Grains",
+          seller: "Singh Agriculture",
+          time: "4 hours ago",
+          image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop",
+          tags: ["Basmati", "Premium", "Grains"],
+          verified: true
+        },
+        {
+          id: 3,
+          title: "Fresh Red Apples",
+          description: "Crispy and sweet red apples from Kashmir valley. Hand-picked and carefully sorted for quality. Perfect for healthy snacking.",
+          price: "₹150/kg",
+          priceValue: 150,
+          quantity: "200kg",
+          location: "Uttarakhand",
+          category: "Fruits",
+          seller: "Mountain Orchards",
+          time: "6 hours ago",
+          image: "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=300&fit=crop",
+          tags: ["Fresh", "Premium", "Fruits"],
+          verified: true
+        },
+        {
+          id: 4,
+          title: "Organic Green Vegetables Mix",
+          description: "Fresh mix of seasonal green vegetables including spinach, lettuce, and herbs. Grown without pesticides using organic methods.",
+          price: "₹60/kg",
+          priceValue: 60,
+          quantity: "300kg",
+          location: "Haryana",
+          category: "Vegetables",
+          seller: "Green Valley Farm",
+          time: "8 hours ago",
+          image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=300&fit=crop",
+          tags: ["Organic", "Mixed", "Vegetables"],
+          verified: true
+        },
+        {
+          id: 5,
+          title: "Golden Turmeric Powder",
+          description: "Pure and fresh turmeric powder made from organically grown turmeric roots. Rich in curcumin with anti-inflammatory properties.",
+          price: "₹200/kg",
+          priceValue: 200,
+          quantity: "50kg",
+          location: "Gujarat",
+          category: "Spices",
+          seller: "Spice Gardens",
+          time: "1 day ago",
+          image: "https://images.unsplash.com/photo-1615485925600-97237c4fc1ec?w=400&h=300&fit=crop",
+          tags: ["Organic", "Pure", "Spices"],
+          verified: true
+        },
+        {
+          id: 6,
+          title: "Black Gram (Urad Dal)",
+          description: "High quality black gram dal, rich in protein and fiber. Perfect for making dal, idli, and dosa. Cleaned and sorted.",
+          price: "₹110/kg",
+          priceValue: 110,
+          quantity: "800kg",
+          location: "Uttar Pradesh",
+          category: "Pulses",
+          seller: "Pulse Growers Co-op",
+          time: "1 day ago",
+          image: "https://images.unsplash.com/photo-1607672632458-9eb56696346b?w=400&h=300&fit=crop",
+          tags: ["Premium", "Pulses", "Protein"],
+          verified: true
+        }
+      ];
+    }
+
+    function filterAndDisplayProducts() {
+      showLoadingState();
+      
+      setTimeout(() => {
+        // Apply filters
+        filteredProducts = allProducts.filter(product => {
+          const matchesCategory = !currentFilters.category || product.category === currentFilters.category;
+          const matchesLocation = !currentFilters.location || product.location === currentFilters.location;
+          const matchesSearch = !currentFilters.search || 
+            product.title.toLowerCase().includes(currentFilters.search) ||
+            product.description.toLowerCase().includes(currentFilters.search) ||
+            product.tags.some(tag => tag.toLowerCase().includes(currentFilters.search));
+          
+          return matchesCategory && matchesLocation && matchesSearch;
+        });
+
+        // Apply sorting
+        filteredProducts.sort((a, b) => {
+          switch(currentFilters.sort) {
+            case 'price-low':
+              return a.priceValue - b.priceValue;
+            case 'price-high':
+              return b.priceValue - a.priceValue;
+            case 'popular':
+              return Math.random() - 0.5; // Random for demo
+            case 'latest':
+            default:
+              return b.id - a.id;
+          }
+        });
+
+        hideLoadingState();
+        displayProducts();
+        updatePaginationButtons();
+        
+        // Scroll to top of results
+        const feedElement = document.getElementById('dynamicFeed');
+        if (feedElement) {
+          feedElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 500);
+    }
+
+    function displayProducts() {
+      const feedContainer = document.getElementById("dynamicFeed");
+      if (!feedContainer) return;
+      
+      if (filteredProducts.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="empty-state fade-in-up">
+            <div class="empty-icon"><i class="fas fa-search"></i></div>
+            <h3>No products found</h3>
+            <p>Try adjusting your filters or search terms to find more products.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Calculate products for current page
+      const startIndex = (currentPage - 1) * productsPerPage;
+      const endIndex = startIndex + productsPerPage;
+      const productsToShow = filteredProducts.slice(startIndex, endIndex);
+
+      feedContainer.innerHTML = productsToShow.map((product, index) => {
+        const isLiked = isFavorite(product.id);
+        return `
+        <div class="product-card fade-in-up" style="animation-delay: ${index * 0.1}s" data-product-id="${product.id}">
+          <div class="product-card-header">
+            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(product.seller)}&background=4a8f5f&color=fff&size=48" alt="${product.seller} Avatar">
+            <div class="user-info">
+              <div class="name">
+                ${product.seller}
+                ${product.verified ? '<span class="verified-badge"><i class="fas fa-check"></i> Verified</span>' : ''}
+              </div>
+              <div class="time">${product.time}</div>
+            </div>
+          </div>
+
+          <div class="product-title">${product.title}</div>
+          <div class="product-description">${product.description}</div>
+
+          <img src="${product.image}" class="product-image" alt="${product.title}" loading="lazy">
+
+          <div class="product-tags">
+            ${product.tags.map(tag => `<span class="product-tag">${tag}</span>`).join('')}
+          </div>
+
+          <div class="product-details-row">
+            <div class="detail">
+              <i class="fas fa-tag icon"></i> 
+              <strong>${product.price}</strong>
+            </div>
+            <div class="detail">
+              <i class="fas fa-box icon"></i> 
+              <strong>${product.quantity}</strong>
+            </div>
+            <div class="detail">
+              <i class="fas fa-map-marker-alt icon"></i> 
+              <strong>${product.location}</strong>
+            </div>
+          </div>
+
+          <div class="product-actions-row">
+            <div class="action" onclick="toggleLike(this, ${product.id})">
+              <i class="fas fa-heart" style="color: ${isLiked ? 'red' : ''}"></i> 
+              <span>${isLiked ? 'Liked' : 'Like'}</span>
+            </div>
+            <div class="action" onclick="showCommentModal(${product.id})">
+              <i class="fas fa-comment"></i> 
+              <span>Comment</span>
+            </div>
+            <div class="action" onclick="shareProduct(${product.id})">
+              <i class="fas fa-share"></i> 
+              <span>Share</span>
+            </div>
+          </div>
+
+          <div class="contact-seller-section">
+            <button class="btn-contact" onclick="contactSeller('${product.seller}', ${product.id})">
+              <i class="fas fa-phone"></i> 
+              Contact Seller
+            </button>
+          </div>
+        </div>
+      `;
+      }).join('');
+
+      // Re-initialize animations for new content
+      initializeAnimations();
+    }
+
+    function updatePaginationButtons() {
+      const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+      const prevButton = document.getElementById("prevPage");
+      const nextButton = document.getElementById("nextPage");
+
+      if (prevButton) {
+        prevButton.disabled = currentPage === 1;
+      }
+
+      if (nextButton) {
+        nextButton.disabled = currentPage >= totalPages || filteredProducts.length === 0;
+      }
+    }
+
+    function showLoadingState() {
+      if (isLoading) return;
+      isLoading = true;
+      
+      const feedContainer = document.getElementById("dynamicFeed");
+      if (feedContainer) {
+        feedContainer.innerHTML = `
+          <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading fresh products...</p>
+          </div>
+        `;
+      }
+    }
+
+    function hideLoadingState() {
+      isLoading = false;
     }
 
     function initializeAnimations() {
@@ -957,187 +1652,259 @@
         });
       }, observerOptions);
 
-      document.querySelectorAll(".crop-card").forEach(card => {
-        card.style.opacity = "0";
-        card.style.transform = "translateY(20px)";
-        card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      // Observe all product cards
+      document.querySelectorAll(".product-card").forEach(card => {
+        if (!card.style.opacity) {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(20px)";
+          card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        }
         observer.observe(card);
       });
     }
 
-    function setupInteractions() {
-      document.querySelectorAll(".action").forEach(action => {
-        action.addEventListener("click", function () {
-          const icon = this.querySelector("i");
-          if (icon.classList.contains("fa-heart")) {
-            icon.style.color = icon.style.color === "red" ? "" : "red";
-            icon.style.transform = "scale(1.2)";
-            setTimeout(() => {
-              icon.style.transform = "scale(1)";
-            }, 200);
-          }
+    // Favorites management functions
+    function addToFavorites(product) {
+      const existingIndex = favorites.findIndex(fav => fav.id === product.id);
+      if (existingIndex === -1) {
+        favorites.push({
+          id: product.id,
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          location: product.location,
+          seller: product.seller,
+          image: product.image,
+          dateAdded: new Date().toISOString()
         });
-      });
-
-      document.querySelectorAll(".btn-contact").forEach(btn => {
-        btn.addEventListener("click", function () {
-          const ripple = document.createElement("span");
-          ripple.style.position = "absolute";
-          ripple.style.borderRadius = "50%";
-          ripple.style.background = "rgba(255,255,255,0.6)";
-          ripple.style.transform = "scale(0)";
-          ripple.style.animation = "ripple 0.6s linear";
-          ripple.style.left = "50%";
-          ripple.style.top = "50%";
-          ripple.style.width = ripple.style.height = "100px";
-          ripple.style.marginLeft = "-50px";
-          ripple.style.marginTop = "-50px";
-
-          this.style.position = "relative";
-          this.style.overflow = "hidden";
-          this.appendChild(ripple);
-
-          setTimeout(() => {
-            ripple.remove();
-          }, 600);
-        });
-      });
-
-      const loadMoreBtn = document.querySelector(".load-more-row button");
-      if (loadMoreBtn) {
-        loadMoreBtn.addEventListener("click", function () {
-          this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-          
-          setTimeout(() => {
-            this.innerHTML = '<i class="fas fa-chevron-down"></i> Load More Posts';
-          }, 1500);
-        });
+        
+        // Save to localStorage
+        localStorage.setItem('userFavorites', JSON.stringify(favorites));
+        
+        showNotification(`${product.title} added to favorites!`, 'success');
+        return true;
       }
+      return false;
     }
 
-    function setupSearch() {
-      const searchInput = document.querySelector(".navbar input[type='text']");
-      if (searchInput) {
-        searchInput.addEventListener("input", function () {
-          console.log("Searching for:", this.value);
-          filterProducts();
-        });
-      }
-    }
-
-    function setupFilters() {
-      const categoryFilter = document.getElementById("category");
-      const statusFilter = document.getElementById("status");
-      const sortSelect = document.querySelector(".sort-select");
-
-      [categoryFilter, statusFilter, sortSelect].forEach(filter => {
-        if (filter) {
-          filter.addEventListener("change", filterProducts);
-        }
-      });
-    }
-
-    function filterProducts() {
-      console.log("Filtering products...");
-      // Add your filtering logic here
-    }
-
-    function loadProducts() {
-      // Mock product data for seller's products
-      const mockProducts = [
-        {
-          id: 1,
-          title: "Fresh Organic Tomatoes",
-          description: "Premium quality organic tomatoes, freshly harvested from our farm. Perfect for cooking and salads.",
-          price: "₹80/kg",
-          quantity: "500kg",
-          location: "Maharashtra",
-          seller: "My Farm",
-          time: "2 hours ago",
-          image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400",
-          tags: ["Organic", "Fresh", "Vegetables"],
-          status: "active"
-        },
-        {
-          id: 2,
-          title: "Premium Basmati Rice",
-          description: "Long grain basmati rice with excellent aroma and taste. Aged for perfect texture.",
-          price: "₹120/kg",
-          quantity: "1000kg",
-          location: "Punjab",
-          seller: "My Farm",
-          time: "1 day ago",
-          image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400",
-          tags: ["Basmati", "Premium", "Grains"],
-          status: "active"
-        }
-      ];
-
-      const feedContainer = document.getElementById("dynamicFeed");
+    function removeFromFavorites(productId) {
+      const initialLength = favorites.length;
+      favorites = favorites.filter(fav => fav.id !== productId);
       
-      if (mockProducts.length === 0) {
-        feedContainer.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon"><i class="fas fa-seedling"></i></div>
-            <h3>No products found</h3>
-            <p>You haven't posted any products yet.</p>
-            <a href="#" class="upload-link">Post Your First Product</a>
-          </div>
-        `;
-        return;
+      if (favorites.length < initialLength) {
+        // Save to localStorage
+        localStorage.setItem('userFavorites', JSON.stringify(favorites));
+        
+        showNotification('Removed from favorites', 'success');
+        return true;
       }
-
-      feedContainer.innerHTML = mockProducts.map(product => `
-        <div class="crop-card">
-          <img src="${product.image}" class="crop-image" alt="${product.title}">
-
-          <div class="crop-card-header">
-            <img src="https://via.placeholder.com/48x48/4a8f5f/ffffff?text=${product.seller.charAt(0)}" alt="Seller Avatar">
-            <div class="user-info">
-              <div class="name">${product.seller}</div>
-              <div class="time">${product.time}</div>
-            </div>
-          </div>
-
-          <div class="crop-description">${product.description}</div>
-
-          <div class="crop-tags">
-            ${product.tags.map(tag => `<span class="crop-tag">${tag}</span>`).join('')}
-          </div>
-
-          <div class="crop-details-row">
-            <div class="detail"><i class="fas fa-tag icon"></i> ${product.price}</div>
-            <div class="detail"><i class="fas fa-box icon"></i> ${product.quantity}</div>
-            <div class="detail"><i class="fas fa-map-marker-alt icon"></i> ${product.location}</div>
-          </div>
-
-          <div class="crop-actions-row">
-            <div class="action"><i class="fas fa-eye"></i> 24 Views</div>
-            <div class="action"><i class="fas fa-heart"></i> 12 Likes</div>
-            <div class="action"><i class="fas fa-message"></i> 3 Inquiries</div>
-          </div>
-
-          <div class="contact-seller-section">
-            <button class="btn-contact"><i class="fas fa-edit icon"></i> Edit Product</button>
-          </div>
-        </div>
-      `).join('');
-
-      // Re-initialize animations for new content
-      initializeAnimations();
-      setupInteractions();
+      return false;
     }
 
-    const style = document.createElement("style");
-    style.textContent = `
-      @keyframes ripple {
-        to {
-          transform: scale(4);
-          opacity: 0;
+    function isFavorite(productId) {
+      return favorites.some(fav => fav.id === productId);
+    }
+
+    // Interactive functions
+    function toggleLike(element, productId) {
+      const icon = element.querySelector("i");
+      const span = element.querySelector("span");
+      const product = allProducts.find(p => p.id === productId);
+      
+      if (!product) return;
+
+      if (isFavorite(productId)) {
+        // Remove from favorites
+        if (removeFromFavorites(productId)) {
+          icon.style.color = "";
+          span.textContent = "Like";
+        }
+      } else {
+        // Add to favorites
+        if (addToFavorites(product)) {
+          icon.style.color = "red";
+          span.textContent = "Liked";
         }
       }
-    `;
-    document.head.appendChild(style);
+
+      // Animation
+      icon.style.transform = "scale(1.2)";
+      setTimeout(() => {
+        icon.style.transform = "scale(1)";
+      }, 200);
+    }
+    
+    // Enhanced Contact Seller Modal Functions
+    function openContactSellerModal(sellerName, phoneNumber) {
+      const modal = document.getElementById('contactSellerModal');
+      const agreeCheckbox = document.getElementById('agreeCheckbox');
+      const showNumberBtn = document.getElementById('showNumberBtn');
+      const contactNumberSection = document.getElementById('contactNumberSection');
+      const contactNumberElem = document.getElementById('contactNumber');
+
+      // Reset modal state
+      agreeCheckbox.checked = false;
+      agreeCheckbox.disabled = false;
+      showNumberBtn.disabled = true;
+      showNumberBtn.style.display = 'inline-flex';
+      contactNumberSection.classList.add('hidden');
+      contactNumberElem.textContent = '';
+
+      // Show modal with animation
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      // Handle checkbox change
+      agreeCheckbox.onchange = function() {
+        showNumberBtn.disabled = !agreeCheckbox.checked;
+        if (agreeCheckbox.checked) {
+          showNumberBtn.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
+        } else {
+          showNumberBtn.style.background = 'var(--border-light)';
+        }
+      };
+
+      // Handle show number button click
+      showNumberBtn.onclick = function() {
+        contactNumberElem.textContent = phoneNumber;
+        contactNumberSection.classList.remove('hidden');
+        showNumberBtn.style.display = 'none';
+        agreeCheckbox.disabled = true;
+        
+        // Add success animation
+        contactNumberSection.style.animation = 'slideIn 0.5s ease-out';
+        
+        showNotification(`Contact information revealed for ${sellerName}. Proceed with caution.`, 'warning');
+      };
+
+      // Close modal handlers
+      const closeBtn = document.getElementById('modalCloseBtn');
+      closeBtn.onclick = closeModal;
+      
+      window.onclick = function(event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      };
+
+      // Handle escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      }, { once: true });
+
+      function closeModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    // Main contact seller function
+    function contactSeller(seller, productId) {
+      // In real implementation, fetch actual phone number from database
+      const phoneNumbers = {
+        'Raj Farmers': '+91-9876543210',
+        'Singh Agriculture': '+91-9988776655',
+        'Mountain Orchards': '+91-9123456789',
+        'Green Valley Farm': '+91-9555444333',
+        'Spice Gardens': '+91-9444555666',
+        'Pulse Growers Co-op': '+91-9333222111'
+      };
+      
+      const phoneNumber = phoneNumbers[seller] || '+91-9876543210';
+      
+      // Open the modal with seller info
+      openContactSellerModal(seller, phoneNumber);
+    }
+
+    function shareProduct(productId) {
+      const product = allProducts.find(p => p.id === productId);
+      if (product) {
+        if (navigator.share) {
+          navigator.share({
+            title: product.title,
+            text: product.description,
+            url: window.location.href
+          });
+        } else {
+          // Fallback for browsers that don't support Web Share API
+          const url = `${window.location.origin}${window.location.pathname}?product=${productId}`;
+          navigator.clipboard.writeText(url).then(() => {
+            showNotification("Product link copied to clipboard!", "success");
+          });
+        }
+      }
+    }
+
+    function showCommentModal(productId) {
+      showNotification("Comment feature coming soon!", "info");
+    }
+
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification notification-${type}`;
+      notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--error)' : type === 'warning' ? 'var(--warning)' : 'var(--secondary-green)'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Animate in
+      setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Animate out
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+      }, 4000);
+    }
+
+    // Handle mobile sidebar
+    document.addEventListener('click', function(event) {
+      const sidebar = document.querySelector('aside');
+      const hamburger = document.querySelector('.hamburger');
+      
+      if (sidebar && hamburger && sidebar.classList.contains('active')) {
+        if (!sidebar.contains(event.target) && !hamburger.contains(event.target)) {
+          sidebar.classList.remove('active');
+          const navMenu = document.querySelector('.nav-menu');
+          if (navMenu) navMenu.classList.remove('active');
+        }
+      }
+    });
+
+    // Add error handling for images
+    document.addEventListener('error', function(event) {
+      if (event.target.tagName === 'IMG') {
+        event.target.src = 'https://via.placeholder.com/400x300/e8f5e8/4a8f5f?text=No+Image';
+      }
+    }, true);
   </script>
+
 </body>
 </html>

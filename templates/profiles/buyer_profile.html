@@ -48,95 +48,6 @@
       min-height: 100vh;
     }
 
-    /* Enhanced Navbar */
-    header {
-      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-      box-shadow: var(--shadow-md);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-      height: 72px;
-    }
-
-    .logo {
-      color: white;
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .navbar input[type="text"] {
-      flex: 1;
-      max-width: 400px;
-      margin: 0 2rem;
-      padding: 0.75rem 1rem 0.75rem 2.5rem;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: var(--radius-lg);
-      font-size: 0.95rem;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-    }
-
-    .navbar input[type="text"]::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-
-    .navbar input[type="text"]:focus {
-      outline: none;
-      border-color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.15);
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
-    }
-
-    .navbar ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
-
-    .navbar ul li a {
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      position: relative;
-      padding: 0.5rem 0;
-    }
-
-    .navbar ul li a:hover {
-      color: white;
-    }
-
-    .navbar ul li a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: white;
-      transition: width 0.3s ease;
-    }
-
-    .navbar ul li a:hover::after {
-      width: 100%;
-    }
-
     /* Main Container */
     .main-wrapper {
       display: flex;
@@ -146,7 +57,7 @@
       padding: 0 2rem;
     }
 
-    /* Enhanced Sidebar */
+    /* Sidebar */
     aside {
       width: 320px;
       background: var(--card-bg);
@@ -180,7 +91,7 @@
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
 
-    .profile-avatar {
+    .sidebar-profile img, .profile-avatar {
       width: 100px;
       height: 100px;
       border-radius: 50%;
@@ -207,21 +118,49 @@
     .sidebar-profile .role {
       color: var(--text-secondary);
       font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
     }
 
-    .sidebar-profile .location, .sidebar-profile .phone {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+    .sidebar-stats {
+      margin: 1rem 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      justify-content: space-around;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .sidebar-stats div {
+      flex: 1;
+    }
+
+    .sidebar-stats strong {
+      display: block;
+      color: var(--primary-green);
+      font-weight: 600;
+    }
+
+    .profile-link {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      background: white;
+      color: var(--primary-green);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-link:hover {
+      background: var(--primary-green);
+      color: white;
+      transform: translateY(-1px);
     }
 
     .sidebar-section-title {
@@ -268,23 +207,94 @@
       gap: 2rem;
     }
 
+    /* Enhanced Profile Section */
+    .profile-section {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .profile-cover {
+      height: 200px;
+      background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
     .profile-header {
       text-align: center;
-      margin-bottom: 2rem;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .profile-header .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border: 5px solid white;
+      margin: -80px auto 1rem;
+      box-shadow: var(--shadow-lg);
     }
 
     .profile-header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--primary-green);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--success);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    .profile-rating {
+      color: #f6c23e;
+      font-size: 1rem;
       margin-bottom: 1rem;
     }
 
-    .profile-header p {
-      font-size: 1.1rem;
+    .profile-rating i {
+      margin-right: 0.25rem;
+    }
+
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      padding: 0 2rem 2rem;
+      text-align: center;
+    }
+
+    .profile-details div {
+      font-size: 0.95rem;
       color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
+    }
+
+    .profile-details strong {
+      display: block;
+      color: var(--primary-green);
+      font-weight: 600;
     }
 
     /* Account Settings */
@@ -353,7 +363,8 @@
     }
 
     .account-form input,
-    .account-form textarea {
+    .account-form textarea,
+    .account-form select {
       padding: 0.75rem 1rem;
       border: 2px solid var(--border-light);
       border-radius: var(--radius-md);
@@ -364,7 +375,8 @@
     }
 
     .account-form input:focus,
-    .account-form textarea:focus {
+    .account-form textarea:focus,
+    .account-form select:focus {
       outline: none;
       border-color: var(--secondary-green);
       background: white;
@@ -408,7 +420,243 @@
       display: none;
     }
 
-    /* Logout Button - Positioned below main container */
+    /* Favorites Section */
+    .favorites-section {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    .favorites-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--secondary-green), var(--accent-green));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .favorites-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .favorites-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .favorites-section h2 i {
+      color: var(--secondary-green);
+    }
+
+    .clear-favorites-btn {
+      background: linear-gradient(135deg, var(--error), #e53e3e);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .clear-favorites-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .favorite-item {
+      background: var(--ultra-light-green);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 2px solid var(--border-light);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .favorite-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--secondary-green);
+    }
+
+    .favorite-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary-green), var(--accent-green));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .favorite-item:hover::before {
+      transform: scaleX(1);
+    }
+
+    .favorite-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .favorite-item h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .remove-favorite-btn {
+      background: none;
+      border: none;
+      color: var(--error);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      padding: 0.25rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .remove-favorite-btn:hover {
+      background: rgba(245, 101, 101, 0.1);
+      transform: scale(1.1);
+    }
+
+    .favorite-item .product-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .favorite-item:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .favorite-item-details {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .favorite-item-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .favorite-item-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-green);
+    }
+
+    .contact-seller-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .contact-seller-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .no-favorites {
+      text-align: center;
+      padding: 3rem;
+      background: var(--ultra-light-green);
+      border-radius: var(--radius-lg);
+      border: 2px dashed var(--border-light);
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .no-favorites:hover {
+      border-color: var(--secondary-green);
+      background: var(--light-green);
+    }
+
+    .no-favorites i {
+      font-size: 2.5rem;
+      color: var(--secondary-green);
+      margin-bottom: 1rem;
+    }
+
+    .no-favorites h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .no-favorites p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .browse-products-btn {
+      background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .browse-products-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Logout Button */
     .logout-section {
       max-width: 1400px;
       margin: 3rem auto 4rem auto;
@@ -504,78 +752,105 @@
         padding: 0 1rem;
       }
 
-      .navbar {
-        padding: 1rem;
-        flex-direction: column;
-        gap: 1rem;
-        height: auto;
+      .profile-cover {
+        height: 150px;
       }
 
-      .navbar input[type="text"] {
-        margin: 0;
-        max-width: 100%;
+      .profile-header .profile-avatar {
+        width: 100px;
+        height: 100px;
+        margin: -60px auto 1rem;
+      }
+
+      .favorites-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .favorites-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <i class="fas fa-seedling"></i>
-        TAAZA MANDI
-      </div>
-      <input type="text" placeholder="🔍 Search fresh produce, farmers...">
-      <ul>
-        <li><a href="{{ url_for('buyer_feed') }}">Home</a></li>
-        <li><a href="{{ url_for('market') }}">Market</a></li>
-        <li><a href="{{ url_for('about') }}">About</a></li>
-        <li><a href="{{ url_for('contact') }}">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  {% include 'constants/buyer/navbar.html' %}
 
   <div class="main-wrapper">
-    <aside>
-      <div class="sidebar-profile">
-        <div class="profile-avatar" id="sidebarAvatar">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="name" id="sidebarName">Loading...</div>
-        <div class="role" id="sidebarRole">
-          <i class="fas fa-shopping-cart"></i>
-          Loading...
-        </div>
-        <div class="location" id="sidebarLocation">
-          <i class="fas fa-map-marker-alt"></i>
-          Loading location...
-        </div>
-        <div class="phone" id="sidebarPhone">
-          <i class="fas fa-phone"></i>
-          Loading phone...
-        </div>
-      </div>
-      
-      <div class="sidebar-section-title">Quick Links</div>
-      <ul class="sidebar-menu">
-                    <li><a href="{{ url_for('buyer_feed') }}"><i class="fas fa-home"></i> Feed</a></li>
-            <li><a href="{{ url_for('market') }}"><i class="fas fa-shopping-bag"></i> Market</a></li>
-            <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
-      </ul>
-    </aside>
+    {% include 'constants/buyer/sidebar.html' %}
 
     <div class="main-container">
-      <div class="profile-header">
-        <h1>Buyer Profile</h1>
-        <p>Manage your account settings and personal information</p>
-      </div>
+      <!-- Enhanced Profile Section -->
+      <section class="profile-section">
+        <div class="profile-cover"></div>
+        <div class="profile-header">
+          <div class="profile-avatar" id="mainAvatar">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h1 id="mainName">Loading...</h1>
+          <div class="verified-badge">
+            <i class="fas fa-check-circle"></i>
+            Verified Buyer
+          </div>
+          <div class="profile-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span id="profileRating">4.5 (50 reviews)</span>
+          </div>
+          <div class="profile-details">
+            <div>
+              <strong id="profileLocation">Punjab</strong>
+              Location
+            </div>
+            <div>
+              <strong id="profileMember">2 Years</strong>
+              Member Since
+            </div>
+            <div>
+              <strong id="profileFavorites">0</strong>
+              Favorites
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- Message Display -->
       <div id="message" class="message hidden">
         <i class="fas fa-info-circle"></i>
         <span id="message-text"></span>
       </div>
+
+      <!-- Favorites Section -->
+      <section class="favorites-section">
+        <div class="favorites-header">
+          <h2>
+            <i class="fas fa-heart"></i>
+            My Favorites
+          </h2>
+          <button class="clear-favorites-btn" id="clearFavoritesBtn" onclick="clearAllFavorites()" style="display: none;">
+            <i class="fas fa-trash"></i>
+            Clear All
+          </button>
+        </div>
+        
+        <div class="favorites-grid" id="favoritesGrid">
+          <!-- Favorites will be loaded here -->
+        </div>
+
+        <div class="no-favorites" id="noFavorites">
+          <i class="fas fa-heart-broken"></i>
+          <h3>No Favorites Yet</h3>
+          <p>Start exploring our marketplace and like products to see them here!</p>
+          <a href="/marketplace" class="browse-products-btn">
+            <i class="fas fa-shopping-bag"></i>
+            Browse Products
+          </a>
+        </div>
+      </section>
 
       <!-- Account Settings -->
       <section class="account-settings">
@@ -588,17 +863,9 @@
           <div class="form-group">
             <label>
               <i class="fas fa-user"></i>
-              First Name
+              Full Name
             </label>
-            <input type="text" id="firstName" readonly>
-          </div>
-
-          <div class="form-group">
-            <label>
-              <i class="fas fa-user"></i>
-              Last Name
-            </label>
-            <input type="text" id="lastName" readonly>
+            <input type="text" id="fullName" readonly>
           </div>
           
           <div class="form-group">
@@ -620,25 +887,46 @@
           <div class="form-group">
             <label>
               <i class="fas fa-map-marker-alt"></i>
-              State
+              Location/City
             </label>
-            <input type="text" id="state" readonly>
+            <input type="text" id="location" readonly>
           </div>
 
           <div class="form-group">
             <label>
-              <i class="fas fa-users"></i>
-              User Type
+              <i class="fas fa-home"></i>
+              Address Type
             </label>
-            <input type="text" id="userType" readonly>
+            <select id="addressType" disabled>
+              <option value="">Select Address Type</option>
+              <option value="home">Home</option>
+              <option value="office">Office</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i class="fas fa-shopping-basket"></i>
+              Buying Preferences
+            </label>
+            <input type="text" id="preferences" readonly placeholder="e.g., Organic vegetables, Fresh fruits">
+          </div>
+
+          <div class="form-group full-width">
+            <label>
+              <i class="fas fa-map"></i>
+              Complete Address
+            </label>
+            <textarea id="address" readonly placeholder="Enter your complete delivery address..."></textarea>
           </div>
 
           <div class="form-group full-width">
             <label>
               <i class="fas fa-info-circle"></i>
-              About Me
+              Special Instructions
             </label>
-            <textarea id="about" readonly placeholder="Tell us about your preferences and what you're looking for..."></textarea>
+            <textarea id="instructions" readonly placeholder="Any special delivery instructions or dietary preferences..."></textarea>
           </div>
         </form>
         
@@ -647,7 +935,7 @@
           Edit Profile
         </button>
 
-        <button type="submit" class="save-btn" id="saveBtn" form="accountForm" style="display: none;">
+        <button type="submit" class="save-btn" id="saveBtn" form="accountForm">
           <i class="fas fa-save"></i>
           Save Changes
         </button>
@@ -655,7 +943,7 @@
     </div>
   </div>
 
-  <!-- Logout Button - Positioned below main container -->
+  <!-- Logout Button -->
   <div class="logout-section">
     <button class="logout-btn" id="logoutBtn" onclick="logout()">
       <i class="fas fa-sign-out-alt"></i>
@@ -663,14 +951,167 @@
     </button>
   </div>
 
+  {% include 'constants/buyer/footer.html' %}
+
   <script>
-    // Initialize Supabase client - Replace with your actual credentials
+    // Initialize Supabase client
     const supabaseUrl = '{{ config.SUPABASE_URL if config else "YOUR_SUPABASE_URL" }}';
     const supabaseKey = '{{ config.SUPABASE_ANON_KEY if config else "YOUR_SUPABASE_ANON_KEY" }}';
     const { createClient } = supabase;
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
     let editMode = false;
+    let favorites = [];
+
+    // Initialize favorites from localStorage
+    function initializeFavorites() {
+      const storedFavorites = localStorage.getItem('userFavorites');
+      if (storedFavorites) {
+        favorites = JSON.parse(storedFavorites);
+      }
+      loadFavorites();
+      updateFavoritesCount();
+    }
+
+    // Add product to favorites (this function will be called from marketplace)
+    function addToFavorites(product) {
+      const existingIndex = favorites.findIndex(fav => fav.id === product.id);
+      if (existingIndex === -1) {
+        favorites.push({
+          id: product.id,
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          location: product.location,
+          seller: product.seller,
+          image: product.image,
+          dateAdded: new Date().toISOString()
+        });
+        
+        // Save to localStorage
+        localStorage.setItem('userFavorites', JSON.stringify(favorites));
+        
+        // Update UI
+        loadFavorites();
+        updateFavoritesCount();
+        showMessage(`${product.title} added to favorites!`, 'success');
+        return true;
+      }
+      return false;
+    }
+
+    // Remove from favorites
+    function removeFromFavorites(productId) {
+      const initialLength = favorites.length;
+      favorites = favorites.filter(fav => fav.id !== productId);
+      
+      if (favorites.length < initialLength) {
+        // Save to localStorage
+        localStorage.setItem('userFavorites', JSON.stringify(favorites));
+        
+        // Update UI
+        loadFavorites();
+        updateFavoritesCount();
+        showMessage('Removed from favorites', 'success');
+        return true;
+      }
+      return false;
+    }
+
+    // Clear all favorites
+    function clearAllFavorites() {
+      if (favorites.length === 0) {
+        showMessage('No favorites to clear', 'error');
+        return;
+      }
+
+      if (confirm('Are you sure you want to remove all favorites? This action cannot be undone.')) {
+        favorites = [];
+        localStorage.setItem('userFavorites', JSON.stringify(favorites));
+        loadFavorites();
+        updateFavoritesCount();
+        showMessage('All favorites cleared successfully', 'success');
+      }
+    }
+
+    // Load and display favorites
+    function loadFavorites() {
+      const favoritesGrid = document.getElementById('favoritesGrid');
+      const noFavorites = document.getElementById('noFavorites');
+      const clearBtn = document.getElementById('clearFavoritesBtn');
+
+      if (favorites.length === 0) {
+        favoritesGrid.style.display = 'none';
+        noFavorites.style.display = 'block';
+        clearBtn.style.display = 'none';
+        return;
+      }
+
+      favoritesGrid.style.display = 'grid';
+      noFavorites.style.display = 'none';
+      clearBtn.style.display = 'inline-flex';
+
+      // Sort favorites by date added (newest first)
+      const sortedFavorites = favorites.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+
+      favoritesGrid.innerHTML = sortedFavorites.map(item => `
+        <div class="favorite-item" data-product-id="${item.id}">
+          <div class="favorite-item-header">
+            <h3>${item.title}</h3>
+            <button class="remove-favorite-btn" onclick="removeFromFavorites(${item.id})" title="Remove from favorites">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <img src="${item.image}" alt="${item.title}" class="product-image" onerror="this.src='https://via.placeholder.com/300x150/e8f5e8/4a8f5f?text=No+Image'">
+          
+          <div class="favorite-item-details">
+            ${item.description}
+          </div>
+          
+          <div class="favorite-item-footer">
+            <div class="favorite-item-price">${item.price}</div>
+            <button class="contact-seller-btn" onclick="contactSeller('${item.seller}', ${item.id})">
+              <i class="fas fa-envelope"></i>
+              Contact
+            </button>
+          </div>
+          
+          <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light);">
+            <i class="fas fa-map-marker-alt"></i> ${item.location} • 
+            <i class="fas fa-user"></i> ${item.seller}
+          </div>
+        </div>
+      `).join('');
+
+      // Add animation to new items
+      const favoriteItems = favoritesGrid.querySelectorAll('.favorite-item');
+      favoriteItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          item.style.transition = 'all 0.6s ease';
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    }
+
+    // Update favorites count in profile
+    function updateFavoritesCount() {
+      const favoritesCountElement = document.getElementById('profileFavorites');
+      if (favoritesCountElement) {
+        favoritesCountElement.textContent = favorites.length;
+      }
+    }
+
+    // Contact seller function
+    function contactSeller(seller, productId) {
+      showMessage(`Connecting you with ${seller}...`, 'success');
+      setTimeout(() => {
+        showMessage("Contact information sent to your email", 'success');
+      }, 1500);
+    }
 
     // Show message function
     function showMessage(message, type = 'success') {
@@ -688,37 +1129,39 @@
       }
     }
 
-    // Load user data from Flask session
+    // Load user data from Supabase and Flask session
     async function loadUserData() {
       try {
-        // For Flask integration, data will be injected via templates
         const userData = {
-          firstName: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata else 'Priya' }}",
-          lastName: "{{ session.user.user_metadata.last_name if session.user and session.user.user_metadata else 'Sharma' }}",
-          email: "{{ session.user.email if session.user else 'priya.sharma@example.com' }}",
+          fullName: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata else 'John' }} {{ session.user.user_metadata.last_name if session.user and session.user.user_metadata else 'Doe' }}",
+          email: "{{ session.user.email if session.user else 'john.doe@example.com' }}",
           phone: "{{ session.user.user_metadata.phone if session.user and session.user.user_metadata else '+91 9876543210' }}",
-          state: "{{ session.user.user_metadata.state if session.user and session.user.user_metadata else 'Delhi' }}",
-          userType: "{{ session.user.user_metadata.user_type if session.user and session.user.user_metadata else 'Buyer' }}",
-          about: "Health-conscious buyer looking for fresh, organic produce from local farmers."
+          location: "{{ session.user.user_metadata.state if session.user and session.user.user_metadata else 'Punjab' }}",
+          addressType: "{{ session.user.user_metadata.address_type if session.user and session.user.user_metadata else 'home' }}",
+          preferences: "{{ session.user.user_metadata.preferences if session.user and session.user.user_metadata else 'Organic vegetables, Fresh fruits' }}",
+          address: "{{ session.user.user_metadata.address if session.user and session.user.user_metadata else 'Enter your complete delivery address...' }}",
+          instructions: "{{ session.user.user_metadata.instructions if session.user and session.user.user_metadata else 'Handle with care, prefer organic products' }}",
+          rating: "{{ session.user.user_metadata.rating if session.user and session.user.user_metadata else '4.5' }}",
+          reviews: "{{ session.user.user_metadata.reviews if session.user and session.user.user_metadata else '50' }}",
+          memberSince: "{{ session.user.user_metadata.member_since if session.user and session.user.user_metadata else '2 Years' }}"
         };
 
         // Populate form fields
-        document.getElementById('firstName').value = userData.firstName;
-        document.getElementById('lastName').value = userData.lastName;
+        document.getElementById('fullName').value = userData.fullName;
         document.getElementById('email').value = userData.email;
         document.getElementById('phone').value = userData.phone;
-        document.getElementById('state').value = userData.state;
-        document.getElementById('userType').value = userData.userType.charAt(0).toUpperCase() + userData.userType.slice(1);
-        document.getElementById('about').value = userData.about;
+        document.getElementById('location').value = userData.location;
+        document.getElementById('addressType').value = userData.addressType;
+        document.getElementById('preferences').value = userData.preferences;
+        document.getElementById('address').value = userData.address;
+        document.getElementById('instructions').value = userData.instructions;
 
-        // Update sidebar
-        const fullName = `${userData.firstName} ${userData.lastName}`;
-        document.getElementById('sidebarName').textContent = fullName;
-        document.getElementById('sidebarRole').innerHTML = `<i class="fas fa-shopping-cart"></i> ${userData.userType} Account`;
-        document.getElementById('sidebarLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${userData.state}`;
-        document.getElementById('sidebarPhone').innerHTML = `<i class="fas fa-phone"></i> ${userData.phone}`;
+        // Update profile section
+        document.getElementById('mainName').textContent = userData.fullName;
+        document.getElementById('profileLocation').textContent = userData.location;
+        document.getElementById('profileMember').textContent = userData.memberSince;
+        document.getElementById('profileRating').textContent = `${userData.rating} (${userData.reviews} reviews)`;
 
-        console.log('User data loaded successfully');
       } catch (error) {
         console.error('Error loading user data:', error);
         showMessage('Failed to load profile data', 'error');
@@ -728,12 +1171,17 @@
     // Toggle edit mode
     function toggleEditMode() {
       editMode = !editMode;
-      const inputs = document.querySelectorAll('#accountForm input:not(#email):not(#userType), #accountForm textarea');
+      const inputs = document.querySelectorAll('#accountForm input:not(#email), #accountForm textarea, #accountForm select');
       const saveBtn = document.getElementById('saveBtn');
       const editBtn = document.getElementById('editBtn');
 
       inputs.forEach(input => {
-        input.readOnly = !editMode;
+        if (input.tagName === 'SELECT') {
+          input.disabled = !editMode;
+        } else {
+          input.readOnly = !editMode;
+        }
+        
         if (editMode) {
           input.style.background = 'white';
           input.style.borderColor = 'var(--border-light)';
@@ -761,27 +1209,37 @@
       const saveBtn = document.getElementById('saveBtn');
       const originalContent = saveBtn.innerHTML;
       
-      // Show loading
       saveBtn.disabled = true;
       saveBtn.innerHTML = '<div class="loading"></div> Saving...';
 
       try {
-        // Here you would send data to Flask backend or Supabase
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+        const userId = "{{ session.user.id if session.user else 'demo-user-id' }}";
+        const updates = {
+          first_name: document.getElementById('fullName').value.split(' ')[0],
+          last_name: document.getElementById('fullName').value.split(' ').slice(1).join(' '),
+          phone: document.getElementById('phone').value,
+          state: document.getElementById('location').value,
+          address_type: document.getElementById('addressType').value,
+          preferences: document.getElementById('preferences').value,
+          address: document.getElementById('address').value,
+          instructions: document.getElementById('instructions').value
+        };
+
+        const { error } = await supabaseClient
+          .from('buyer_profiles')
+          .update(updates)
+          .eq('user_id', userId);
+
+        if (error) throw error;
 
         showMessage("Profile updated successfully!", 'success');
         
-        // Update sidebar with new data
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
-        const phone = document.getElementById('phone').value;
-        const state = document.getElementById('state').value;
-        
-        document.getElementById('sidebarName').textContent = `${firstName} ${lastName}`;
-        document.getElementById('sidebarPhone').innerHTML = `<i class="fas fa-phone"></i> ${phone}`;
-        document.getElementById('sidebarLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${state}`;
+        // Update profile section
+        const fullName = document.getElementById('fullName').value;
+        document.getElementById('mainName').textContent = fullName;
+        document.getElementById('profileLocation').textContent = document.getElementById('location').value;
 
-        toggleEditMode(); // Exit edit mode
+        toggleEditMode();
       } catch (error) {
         console.error('Save error:', error);
         showMessage("Failed to update profile. Please try again.", 'error');
@@ -801,9 +1259,16 @@
       }
     }
 
+    // Make functions available globally for marketplace integration
+    window.addToFavorites = addToFavorites;
+    window.removeFromFavorites = removeFromFavorites;
+    window.getFavorites = () => favorites;
+    window.isFavorite = (productId) => favorites.some(fav => fav.id === productId);
+
     // Load data when page loads
     document.addEventListener('DOMContentLoaded', function() {
       loadUserData();
+      initializeFavorites();
       
       // Add entrance animation
       setTimeout(() => {

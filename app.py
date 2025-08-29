@@ -1,9 +1,13 @@
 from __future__ import annotations
-
+import joblib
 import os
+import json  # Fixed import
 from datetime import datetime, timedelta, timezone
 from functools import wraps
-
+import numpy as np
+from dotenv import load_dotenv
+from supabase import create_client, Client
+import jwt
 from flask import (
     Flask,
     render_template,
@@ -14,11 +18,6 @@ from flask import (
     session,
     flash,
 )
-from dotenv import load_dotenv
-from supabase import create_client, Client
-import jwt
-import joblib
-import numpy as np
 
 # ==================== APP & CONFIG ====================
 
@@ -81,7 +80,6 @@ except Exception as e:
 
 # ==================== AUTH HELPERS ====================
 
-
 def verify_supabase_token(token: str) -> dict:
     """Verify a Supabase GoTrue JWT locally using the service JWT secret.
 
@@ -90,12 +88,17 @@ def verify_supabase_token(token: str) -> dict:
       * Some projects disable audience or change it; we set verify_aud=False for dev friendliness.
     """
     try:
+        print(f"Verifying token: {token[:20]}...")  # Only log first 20 chars for security
+        
         payload = jwt.decode(
             token,
             SUPABASE_JWT_SECRET,
             algorithms=["HS256"],
             options={"verify_aud": False},  # avoid false negatives across setups
         )
+        
+        print(f"Token verification successful for user: {payload.get('email')}")
+        
         return {
             "status": "success",
             "user": {
@@ -107,10 +110,14 @@ def verify_supabase_token(token: str) -> dict:
             },
         }
     except jwt.ExpiredSignatureError:
+        print("Token verification failed: Token expired")
         return {"status": "error", "message": "Token expired"}
     except jwt.InvalidTokenError as e:
+        print(f"Token verification failed: Invalid token: {e}")
         return {"status": "error", "message": f"Invalid token: {e}"}
-
+    except Exception as e:
+        print(f"Token verification failed: Unexpected error: {e}")
+        return {"status": "error", "message": f"Token verification failed: {e}"}
 
 def require_auth(f):
     @wraps(f)
@@ -128,7 +135,6 @@ def require_auth(f):
 
     return decorated_function
 
-
 # Make limited config available in templates
 @app.context_processor
 def inject_config():
@@ -136,16 +142,13 @@ def inject_config():
         "config": {"SUPABASE_URL": SUPABASE_URL, "SUPABASE_ANON_KEY": SUPABASE_ANON_KEY}
     }
 
-
 # ==================== MAIN ROUTES ====================
-
 
 @app.route("/")
 def index():
     if session.get("user") and session.get("user_role"):
         return redirect(url_for("user_select"))
     return render_template("index.html")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -182,7 +185,6 @@ def login():
         print(f"Login error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "GET":
@@ -191,32 +193,109 @@ def signup():
         return render_template("auth/signup.html")
 
     try:
-        data = request.get_json(force=True, silent=False) or {}
+        print(f"Request method: {request.method}")
+        print(f"Content-Type: {request.headers.get('Content-Type')}")
+        print(f"Request data length: {len(request.data) if request.data else 0}")
+        
+        # Check if request has data
+        if not request.data:
+            print("ERROR: No request data received")
+            return jsonify({
+                "status": "error", 
+                "message": "No data received"
+            }), 400
+        
+        # Try to get JSON data with better error handling
+        try:
+            data = request.get_json(force=True)
+            print(f"Successfully parsed JSON data: {data}")
+        except Exception as json_error:
+            print(f"JSON parsing error: {json_error}")
+            print(f"Raw request data: {request.data}")
+            return jsonify({
+                "status": "error", 
+                "message": f"Invalid JSON format: {str(json_error)}"
+            }), 400
+        
+        if not data:
+            print("ERROR: Parsed data is None or empty")
+            return jsonify({
+                "status": "error", 
+                "message": "Empty data received"
+            }), 400
+        
+        # Validate required fields
         token = data.get("token")
+        email = data.get("email")
+        
         if not token:
+            print("ERROR: Missing token")
             return jsonify({"status": "error", "message": "Token is required"}), 400
+        
+        if not email:
+            print("ERROR: Missing email")
+            return jsonify({"status": "error", "message": "Email is required"}), 400
 
+        print(f"Processing signup for email: {email}")
+
+        # Verify the token
+        print("Verifying Supabase token...")
         token_verification = verify_supabase_token(token)
+        print(f"Token verification result: {token_verification['status']}")
+        
         if token_verification["status"] != "success":
-            return (
-                jsonify({"status": "error", "message": token_verification["message"]}),
-                401,
-            )
+            print(f"Token verification failed: {token_verification['message']}")
+            return jsonify({
+                "status": "error", 
+                "message": token_verification["message"]
+            }), 401
 
+        # Extract user info from verified token
+        verified_user = token_verification["user"]
+        user_id = data.get("user_id") or verified_user.get("id") or verified_user.get("sub")
+
+        # Create user session data
+        user_data = {
+            "id": user_id,
+            "email": email,
+            "first_name": data.get("first_name", ""),
+            "last_name": data.get("last_name", ""),
+            "phone": data.get("phone", ""),
+            "state": data.get("state", ""),
+            "full_name": f"{data.get('first_name', '')} {data.get('last_name', '')}".strip(),
+            "user_type": "pending",
+            # Include any additional metadata from the verified token
+            **verified_user.get("user_metadata", {})
+        }
+
+        # Store in session
         session["access_token"] = token
-        session["user"] = token_verification["user"]
-        print(f"Signup successful: {session['user']}")
-        return jsonify(
-            {
-                "status": "success",
-                "message": "Registration successful",
-                "redirect_url": url_for("user_select"),
-            }
-        )
-    except Exception as e:
-        print(f"Signup error: {e}")
-        return jsonify({"status": "error", "message": f"Server error: {e}"}), 500
+        session["user"] = user_data
+        session.permanent = True
 
+        print(f"Signup successful for user: {user_data['email']}")
+        print(f"User data stored in session: {user_data}")
+        
+        return jsonify({
+            "status": "success",
+            "message": "Registration successful",
+            "redirect_url": url_for("user_select"),
+            "user": user_data
+        })
+        
+    except json.JSONDecodeError as e:
+        print(f"JSON decode error: {e}")
+        return jsonify({"status": "error", "message": "Invalid JSON data"}), 400
+    except Exception as e:
+        print(f"Unexpected signup error: {str(e)}")
+        print(f"Error type: {type(e).__name__}")
+        import traceback
+        print(f"Full traceback: {traceback.format_exc()}")
+        
+        return jsonify({
+            "status": "error", 
+            "message": f"Server error: {str(e)}"
+        }), 500
 
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
@@ -237,7 +316,6 @@ def forgot_password():
     except Exception as e:
         print(f"Forgot password error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
-
 
 @app.route("/user-select", methods=["GET", "POST"])
 @require_auth
@@ -273,9 +351,7 @@ def user_select():
         print(f"User select error: {e}")
         return jsonify({"status": "error", "message": f"Server error: {e}"}), 500
 
-
 # ==================== DASHBOARD ====================
-
 
 @app.route("/seller-feed")
 @require_auth
@@ -297,14 +373,13 @@ def seller_feed():
         print(f"Seller feed error: {e}")
         return (
             f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Seller Feed</h1>
             <p>Error loading products: {e}</p>
-            <a href=\"/user-select\">Back to Role Selection</a>
+            <a href="/user-select">Back to Role Selection</a>
         </div>
         """
         )
-
 
 @app.route("/buyer-feed")
 @require_auth
@@ -321,17 +396,15 @@ def buyer_feed():
         print(f"Buyer feed error: {e}")
         return (
             f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Buyer Feed</h1>
             <p>Error loading products: {e}</p>
-            <a href=\"/user-select\">Back to Role Selection</a>
+            <a href="/user-select">Back to Role Selection</a>
         </div>
         """
         )
 
-
 # ==================== PROFILE ====================
-
 
 @app.route("/buyer_profile", methods=["GET", "POST"])
 @app.route("/buyer-profile", methods=["GET", "POST"])
@@ -364,7 +437,6 @@ def buyer_profile():
         print(f"Buyer profile update error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
 @app.route("/seller_profile", methods=["GET", "POST"])
 @app.route("/seller-profile", methods=["GET", "POST"])
 @require_auth
@@ -396,9 +468,7 @@ def seller_profile():
         print(f"Seller profile update error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
 # ==================== PRODUCT UPLOAD ====================
-
 
 @app.route("/upload-product", methods=["POST"])
 @require_auth
@@ -504,7 +574,6 @@ def upload_product():
         print(f"Error in upload-product: {e}")
         return jsonify({"status": "error", "message": f"Upload failed: {e}"}), 500
 
-
 @app.route("/post-upload")
 @require_auth
 def post_upload():
@@ -527,9 +596,17 @@ def post_upload():
         """
         )
 
-
 # ==================== PREDICTOR ====================
 
+# Load once globally - Fixed duplicate loading
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "model/final_model.pkl")
+try:
+    if model is None:  # Only load if not already loaded
+        model = joblib.load(MODEL_PATH)
+        print("Model loaded successfully")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None
 
 @app.route("/predictor", methods=["GET", "POST"])
 @require_auth
@@ -543,12 +620,14 @@ def predictor():
             if model is None:
                 return jsonify({"status": "error", "message": "Model not loaded on server"}), 503
 
+            # Grab inputs
             n = float(request.form.get("n", 0))
             p = float(request.form.get("p", 0))
             k = float(request.form.get("k", 0))
             humidity = float(request.form.get("humidity", 0))
             rainfall = float(request.form.get("rainfall", 0))
 
+            # Validation
             inputs = [
                 ("n", n, 0, 200),
                 ("p", p, 0, 150),
@@ -568,6 +647,7 @@ def predictor():
                         400,
                     )
 
+            # Predict
             features = np.array([[n, p, k, humidity, rainfall]], dtype=float)
             prediction = model.predict(features)[0]
             crop = str(prediction).upper()
@@ -590,6 +670,7 @@ def predictor():
             print(f"Prediction error: {e}")
             return jsonify({"status": "error", "message": f"Error during prediction: {e}"}), 500
 
+    # Render template
     try:
         return render_template("constants/seller/predictor.html", session=session)
     except Exception as e:
@@ -605,9 +686,7 @@ def predictor():
         """
         )
 
-
 # ==================== STATIC PAGES ====================
-
 
 @app.route("/about")
 @require_auth
@@ -632,14 +711,13 @@ def about():
         safe_role = (session.get("user_role") or "User").title()
         fallback_to = (session.get("user_role") or "buyer") + "-feed"
         return f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>About - {safe_role}</h1>
             <p>Learn more about Taaza Mandi.</p>
             <p><strong>Template error:</strong> {e}</p>
-            <a href=\"/{fallback_to}\">Back to Dashboard</a>
+            <a href="/{fallback_to}">Back to Dashboard</a>
         </div>
         """
-
 
 @app.route("/contact")
 @require_auth
@@ -664,14 +742,13 @@ def contact():
         safe_role = (session.get("user_role") or "User").title()
         fallback_to = (session.get("user_role") or "buyer") + "-feed"
         return f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Contact - {safe_role}</h1>
             <p>Get in touch with us.</p>
             <p><strong>Template error:</strong> {e}</p>
-            <a href=\"/{fallback_to}\">Back to Dashboard</a>
+            <a href="/{fallback_to}">Back to Dashboard</a>
         </div>
         """
-
 
 @app.route("/market")
 @require_auth
@@ -696,14 +773,13 @@ def market():
         safe_role = (session.get("user_role") or "User").title()
         fallback_to = (session.get("user_role") or "buyer") + "-feed"
         return f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Market - {safe_role}</h1>
             <p>Explore the market for various products.</p>
             <p><strong>Template error:</strong> {e}</p>
-            <a href=\"/{fallback_to}\">Back to Dashboard</a>
+            <a href="/{fallback_to}">Back to Dashboard</a>
         </div>
         """
-
 
 @app.route("/equipment")
 @require_auth
@@ -717,14 +793,13 @@ def equipment():
     except Exception as e:
         print(f"Equipment route error: {e}")
         return f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Equipment</h1>
             <p>Explore equipment bazaar.</p>
             <p><strong>Template error:</strong> {e}</p>
-            <a href=\"/seller-feed\">Back to Dashboard</a>
+            <a href="/seller-feed">Back to Dashboard</a>
         </div>
         """
-
 
 @app.route("/schemes")
 @require_auth
@@ -738,14 +813,13 @@ def schemes():
     except Exception as e:
         print(f"Schemes route error: {e}")
         return f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>Government Schemes</h1>
             <p>Explore various government schemes for farmers.</p>
             <p><strong>Template error:</strong> {e}</p>
-            <a href=\"/seller-feed\">Back to Dashboard</a>
+            <a href="/seller-feed">Back to Dashboard</a>
         </div>
         """
-
 
 @app.route("/logout")
 def logout():
@@ -753,9 +827,7 @@ def logout():
     flash("You have been logged out successfully.", "info")
     return redirect(url_for("index"))
 
-
 # ==================== API ROUTES ====================
-
 
 @app.route("/api/check-auth", methods=["POST"])  # keep POST if called via fetch
 def check_auth():
@@ -777,7 +849,6 @@ def check_auth():
     else:
         return jsonify({"status": "error", "authenticated": False, "message": "No user session"})
 
-
 @app.route("/api/update-profile", methods=["POST"])
 @require_auth
 def update_profile():
@@ -795,9 +866,7 @@ def update_profile():
         print(f"Update profile error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
 # ==================== ERROR HANDLERS ====================
-
 
 @app.errorhandler(404)
 def not_found(error):
@@ -806,16 +875,15 @@ def not_found(error):
     except Exception:
         return (
             f"""
-        <div style=\"text-align:center; padding:50px; font-family:Arial;\">
+        <div style="text-align:center; padding:50px; font-family:Arial;">
             <h1>404 - Page Not Found</h1>
             <p>The page you're looking for doesn't exist.</p>
             <p><strong>Requested path:</strong> {request.path}</p>
-            <a href=\"/\">Back to Home</a>
+            <a href="/">Back to Home</a>
         </div>
         """,
             404,
         )
-
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -833,9 +901,7 @@ def internal_error(error):
             500,
         )
 
-
 # ==================== RUN ====================
-
 
 if __name__ == "__main__":
     print("Starting TAAZA MANDI Flask App...")
@@ -843,3 +909,4 @@ if __name__ == "__main__":
     for rule in app.url_map.iter_rules():
         print(f"   {rule} -> {rule.endpoint}")
     app.run(debug=True)
+
