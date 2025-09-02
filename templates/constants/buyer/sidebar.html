@@ -172,35 +172,50 @@
 <body>
   <aside>
     <div class="sidebar-profile">
+      <!-- FIXED: Dynamic Avatar with correct session access -->
       <div class="profile-avatar" id="sidebarAvatar">
-        {% if session.user and session.user.user_metadata and session.user.user_metadata.first_name %}
-          {{ session.user.user_metadata.first_name[0]|upper }}
+        {% if session.user and session.user.first_name %}
+          {{ session.user.first_name[0]|upper }}{% if session.user.last_name %}{{ session.user.last_name[0]|upper }}{% endif %}
+        {% elif session.user and session.user.email %}
+          {{ session.user.email[0]|upper }}
         {% else %}
-          <i class="fas fa-user"></i>
+          <i class="fas fa-shopping-cart"></i>
         {% endif %}
       </div>
       
+      <!-- FIXED: Dynamic Name with correct session access -->
       <div class="name" id="sidebarName">
-        {% if session.user and session.user.user_metadata %}
-          {{ session.user.user_metadata.first_name }} {{ session.user.user_metadata.last_name }}
-        {% elif session.user %}
+        {% if session.user and session.user.first_name and session.user.last_name %}
+          {{ session.user.first_name }} {{ session.user.last_name }}
+        {% elif session.user and session.user.first_name %}
+          {{ session.user.first_name }}
+        {% elif session.user and session.user.email %}
           {{ session.user.email.split('@')[0]|title }}
         {% else %}
           Guest User
         {% endif %}
       </div>
       
+      <!-- FIXED: Dynamic Role -->
       <div class="role" id="sidebarRole">
-        <i class="fas fa-seedling"></i>
+        <i class="fas fa-shopping-cart"></i>
         {% if session.user_role == 'buyer' %}
           Buyer Account
+        {% elif session.user_role == 'seller' %}
+          Seller Account
         {% else %}
-          User
+          Loading...
         {% endif %}
       </div>
       
+      <!-- FIXED: Dynamic Profile Link -->
       {% if session.user_role == 'buyer' %}
         <a href="{{ url_for('buyer_profile') }}" class="profile-link">
+          <i class="fas fa-user"></i>
+          View Profile
+        </a>
+      {% elif session.user_role == 'seller' %}
+        <a href="{{ url_for('seller_profile') }}" class="profile-link">
           <i class="fas fa-user"></i>
           View Profile
         </a>
@@ -240,14 +255,18 @@
     });
 
     function loadUserData() {
+      // FIXED: User data is now properly accessed from Flask session
       const userData = {
-        name: "{{ session.user.user_metadata.first_name if session.user and session.user.user_metadata and session.user.user_metadata.first_name else (session.user.email.split('@')[0] if session.user else 'Guest') }}",
-        role: "{{ session.user_role if session.user_role else 'User' }}",
-        email: "{{ session.user.email if session.user else '' }}",
-        avatar: "{{ session.user.user_metadata.first_name[0]|upper if session.user and session.user.user_metadata and session.user.user_metadata.first_name else 'U' }}"
+        firstName: "{% if session.user and session.user.first_name %}{{ session.user.first_name }}{% endif %}",
+        lastName: "{% if session.user and session.user.last_name %}{{ session.user.last_name }}{% endif %}",
+        email: "{% if session.user and session.user.email %}{{ session.user.email }}{% endif %}",
+        role: "{% if session.user_role %}{{ session.user_role }}{% endif %}",
+        fullName: "{% if session.user and session.user.first_name and session.user.last_name %}{{ session.user.first_name }} {{ session.user.last_name }}{% elif session.user and session.user.first_name %}{{ session.user.first_name }}{% elif session.user and session.user.email %}{{ session.user.email.split('@')[0]|title }}{% endif %}"
       };
+      
       if (userData.email) {
-        console.log('Current user:', userData);
+        console.log('Current buyer user data:', userData);
+        console.log('User role:', userData.role);
       } else {
         console.log('No user session found');
       }

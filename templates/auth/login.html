@@ -544,187 +544,153 @@
     </div>
   </div>
 
-<script>
-// Supabase configuration
-const SUPABASE_URL = 'https://wesrjuxmbudivggitawl.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3JqdXhtYnVkaXZnZ2l0YXdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NDA3OTYsImV4cCI6MjA3MTQxNjc5Nn0.KTHwj3jAGWC-9d5gIL6Znr2u22ycdpo1VXq8JHJq3Jg';
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Supabase configuration
+  const SUPABASE_URL = 'https://wesrjuxmbudivggitawl.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3JqdXhtYnVkaXZnZ2l0YXdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NDA3OTYsImV4cCI6MjA3MTQxNjc5Nn0.KTHwj3jAGWC-9d5gIL6Znr2u22ycdpo1VXq8JHJq3Jg'; // 🔒 move this to .env in prod
 
-document.addEventListener('DOMContentLoaded', function() {
-  const loginForm = document.getElementById('login-form');
-  const loginBtn = document.getElementById('login-btn');
-  const messageDiv = document.getElementById('message');
-  const messageText = document.getElementById('message-text');
+  // Initialize Supabase client
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Show message function
-  function showMessage(message, type = 'info') {
-    if (messageDiv && messageText) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    const loginBtn = document.getElementById('login-btn');
+    const messageDiv = document.getElementById('message');
+    const messageText = document.getElementById('message-text');
+
+    // Utility: show message
+    function showMessage(message, type = 'info') {
+      if (!messageDiv || !messageText) return;
       messageDiv.className = `message ${type}`;
       messageText.textContent = message;
       messageDiv.classList.remove('hidden');
-      
-      setTimeout(() => {
-        messageDiv.classList.add('hidden');
-      }, 5000);
+      setTimeout(() => messageDiv.classList.add('hidden'), 5000);
     }
-  }
 
-  // Show error function
-  function showError(fieldId, message) {
-    const errorDiv = document.getElementById(`${fieldId}-error`);
-    if (errorDiv) {
-      const errorSpan = errorDiv.querySelector('span');
-      if (errorSpan) {
-        errorSpan.textContent = message;
+    // Utility: show field error
+    function showError(fieldId, message) {
+      const errorDiv = document.getElementById(`${fieldId}-error`);
+      if (errorDiv) {
+        const errorSpan = errorDiv.querySelector('span');
+        if (errorSpan) errorSpan.textContent = message;
         errorDiv.classList.remove('hidden');
       }
     }
-  }
 
-  // Clear errors function
-  function clearErrors() {
-    document.querySelectorAll('.error-message').forEach(error => {
-      error.classList.add('hidden');
+    function clearErrors() {
+      document.querySelectorAll('.error-message').forEach(el => el.classList.add('hidden'));
+    }
+
+    // Validate login form
+    function validateForm() {
+      clearErrors();
+      let isValid = true;
+      const email = document.getElementById('email')?.value.trim();
+      const password = document.getElementById('password')?.value;
+
+      if (!email) {
+        showError('email', 'Email address is required');
+        isValid = false;
+      } else if (!/\S+@\S+\.\S+/.test(email)) {
+        showError('email', 'Please enter a valid email address');
+        isValid = false;
+      }
+
+      if (!password) {
+        showError('password', 'Password is required');
+        isValid = false;
+      } else if (password.length < 6) {
+        showError('password', 'Password must be at least 6 characters long');
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    // Handle login
+    loginForm?.addEventListener('submit', async e => {
+      e.preventDefault();
+      if (!validateForm()) return;
+
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<div class="loading"></div> Signing In...';
+
+      try {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        console.log('🔧 Attempting Supabase login:', email);
+
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+
+        const accessToken = data?.session?.access_token;
+        if (!accessToken) throw new Error('No access token returned from Supabase');
+
+        console.log('✅ Supabase login successful:', data.user?.id);
+        showMessage('🎉 Login successful! Setting up session...', 'success');
+
+        // Forward token to Flask backend
+        const flaskResponse = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            token: accessToken,
+            user_id: data.user?.id
+          })
+        });
+
+        if (!flaskResponse.ok) {
+          const errorText = await flaskResponse.text();
+          throw new Error(`Flask error: ${flaskResponse.status} - ${errorText}`);
+        }
+
+        const flaskResult = await flaskResponse.json();
+        if (flaskResult.status === 'success') {
+          showMessage('🎉 Login complete! Redirecting...', 'success');
+          setTimeout(() => {
+            window.location.href = flaskResult.redirect_url;
+          }, 1500);
+        } else {
+          throw new Error(flaskResult.message || 'Flask login failed');
+        }
+
+      } catch (err) {
+        console.error('❌ Login error:', err);
+        if (err.message.toLowerCase().includes('invalid')) {
+          showMessage('❌ Invalid email or password.', 'error');
+        } else if (err.message.toLowerCase().includes('email not confirmed')) {
+          showMessage('📧 Please confirm your email address before logging in.', 'info');
+        } else {
+          showMessage(`❌ ${err.message}`, 'error');
+        }
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+      }
     });
-  }
 
-  // Form validation
-  function validateForm() {
-    clearErrors();
-    let isValid = true;
-
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    if (!email) {
-      showError('email', 'Email address is required');
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      showError('email', 'Please enter a valid email address');
-      isValid = false;
-    }
-
-    if (!password) {
-      showError('password', 'Password is required');
-      isValid = false;
-    } else if (password.length < 6) {
-      showError('password', 'Password must be at least 6 characters long');
-      isValid = false;
-    }
-
-    return isValid;
-  }
-
-  // Handle form submission
-  loginForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    // Show loading state
-    loginBtn.disabled = true;
-    loginBtn.innerHTML = '<div class="loading"></div> Signing In...';
-
-    try {
-      // Get form data
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-
-      console.log('🔧 Attempting Supabase login for:', email);
-
-      // Authenticate with Supabase
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      console.log('✅ Supabase login successful:', data);
-      showMessage('🎉 Login successful! Setting up session...', 'success');
-
-      // Send to Flask backend
-      console.log('🔧 Sending token to Flask...');
-      
-      const flaskResponse = await fetch('/login', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          token: data.session.access_token,
-          user: data.user
-        })
-      });
-
-      console.log('🔧 Flask response status:', flaskResponse.status);
-
-      if (!flaskResponse.ok) {
-        const errorText = await flaskResponse.text();
-        console.error('❌ Flask error response:', errorText);
-        throw new Error(`Flask error: ${flaskResponse.status} - ${errorText}`);
-      }
-
-      const flaskResult = await flaskResponse.json();
-      console.log('✅ Flask response:', flaskResult);
-
-      if (flaskResult.status === 'success') {
-        showMessage('🎉 Login complete! Redirecting...', 'success');
-        
-        setTimeout(() => {
-          console.log('🔧 Redirecting to:', flaskResult.redirect_url);
-          window.location.href = flaskResult.redirect_url;
-        }, 1500);
+    // Real-time validation
+    document.getElementById('email')?.addEventListener('blur', function () {
+      if (this.value && !/\S+@\S+\.\S+/.test(this.value)) {
+        showError('email', 'Please enter a valid email address');
       } else {
-        throw new Error(flaskResult.message || 'Flask login failed');
+        document.getElementById('email-error')?.classList.add('hidden');
       }
+    });
 
-    } catch (error) {
-      console.error('❌ Login error:', error);
-      
-      let errorMessage = 'Login failed: ' + error.message;
-      if (error.message.includes('Invalid login credentials')) {
-        errorMessage = 'Invalid email or password. Please check your credentials.';
-        showMessage('❌ ' + errorMessage, 'error');
-      } else if (error.message.includes('Email not confirmed')) {
-        errorMessage = 'Message has been sent to your email account, confirm your email id.';
-        showMessage(errorMessage, 'info');
+    document.getElementById('password')?.addEventListener('input', function () {
+      if (this.value.length > 0 && this.value.length < 6) {
+        showError('password', 'Password must be at least 6 characters long');
       } else {
-        showMessage('❌ ' + errorMessage, 'error');
+        document.getElementById('password-error')?.classList.add('hidden');
       }
-    } finally {
-      // Reset button state
-      loginBtn.disabled = false;
-      loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
-    }
+    });
   });
-
-  // Real-time validation
-  document.getElementById('email').addEventListener('blur', function() {
-    const email = this.value.trim();
-    if (email && !/\S+@\S+\.\S+/.test(email)) {
-      showError('email', 'Please enter a valid email address');
-    } else {
-      document.getElementById('email-error').classList.add('hidden');
-    }
-  });
-
-  document.getElementById('password').addEventListener('input', function() {
-    if (this.value.length > 0 && this.value.length < 6) {
-      showError('password', 'Password must be at least 6 characters long');
-    } else {
-      document.getElementById('password-error').classList.add('hidden');
-    }
-  });
-});
 </script>
+
 
 </body>
 </html>
