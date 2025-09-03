@@ -400,7 +400,7 @@ def seller_feed():
         resp = (
             supabase.table("products")
             .select("*")
-            .eq("seller_email", session["user"]["email"])
+            .eq("email", session["user"]["email"])
             .execute()
         )
         products = getattr(resp, "data", resp)
